@@ -10,4 +10,4 @@
     android:background="@color/colorPrimary"
     app:titleTextColor="@color/colorAccent"
     android:theme= "@style/AppTheme"
-    app:menu="@menu/toolbar_menu"/>
+    app:menu="@menu/menu_toolbar"/>

@@ -1,7 +1,8 @@
-package com.menard.ruralis
+package com.menard.ruralis.controller.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.menard.ruralis.R
 
 class MainActivity : AppCompatActivity() {
 
