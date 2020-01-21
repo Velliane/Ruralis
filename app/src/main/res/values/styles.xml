@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="RedFruitTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#BF1F58</item>
+        <item name="colorPrimaryDark">#85144C</item>
+        <item name="colorAccent">#1FBF87</item>
+    </style>
+
+    <style name="GreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/green_theme_primary</item>
+        <item name="colorPrimaryDark">@color/green_theme_primary_dark</item>
+        <item name="colorAccent">@color/green_theme_accent</item>
+    </style>
+
 </resources>

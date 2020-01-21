@@ -3,21 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_mapview"
+        android:id="@+id/action_map_view"
         android:enabled="true"
-        android:title="Search"
+        android:title="Map"
+        android:icon="@drawable/nav_map"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_listview"
+        android:id="@+id/action_home"
         android:enabled="true"
         android:title="Home"
+        android:icon="@drawable/nav_home"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_workmates"
+        android:id="@+id/action_list_view"
         android:enabled="true"
         android:title="List"
+        android:icon="@drawable/nav_list"
         app:showAsAction="ifRoom" />
 
 </menu>

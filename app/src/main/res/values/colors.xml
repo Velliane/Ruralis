@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#20A947</color>
+    <color name="colorPrimaryDark">#008530</color>
+    <color name="colorAccent">#A92082</color>
+
+    <!-- Green Theme -->
+    <color name="green_theme_primary">#139F3B</color>
+    <color name="green_theme_primary_dark">#007C25</color>
+    <color name="green_theme_accent">#139F81</color>
 </resources>

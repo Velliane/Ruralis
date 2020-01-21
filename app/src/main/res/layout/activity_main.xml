@@ -9,7 +9,7 @@
     tools:context=".controller.activity.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/toolbar_layout"
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,6 +18,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:labelVisibilityMode="labeled"
+            android:background="@color/colorPrimary"
+            app:itemIconTint="@drawable/bottom_navigation_colors"
+            app:itemTextColor="@drawable/bottom_navigation_colors"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
