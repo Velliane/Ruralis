@@ -14,6 +14,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        resValue "string", "api_key_google", API_GOOGLE_RURALIS
     }
     buildTypes {
         release {
@@ -45,6 +47,8 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.1.0'
     implementation 'com.google.maps.android:android-maps-utils:0.4.4'
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
+
+    implementation 'androidx.cardview:cardview:1.0.0'
 
 
 }
