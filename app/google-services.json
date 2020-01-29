@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "606697327355",
+    "firebase_url": "https://ruralis-265814.firebaseio.com",
+    "project_id": "ruralis-265814",
+    "storage_bucket": "ruralis-265814.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606697327355:android:9f1640029fb236e06dbe5e",
+        "android_client_info": {
+          "package_name": "com.menard.ruralis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606697327355-61tmc39c97e9c6i45dgjeo7a9e5ptmpe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.menard.ruralis",
+            "certificate_hash": "a7df3d9151d9e24617017d2704b4b35578296a7d"
+          }
+        },
+        {
+          "client_id": "606697327355-jnda4bhvdn24n8ko0cu27gu5s51orqfk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFOOx8rFcEKgUjGtKkLQbz8OAZG-LoDDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "606697327355-jnda4bhvdn24n8ko0cu27gu5s51orqfk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
