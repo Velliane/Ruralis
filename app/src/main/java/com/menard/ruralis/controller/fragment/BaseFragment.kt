@@ -13,12 +13,12 @@ open class BaseFragment : Fragment() {
      * Check if permissions are granted. If not, request
      */
     open fun checkPermissions(): Boolean {
-        return if(ActivityCompat.checkSelfPermission(this.activity!!, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            true
+        if(ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            return true
         }else{
             //-- Request permissions --//
-            ActivityCompat.requestPermissions(this.activity!!, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), Constants.RC_FINE_LOCATION)
-            false
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), Constants.RC_FINE_LOCATION)
+            return false
         }
     }
 

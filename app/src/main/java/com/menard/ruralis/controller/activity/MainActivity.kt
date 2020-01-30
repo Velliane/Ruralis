@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -18,6 +19,7 @@ import com.menard.ruralis.R
 import com.menard.ruralis.controller.fragment.HomeFragment
 import com.menard.ruralis.controller.fragment.ListViewFragment
 import com.menard.ruralis.controller.fragment.MapViewFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -37,8 +39,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         bindViews()
         configureDrawerLayout()
 
-        // Set BottomNavigationView to HomeFragment by default
-        bottomNavigationView.selectedItemId = R.id.action_home
+        // Set BottomNavigationView to ListFragment by default
+        bottomNavigationView.selectedItemId = R.id.action_list_view
     }
 
     //-- CONFIGURATION --//
@@ -85,14 +87,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.toolbar_menu_filter -> {
+                activity_main_search.visibility = View.VISIBLE
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     //-- LISTENER FOR NAVIGATION VIEW AND BOTTOM NAVIGATION VIEW --//
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.action_home -> {
-                val homeFragment = HomeFragment.newInstance()
-                addFragmentToLayout(homeFragment)
-                return true
-            }
+//            R.id.action_home -> {
+//                val homeFragment = HomeFragment.newInstance()
+//                addFragmentToLayout(homeFragment)
+//                return true
+//            }
             R.id.action_list_view -> {
                 val listViewFragment = ListViewFragment.newInstance()
                 addFragmentToLayout(listViewFragment)
@@ -107,9 +119,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return false
     }
 
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        }
-    }
 }

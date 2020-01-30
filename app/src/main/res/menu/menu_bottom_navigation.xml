@@ -9,12 +9,12 @@
         android:icon="@drawable/nav_map"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/action_home"
-        android:enabled="true"
-        android:title="Home"
-        android:icon="@drawable/nav_home"
-        app:showAsAction="ifRoom" />
+<!--    <item-->
+<!--        android:id="@+id/action_home"-->
+<!--        android:enabled="true"-->
+<!--        android:title="Home"-->
+<!--        android:icon="@drawable/nav_home"-->
+<!--        app:showAsAction="ifRoom" />-->
 
     <item
         android:id="@+id/action_list_view"

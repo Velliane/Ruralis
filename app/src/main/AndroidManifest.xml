@@ -4,6 +4,8 @@
     package="com.menard.ruralis">
     <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="false"
@@ -11,17 +13,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/GreenTheme"
+        android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.LoginActivity"></activity>
-        <activity android:name=".controller.activity.DispatcherActivity" />
-        <activity android:name=".controller.activity.DetailsActivity" />
-        <activity android:name=".controller.activity.MainActivity">
+        <activity android:name=".controller.activity.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".controller.activity.LoginActivity" />
+        <activity android:name=".controller.activity.DispatcherActivity" />
+        <activity android:name=".controller.activity.DetailsActivity" />
+        <activity android:name=".controller.activity.MainActivity">
         </activity>
         <activity android:name=".controller.activity.SettingsActivity" />
 

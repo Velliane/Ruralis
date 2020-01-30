@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#20A947</color>
+    <color name="colorPrimary">#37BE5E</color>
     <color name="colorPrimaryDark">#008530</color>
-    <color name="colorAccent">#A92082</color>
+    <color name="colorAccent">#664C2C</color>
 
     <!-- Green Theme -->
     <color name="green_theme_primary">#139F3B</color>
