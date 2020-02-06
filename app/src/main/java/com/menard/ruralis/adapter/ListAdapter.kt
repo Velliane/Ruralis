@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.menard.ruralis.R
 import com.menard.ruralis.model.textsearch.Result
+import com.menard.ruralis.utils.distanceToUser
 
 class ListAdapter(private val context: Context): RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
 
@@ -42,11 +43,11 @@ class ListAdapter(private val context: Context): RecyclerView.Adapter<ListAdapte
 
         var name = itemView.findViewById<TextView>(R.id.item_name)
         var photo = itemView.findViewById<ImageView>(R.id.item_photo)
+        var distance = itemView.findViewById<TextView>(R.id.item_distance)
 
         fun bind(result: Result) {
             name.text = result.name
             if (result.photos != null) {
-
                 val photoUrl = context.getString(R.string.photos_list_view,result.photos?.get(0)?.photoReference, context.getString(R.string.api_key_google))
                 Glide.with(context).load(photoUrl).into(photo)
             }

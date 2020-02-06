@@ -2,7 +2,7 @@ package com.menard.ruralis.model
 
 data class KnowsIt (
 
-    var id_knows_it: Int,
-    var info: String,
-    var drawable_id: Int?
+    var id_knows_it: Int = 0,
+    var info: String = "",
+    var drawable: String? = ""
 )

@@ -37,6 +37,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
+                <ImageView
+                    android:id="@+id/home_refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/refresh"
+                    app:layout_constraintTop_toTopOf="@id/fragment_home_title"
+                    app:layout_constraintBottom_toBottomOf="@id/fragment_home_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="80dp"/>
+
                 <TextView
                     android:id="@+id/knows_it_txt"
                     android:layout_width="wrap_content"
@@ -46,7 +56,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/fragment_home_title"
                     android:text="KNOWS IT"
-                    android:inputType="textMultiLine"
                     android:paddingTop="10dp"
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
@@ -58,59 +67,120 @@
 
                 <ImageView
                     android:id="@+id/knows_it_img"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginBottom="25dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/knows_it_txt"/>
+                    app:layout_constraintTop_toBottomOf="@id/knows_it_txt"
+                    app:layout_constraintBottom_toTopOf="@id/home_btn_container"/>
 
-                <TextView
-                    android:id="@+id/bubble_home"
-                    android:layout_width="wrap_content"
+<!--                <TextView-->
+<!--                    android:id="@+id/bubble_home"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:maxWidth="@dimen/bubble_max_width"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/knows_it_img"-->
+<!--                    app:layout_constraintBottom_toTopOf="@id/home_btn_container"-->
+<!--                    android:paddingTop="20dp"-->
+<!--                    android:paddingStart="15dp"-->
+<!--                    android:paddingEnd="15dp"-->
+<!--                    android:paddingBottom="10dp"-->
+<!--                    android:layout_marginBottom="20dp"-->
+<!--                    android:text="Bonjour User ! \n Bienvenue sur l'appli Ruralis."-->
+<!--                    android:background="@drawable/bubble_down"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:gravity="center"-->
+<!--                    android:textSize="13sp"/>-->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/home_btn_container"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:maxWidth="@dimen/bubble_max_width"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/knows_it_img"
-                    android:paddingTop="20dp"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="10dp"
-                    android:text="Bonjour User ! \n Bienvenue sur l'appli Ruralis."
-                    android:background="@drawable/bubble_down"
-                    android:textAlignment="center"
-                    android:gravity="center"
-                    android:textSize="13sp"/>
+                    app:layout_constraintBottom_toTopOf="@id/home_fav_title">
 
-                <Button
-                    android:id="@+id/home_search_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="70dp"
-                    android:text="Rechercher un producteur"
-                    android:textColor="@android:color/white"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_margin="20dp"
-                    android:padding="15dp"
+                    <LinearLayout
+                        android:id="@+id/home_search_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/home_quiz_btn"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:background="@drawable/btn_background"
+                        android:padding="12dp"
+                        android:layout_margin="15dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/search" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="Rechercher un producteur"
+                        android:textAlignment="center"
+                        android:textSize="18sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/home_quiz_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/btn_background"
+                        android:layout_margin="15dp"
+                        android:padding="12dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/home_search_btn">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/quiz" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textAlignment="center"
+                            android:textSize="18sp"
+                            android:text="Tester mes connaissances" />
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                <TextView
+                    android:id="@+id/home_fav_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mes favoris"
+                    android:gravity="center_horizontal"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="?actionBarSize"
+                    android:textColor="@color/colorPrimaryDark"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/bubble_home"
-                    app:layout_constraintBottom_toTopOf="@id/home_quiz_btn"/>
-
-
-                <Button
-                    android:id="@+id/home_quiz_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="70dp"
-                    android:text="Tester mes connaissances"
-                    android:textColor="@android:color/white"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_margin="20dp"
-                    android:padding="15dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/home_search_btn"
+                    app:layout_constraintTop_toBottomOf="@id/home_btn_container"
                     app:layout_constraintBottom_toTopOf="@id/home_list_fav"/>
-
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/home_list_fav"
@@ -122,8 +192,19 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/home_quiz_btn"
-                    tools:listitem="@layout/item_favorites" />
+                    app:layout_constraintTop_toBottomOf="@id/home_fav_title"
+                    tools:listitem="@layout/item_favorites"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ajouter des producteurs dans vos favoris pour accéder à leur fiches plus rapidement"
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toTopOf="@id/home_list_fav"
+                    app:layout_constraintBottom_toBottomOf="@id/home_list_fav"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -10,4 +10,5 @@
     <color name="green_theme_accent">#139F81</color>
 
     <color name="transparentColor">#7A000000</color>
+    <color name="transparentColorBtn">#99FFFFFF</color>
 </resources>

@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -15,8 +16,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.firestore.FirebaseFirestore
 import com.menard.ruralis.R
 import com.menard.ruralis.model.KnowsIt
+import com.menard.ruralis.utils.DrawableEnum
+import com.menard.ruralis.utils.getAllIds
+import com.menard.ruralis.utils.getKnowsIt
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     View.OnClickListener {
@@ -29,7 +34,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var imageView: ImageView
     private var index: Int = 0
 
-    private lateinit var searchBtn: Button
+    private lateinit var searchBtn: LinearLayout
+    private lateinit var refreshBtb: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +43,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         bindViews()
         configureDrawerLayout()
-
-        val knowsIt = getKnowsIt()
-        textView.text = knowsIt.info
-        imageView.setImageResource(knowsIt.drawable_id!!)
+        getRandomId()
     }
 
     //-- CONFIGURATION --//
@@ -55,6 +58,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         imageView = findViewById(R.id.knows_it_img)
         searchBtn = findViewById(R.id.home_search_btn)
         searchBtn.setOnClickListener(this)
+        refreshBtb = findViewById(R.id.home_refresh)
+        refreshBtb.setOnClickListener(this)
     }
 
     private fun configureDrawerLayout() {
@@ -89,28 +94,28 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun getKnowsIt(): KnowsIt {
-
-        val list = ArrayList<KnowsIt>()
-        val knowsIt1 = KnowsIt(0, "Les poules ne pondent pas un oeuf par jour, mais un toutes les 26 heures. De plus, plus la durée du jour décroit, moins elles pondent, jusqu'à s'arrêter complètement en Hiver. C'est pour cela que les éleveurs utilisent un système d'éclairage, pour nous permettre de manger des oeufs toute l'année.", R.drawable.egg)
-        val knowsIt2 = KnowsIt(1, "Une cinquantaine de races de bovin sont présentes sur le territoire français", R.drawable.cow)
-        val knowsIt3 = KnowsIt(2, "Il peut arriver que vous surpreniez votre lapin en train de manger ses crottes. Rassurez-vous, ça n'a rien de bizarre. Le lapin est un coprophage. Afin de palier au manque d'efficacité de son système digestif, il doit ingérer deux fois ses aliments pour les digérer entièrement.", R.drawable.rabbit)
-        list.add(knowsIt1)
-        list.add(knowsIt2)
-        list.add(knowsIt3)
-        list.shuffle()
-
-        if(index == list.size){
-            index = 0
-        }
-        return list[index++]
-
-    }
 
     override fun onClick(p0: View?) {
         when(p0){
-            searchBtn -> {
-                startActivity(Intent(this, MainActivity::class.java))
+            searchBtn -> { startActivity(Intent(this, MainActivity::class.java)) }
+            refreshBtb -> { getRandomId() }
+        }
+    }
+
+    private fun getRandomId(){
+        getAllIds().addOnSuccessListener { documentSnapshot ->
+            val list: ArrayList<String> = documentSnapshot.get("id") as ArrayList<String>
+            list.shuffle()
+            if(index == list.size){
+                index = 0
+            }
+
+            getKnowsIt(list[index++]).addOnSuccessListener { documentSnapshot ->
+                val knowsIt = documentSnapshot.toObject(KnowsIt::class.java)
+                textView.text = knowsIt!!.info
+                val enum = DrawableEnum.valueOf(knowsIt.drawable!!.toUpperCase())
+                val int = enum.getImageResource()
+                imageView.setImageResource(int)
             }
         }
 

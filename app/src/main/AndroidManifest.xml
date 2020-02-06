@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".controller.activity.AddEditActivity"></activity>
         <activity android:name=".controller.activity.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,8 +26,7 @@
         <activity android:name=".controller.activity.LoginActivity" />
         <activity android:name=".controller.activity.DispatcherActivity" />
         <activity android:name=".controller.activity.DetailsActivity" />
-        <activity android:name=".controller.activity.MainActivity">
-        </activity>
+        <activity android:name=".controller.activity.MainActivity"></activity>
         <activity android:name=".controller.activity.SettingsActivity" />
 
         <meta-data
