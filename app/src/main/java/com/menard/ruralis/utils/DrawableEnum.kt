@@ -1,27 +1,14 @@
 package com.menard.ruralis.utils
 
+import androidx.annotation.DrawableRes
 import com.menard.ruralis.R
 
-enum class DrawableEnum: ImageShowed{
+enum class DrawableEnum(@DrawableRes val drawableId: Int){
 
-    EGG{
-        override fun getImageResource(): Int = R.drawable.egg
-    },
-    RABBIT{
-        override fun getImageResource(): Int = R.drawable.rabbit
-    },
-    COW{
-        override fun getImageResource(): Int = R.drawable.cow
-    },
-    GOAT{
-        override fun getImageResource(): Int = R.drawable.goat
-    },
-    SHEEP{
-        override fun getImageResource(): Int = R.drawable.sheep
-    };
+    EGG(R.drawable.egg),
+    RABBIT(R.drawable.rabbit),
+    COW(R.drawable.cow),
+    GOAT( R.drawable.goat ),
+    SHEEP(R.drawable.sheep);
 
-}
-
-interface ImageShowed {
-    fun getImageResource(): Int
 }

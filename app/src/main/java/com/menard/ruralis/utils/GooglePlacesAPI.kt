@@ -1,6 +1,6 @@
 package com.menard.ruralis.utils
 
-import com.menard.ruralis.model.textsearch.TextSearch
+import com.menard.ruralis.search_places.textsearch_model.TextSearch
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

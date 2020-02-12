@@ -6,7 +6,7 @@
     android:id="@+id/activity_main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.activity.MainActivity">
+    tools:context=".search_places.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_layout"
@@ -65,12 +65,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/activity_main_navigation_view"
+        android:id="@+id/main_drawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white"/>
+        app:headerLayout="@layout/header"
+        app:menu="@menu/menu_drawer"
+        app:itemIconTint="@drawable/bottom_navigation_colors"
+        app:itemTextColor="@drawable/bottom_navigation_colors"
+        android:fitsSystemWindows="true"/>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

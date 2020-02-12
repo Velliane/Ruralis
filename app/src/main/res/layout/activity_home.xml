@@ -6,14 +6,13 @@
     android:id="@+id/activity_main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.activity.MainActivity">
+    tools:context=".search_places.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/lamb">
-
+        android:layout_height="match_parent">
+<!--        android:background="@drawable/lamb"-->
 
         <ScrollView
             android:layout_width="match_parent"
@@ -98,70 +97,114 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/home_btn_container"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/knows_it_img"
                     app:layout_constraintBottom_toTopOf="@id/home_fav_title">
 
-                    <LinearLayout
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/home_search_btn"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toStartOf="@id/home_quiz_btn"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        android:background="@drawable/btn_background"-->
+<!--                        android:padding="12dp"-->
+<!--                        android:layout_margin="15dp">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:src="@drawable/search" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:textColor="@color/colorPrimaryDark"-->
+<!--                        android:text="Rechercher un producteur"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:textSize="18sp"/>-->
+
+<!--                    </LinearLayout>-->
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/home_search_btn"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:layout_height="0dp"
+                        style="@style/ButtonHome"
+                        android:text="Rechercher un produit"
+                        android:textSize="17sp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        app:icon="@drawable/search"
+                        app:strokeWidth="2dp"
+                        android:background="@android:color/white"
+                        app:strokeColor="@color/colorPrimaryDark"
+                        android:layout_margin="15dp"
+                        app:cornerRadius="12dp"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                       app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/home_quiz_btn"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:background="@drawable/btn_background"
-                        android:padding="12dp"
-                        android:layout_margin="15dp">
+                        app:layout_constraintEnd_toStartOf="@id/home_quiz_btn"/>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/search" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:text="Rechercher un producteur"
-                        android:textAlignment="center"
-                        android:textSize="18sp"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/home_quiz_btn"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@drawable/btn_background"
+                        android:layout_height="0dp"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:text="Tester mes connaissances"
+                        android:textSize="17sp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        app:icon="@drawable/quiz"
+                        app:strokeWidth="2dp"
+                        android:background="@color/colorPrimary"
+                        app:strokeColor="@color/colorPrimaryDark"
                         android:layout_margin="15dp"
-                        android:padding="12dp"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:cornerRadius="12dp"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/home_search_btn">
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/home_search_btn"/>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/quiz" />
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/home_quiz_btn"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:background="@drawable/btn_background"-->
+<!--                        android:layout_margin="15dp"-->
+<!--                        android:padding="12dp"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintStart_toEndOf="@id/home_search_btn">-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textAlignment="center"
-                            android:textSize="18sp"
-                            android:text="Tester mes connaissances" />
-                    </LinearLayout>
+<!--                        <ImageView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:src="@drawable/quiz" />-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:textColor="@color/colorPrimaryDark"-->
+<!--                            android:textAlignment="center"-->
+<!--                            android:textSize="18sp"-->
+<!--                            android:text="Tester mes connaissances" />-->
+<!--                    </LinearLayout>-->
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -214,12 +257,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/activity_main_navigation_view"
+        android:id="@+id/main_drawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white"/>
+        app:headerLayout="@layout/header"
+        app:menu="@menu/menu_drawer"
+        app:itemIconTint="@drawable/bottom_navigation_colors"
+        app:itemTextColor="@drawable/bottom_navigation_colors"
+        android:fitsSystemWindows="true"/>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
