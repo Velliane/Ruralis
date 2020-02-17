@@ -1,4 +1,4 @@
-package com.menard.ruralis.controller.fragment
+package com.menard.ruralis
 
 import android.content.pm.PackageManager
 import android.util.Log

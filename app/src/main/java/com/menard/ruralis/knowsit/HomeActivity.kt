@@ -13,12 +13,16 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 import com.menard.ruralis.R
 import com.menard.ruralis.search_places.MainActivity
 import com.menard.ruralis.settings.SettingsActivity
 import com.menard.ruralis.utils.DrawableEnum
+import com.menard.ruralis.utils.Injection
+import java.util.*
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     View.OnClickListener {
@@ -29,7 +33,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var textView: TextView
     private lateinit var imageView: ImageView
-    private var index: Int = 0
 
     private lateinit var searchBtn: MaterialButton
     private lateinit var refreshBtb: ImageView
@@ -40,7 +43,19 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         bindViews()
         configureDrawerLayout()
-        getRandomId()
+        getKnowsIt()
+    }
+
+    private fun getKnowsIt() {
+        val viewModelFactory = Injection.provideHomeViewModelFactory()
+        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
+        viewModel.getRandomKnowsIt()
+        viewModel.randomKnowsIt.observe(this, Observer {
+            textView.text = it.info
+            val enum = DrawableEnum.valueOf(it.drawable!!.toUpperCase(Locale.ROOT))
+            val int = enum.drawableId
+            imageView.setImageResource(int)
+        })
     }
 
     //-- CONFIGURATION --//
@@ -100,28 +115,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onClick(p0: View?) {
         when(p0){
             searchBtn -> { startActivity(Intent(this, MainActivity::class.java)) }
-            refreshBtb -> { getRandomId() }
+            refreshBtb -> { getKnowsIt() }
         }
     }
 
-    private fun getRandomId(){
-        getAllIds()
-            .addOnSuccessListener { documentSnapshot ->
-            val list: ArrayList<String> = documentSnapshot.get("id") as ArrayList<String>
-            list.shuffle()
-            if(index == list.size){
-                index = 0
-            }
-
-            getKnowsIt(list[index++])
-                .addOnSuccessListener { documentSnapshot ->
-                val knowsIt = documentSnapshot.toObject(KnowsIt::class.java)
-                textView.text = knowsIt!!.info
-                val enum = DrawableEnum.valueOf(knowsIt.drawable!!.toUpperCase())
-                val int = enum.drawableId
-                imageView.setImageResource(int)
-            }
-        }
-
-    }
 }

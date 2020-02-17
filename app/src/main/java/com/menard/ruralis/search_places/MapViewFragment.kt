@@ -16,9 +16,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.menard.ruralis.R
-import com.menard.ruralis.controller.fragment.BaseFragment
+import com.menard.ruralis.BaseFragment
 import com.menard.ruralis.search_places.textsearch_model.Result
 import com.menard.ruralis.search_places.textsearch_model.TextSearch
+import com.menard.ruralis.search_places.view_model.PlacesViewModel
 import com.menard.ruralis.utils.Injection
 
 class MapViewFragment : BaseFragment(), OnMapReadyCallback {
@@ -33,7 +34,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
     private var googleMap: GoogleMap? = null
     /** FusedLocation */
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var viewModel: TextSearchViewModel
+    private lateinit var viewModel: PlacesViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_map_view, container, false)
@@ -45,8 +46,8 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val viewModelFactory = Injection.provideTextSearchViewModelFactory()
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(TextSearchViewModel::class.java)
+        val viewModelFactory = Injection.providePlacesViewModelFactory()
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(PlacesViewModel::class.java)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

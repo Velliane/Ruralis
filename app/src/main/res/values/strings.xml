@@ -6,4 +6,8 @@
 
     <!-- Photos Api -->
     <string name="photos_list_view" translatable="false">https://maps.googleapis.com/maps/api/place/photo?maxheight=200&amp;photoreference=%1$s&amp;key=%2$s</string>
+
+    <!-- Types -->
+    <string name="type_dairy_farmer">Dairy farmer</string>
+    <string name="type_vegetable">Vegetable</string>
 </resources>

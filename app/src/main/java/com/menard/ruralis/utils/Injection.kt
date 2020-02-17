@@ -1,18 +1,27 @@
 package com.menard.ruralis.utils
 
-import com.menard.ruralis.search_places.TextSearchRepository
-import com.menard.ruralis.search_places.TextSearchViewModelFactory
+import com.menard.ruralis.add_places.FirestoreDataRepository
+import com.menard.ruralis.knowsit.HomeViewModelFactory
+import com.menard.ruralis.knowsit.KnowsItRepository
+import com.menard.ruralis.search_places.view_model.TextSearchRepository
+import com.menard.ruralis.search_places.view_model.PlacesViewModelFactory
 
 class Injection {
 
     companion object {
 
-        fun provideTextSearchViewModelFactory(): TextSearchViewModelFactory {
+        fun providePlacesViewModelFactory(): PlacesViewModelFactory {
             val textSearchRepository =
                 TextSearchRepository()
-            return TextSearchViewModelFactory(
-                textSearchRepository
+            val firestoreDataRepository = FirestoreDataRepository()
+            return PlacesViewModelFactory(
+                textSearchRepository, firestoreDataRepository
             )
+        }
+
+        fun provideHomeViewModelFactory(): HomeViewModelFactory {
+            val knowsItRepository = KnowsItRepository()
+            return HomeViewModelFactory(knowsItRepository)
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.menard.ruralis.search_places
+package com.menard.ruralis.add_places
 
 
 data class Place  (
@@ -11,9 +11,9 @@ data class Place  (
     //val tags: List<String> = ArrayList(),
     //val openingHours: Map<String, String>,
 
-    val latitude: String = "",
-    val longitude: String = "",
+    val latitude: String? = "",
+    val longitude: String? = "",
 
-    val from: Boolean = false
+    val fromRuralis: Boolean = false
 
 )

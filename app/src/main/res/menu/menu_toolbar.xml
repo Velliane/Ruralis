@@ -9,4 +9,10 @@
         android:icon="@drawable/action_filter"
         />
 
+    <item
+        android:id="@+id/toolbar_menu_add"
+        app:showAsAction="ifRoom"
+        android:title="Add"
+        android:icon="@drawable/add"/>
+
 </menu>

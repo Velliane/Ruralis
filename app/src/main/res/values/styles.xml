@@ -50,6 +50,7 @@
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeColor">@color/colorAccent</item>
     </style>
+
     <style name="ButtonHome" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:colorBackground">@color/colorPrimary</item>
     </style>

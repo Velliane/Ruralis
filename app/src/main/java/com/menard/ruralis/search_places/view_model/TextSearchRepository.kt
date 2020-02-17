@@ -1,5 +1,6 @@
-package com.menard.ruralis.search_places
+package com.menard.ruralis.search_places.view_model
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.menard.ruralis.search_places.textsearch_model.TextSearch
 import com.menard.ruralis.utils.GooglePlacesAPI
@@ -11,7 +12,7 @@ class TextSearchRepository{
 
     private val retrofit = GooglePlacesAPI.retrofit.create(GooglePlacesAPI::class.java)
 
-    fun getTextSearch(location:String, radius: String, query: String, key: String): MutableLiveData<TextSearch> {
+    fun getTextSearch(location:String, radius: String, query: String, key: String): LiveData<TextSearch> {
 
         val data = MutableLiveData<TextSearch>()
         retrofit.getTextSearch(location, radius, query, key).enqueue(object : Callback<TextSearch> {

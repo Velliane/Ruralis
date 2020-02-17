@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.menard.ruralis.R
+import com.menard.ruralis.add_places.AddActivity
 import com.menard.ruralis.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -87,6 +88,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when(item.itemId){
             R.id.toolbar_menu_filter -> {
                 activity_main_search.visibility = View.VISIBLE
+                return true
+            }
+            R.id.toolbar_menu_add -> {
+                startActivity(Intent(this, AddActivity::class.java))
                 return true
             }
         }

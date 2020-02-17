@@ -145,7 +145,6 @@
                         android:paddingBottom="15dp"
                         app:icon="@drawable/search"
                         app:strokeWidth="2dp"
-                        android:background="@android:color/white"
                         app:strokeColor="@color/colorPrimaryDark"
                         android:layout_margin="15dp"
                         app:cornerRadius="12dp"

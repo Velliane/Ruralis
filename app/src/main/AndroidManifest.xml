@@ -15,20 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.AddEditActivity"></activity>
-        <activity android:name=".knowsit.HomeActivity">
+
+        <!-- ACTIVITIES -->
+        <activity android:name=".DispatcherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.LoginActivity" />
-        <activity android:name=".controller.activity.DispatcherActivity" />
+        <activity android:name=".login.LoginActivity"/>
+        <activity android:name=".knowsit.HomeActivity" />
+        <activity android:name=".search_places.MainActivity" />
         <activity android:name=".search_places.DetailsActivity" />
-        <activity android:name=".search_places.MainActivity"></activity>
         <activity android:name=".settings.SettingsActivity" />
-
+        <activity android:name=".add_places.AddActivity"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key_google" />
