@@ -9,17 +9,14 @@ import androidx.fragment.app.Fragment
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.Place
 
-class InfosFragment: Fragment() {
+class ContactFragment: Fragment() {
 
-    /** Info */
-    private lateinit var type: String
-    /** Views */
-    private lateinit var typeTextView: TextView
+    private lateinit var addressTxtView: TextView
     private lateinit var place: Place
 
-    companion object {
-        fun newInstance(): InfosFragment {
-            return InfosFragment()
+    companion object{
+        fun newInstance(): ContactFragment {
+            return ContactFragment()
         }
     }
 
@@ -28,19 +25,16 @@ class InfosFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_infos, container, false)
-        //-- Get args --//
-        //type = arguments!!.getString("type")!!
+        val view = inflater.inflate(R.layout.fragment_contact, container, false)
+        //address = arguments!!.getString("address")!!
         place = arguments!!.getSerializable("place") as Place
+        addressTxtView = view.findViewById(R.id.details_address)
 
-        typeTextView = view.findViewById(R.id.info_title_description)
         updateViews()
         return view
     }
 
     private fun updateViews() {
-        typeTextView.text = place.type
+        addressTxtView.text = place.address
     }
-
-
 }

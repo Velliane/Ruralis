@@ -1,5 +1,7 @@
 package com.menard.ruralis.add_places
 
+import java.io.Serializable
+
 
 data class Place  (
 
@@ -16,4 +18,4 @@ data class Place  (
 
     val fromRuralis: Boolean = false
 
-)
+) : Serializable

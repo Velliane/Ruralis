@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.menard.ruralis.add_places.FirestoreDataRepository
 import java.lang.IllegalArgumentException
 
-class PlacesViewModelFactory(private val textSearchRepository: TextSearchRepository, private val firestoreDataRepository: FirestoreDataRepository) : ViewModelProvider.Factory {
+class PlacesViewModelFactory(private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PlacesViewModel::class.java)){
             return PlacesViewModel(
-                textSearchRepository, firestoreDataRepository
+                googleApiRepository, firestoreDataRepository
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel")

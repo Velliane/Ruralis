@@ -11,4 +11,8 @@
 
     <color name="transparentColor">#7A000000</color>
     <color name="transparentColorBtn">#99FFFFFF</color>
+
+    <!-- Color items -->
+    <color name="items_from_ruralis">#ffffff</color>
+    <color name="items_from_maps">#F12626</color>
 </resources>

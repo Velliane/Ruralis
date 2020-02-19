@@ -13,4 +13,9 @@ class FirestoreDataRepository {
         }
         return list
     }
+
+    suspend fun getPlaceFromFirestoreById(id: String): Place {
+        val placesHelper = PlacesHelper()
+        return placesHelper.getPlaceById(id).toObject<Place>(Place::class.java)!!
+    }
 }

@@ -3,7 +3,7 @@ package com.menard.ruralis.utils
 import com.menard.ruralis.add_places.FirestoreDataRepository
 import com.menard.ruralis.knowsit.HomeViewModelFactory
 import com.menard.ruralis.knowsit.KnowsItRepository
-import com.menard.ruralis.search_places.view_model.TextSearchRepository
+import com.menard.ruralis.search_places.view_model.GoogleApiRepository
 import com.menard.ruralis.search_places.view_model.PlacesViewModelFactory
 
 class Injection {
@@ -12,7 +12,7 @@ class Injection {
 
         fun providePlacesViewModelFactory(): PlacesViewModelFactory {
             val textSearchRepository =
-                TextSearchRepository()
+                GoogleApiRepository()
             val firestoreDataRepository = FirestoreDataRepository()
             return PlacesViewModelFactory(
                 textSearchRepository, firestoreDataRepository

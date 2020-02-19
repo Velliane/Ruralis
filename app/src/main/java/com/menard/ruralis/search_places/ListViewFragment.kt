@@ -1,5 +1,8 @@
 package com.menard.ruralis.search_places
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,12 +19,14 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.Place
+import com.menard.ruralis.details.DetailsActivity
 import com.menard.ruralis.search_places.textsearch_model.Result
 import com.menard.ruralis.search_places.textsearch_model.TextSearch
 import com.menard.ruralis.search_places.view_model.PlacesViewModel
+import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
 
-class ListViewFragment : Fragment() {
+class ListViewFragment : Fragment(), ListAdapter.OnItemClickListener {
 
 
     /** FusedLocation */
@@ -31,6 +36,8 @@ class ListViewFragment : Fragment() {
     /** RecyclerView Adapter */
     private lateinit var adapter: ListAdapter
     private lateinit var listResult: List<Result>
+    /** Shared Preferences */
+    private lateinit var sharedPreferences: SharedPreferences
 
     companion object {
         fun newInstance(): ListViewFragment {
@@ -43,6 +50,8 @@ class ListViewFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_list_view, container, false)
 
+
+        sharedPreferences = activity!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
         //-- configure Recycler View --//
         listResult = ArrayList()
         recyclerView = view.findViewById(R.id.fragment_list_recycler_view)
@@ -53,7 +62,7 @@ class ListViewFragment : Fragment() {
             )
         )
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        adapter = ListAdapter(requireContext())
+        adapter = ListAdapter(this, requireContext())
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -61,8 +70,8 @@ class ListViewFragment : Fragment() {
         Places.initialize(requireActivity(), context!!.resources.getString(R.string.api_key_google))
         placesClient = Places.createClient(requireActivity())
 
-        //getListOfPlaces()
-        getPlacesFromFirestore()
+        getListOfPlaces()
+        //getPlacesFromFirestore()
 
         return view
     }
@@ -70,8 +79,7 @@ class ListViewFragment : Fragment() {
     private fun getPlacesFromFirestore() {
         val viewModelFactory = Injection.providePlacesViewModelFactory()
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(PlacesViewModel::class.java)
-        viewModel.getAllPlacesFromFirestore()
-        viewModel.listData.observe(this, Observer {
+        viewModel.getAllPlacesFromFirestore().observe(this, Observer {
             if(it.isNotEmpty()){
                 recyclerView.adapter = adapter
                 adapter.setData(it)
@@ -83,22 +91,22 @@ class ListViewFragment : Fragment() {
     private fun getListOfPlaces() {
         val viewModelFactory = Injection.providePlacesViewModelFactory()
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(PlacesViewModel::class.java)
-        val list = ArrayList<Place>()
 
-        viewModel.getTextSearch("46.6379969,5.234819", "10000", "producteur", context!!.resources.getString(R.string.api_key_google)).observe(this, Observer<TextSearch> {
-            if(it != null){
-               listResult = it.results!!
-               for(result in listResult){
-                   val place = Place(result.placeId.toString(), result.types.toString(), result.name.toString(), result.formattedAddress.toString(), result.geometry?.location!!.lat.toString(), result.geometry!!.location!!.lng.toString(), false)
-                   list.add(place)
-               }
-            }
-
-            if(list.isNotEmpty()){
+        viewModel.getTextSearch("46.6379969,5.234819", "10000", "producteur", context!!.resources.getString(R.string.api_key_google)).observe(this, Observer<ArrayList<Place>> {
+            if(it.isNotEmpty()){
                 recyclerView.adapter = adapter
-                adapter.setData(list)
+                adapter.setData(it)
                 adapter.notifyDataSetChanged()
             }
         })
+    }
+
+    override fun onItemClicked(id: String, from: Boolean) {
+        sharedPreferences.edit().putString(Constants.PREF_ID_PLACE, id).apply()
+        val intent = Intent(context, DetailsActivity::class.java).apply {
+            putExtra(Constants.INTENT_ID, id)
+            putExtra(Constants.INTENT_FROM, from)
+        }
+        startActivity(intent)
     }
 }

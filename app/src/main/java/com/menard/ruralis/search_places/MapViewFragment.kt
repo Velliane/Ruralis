@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.menard.ruralis.R
 import com.menard.ruralis.BaseFragment
+import com.menard.ruralis.add_places.Place
 import com.menard.ruralis.search_places.textsearch_model.Result
 import com.menard.ruralis.search_places.textsearch_model.TextSearch
 import com.menard.ruralis.search_places.view_model.PlacesViewModel
@@ -94,10 +95,9 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun showPlaces(latitude: String, longitude: String){
 
-        viewModel.getTextSearch("$latitude, $longitude", "5000", "maraîcher", context!!.resources.getString(R.string.api_key_google)).observe(this, Observer<TextSearch> {
-            val list: List<Result> = it.results!!
-            for (place in list){
-                val latLng = LatLng(place.geometry!!.location!!.lat!!, place.geometry!!.location!!.lng!!)
+        viewModel.getTextSearch("$latitude, $longitude", "5000", "maraîcher", context!!.resources.getString(R.string.api_key_google)).observe(this, Observer<ArrayList<Place>> {
+            for (place in it){
+                val latLng = LatLng((place.latitude)!!.toDouble(), (place.longitude)!!.toDouble())
                 val markerOptions = MarkerOptions().position(latLng).title(place.name)
                 googleMap!!.addMarker(markerOptions)
             }

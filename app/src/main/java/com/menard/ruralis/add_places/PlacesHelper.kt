@@ -33,4 +33,8 @@ open class PlacesHelper {
         val snapshot = getPlacesCollection().get().await()
         return snapshot.documents
     }
+
+    open suspend fun getPlaceById(id: String): DocumentSnapshot {
+        return getPlacesCollection().document(id).get().await()
+    }
 }
