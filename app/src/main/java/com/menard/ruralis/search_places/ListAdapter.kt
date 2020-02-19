@@ -1,6 +1,7 @@
 package com.menard.ruralis.search_places
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.Place
+import com.menard.ruralis.details.DetailsActivity
 import com.menard.ruralis.search_places.textsearch_model.Result
 
 class ListAdapter(private val context: Context): RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
@@ -51,6 +53,9 @@ class ListAdapter(private val context: Context): RecyclerView.Adapter<ListAdapte
 //                val photoUrl = context.getString(R.string.photos_list_view,result.photos?.get(0)?.photoReference, context.getString(R.string.api_key_google))
 //                Glide.with(context).load(photoUrl).into(photo)
 //            }
+            itemView.setOnClickListener {
+                context.startActivity(Intent(context, DetailsActivity::class.java))
+            }
         }
     }
 

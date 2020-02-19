@@ -10,4 +10,8 @@
     <!-- Types -->
     <string name="type_dairy_farmer">Dairy farmer</string>
     <string name="type_vegetable">Vegetable</string>
+
+    <!-- Tab's title -->
+    <string name="tab_info">Info général</string>
+    <string name="tab_photos">Photos</string>
 </resources>
