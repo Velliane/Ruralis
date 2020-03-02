@@ -1,4 +1,4 @@
-package com.menard.ruralis.details
+package com.menard.ruralis.details.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,19 +7,21 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.menard.ruralis.R
-import com.menard.ruralis.add_places.Place
+import com.menard.ruralis.add_places.PlaceDetailed
 
 class InfosFragment: Fragment() {
 
-    /** Info */
-    private lateinit var type: String
     /** Views */
     private lateinit var typeTextView: TextView
-    private lateinit var place: Place
+    private lateinit var placeDetailed: PlaceDetailed
 
     companion object {
-        fun newInstance(): InfosFragment {
-            return InfosFragment()
+        fun newInstance(place: PlaceDetailed): InfosFragment {
+            val fragment = InfosFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("place", place)
+            fragment.arguments = bundle
+            return fragment
         }
     }
 
@@ -30,8 +32,7 @@ class InfosFragment: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_infos, container, false)
         //-- Get args --//
-        //type = arguments!!.getString("type")!!
-        place = arguments!!.getSerializable("place") as Place
+        placeDetailed = arguments!!.getSerializable("place") as PlaceDetailed
 
         typeTextView = view.findViewById(R.id.info_title_description)
         updateViews()
@@ -39,7 +40,7 @@ class InfosFragment: Fragment() {
     }
 
     private fun updateViews() {
-        typeTextView.text = place.type
+        typeTextView.text = placeDetailed.type
     }
 
 

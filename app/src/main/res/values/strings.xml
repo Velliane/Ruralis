@@ -6,10 +6,13 @@
 
     <!-- Photos Api -->
     <string name="photos_list_view" translatable="false">https://maps.googleapis.com/maps/api/place/photo?maxheight=200&amp;photoreference=%1$s&amp;key=%2$s</string>
+    <!-- Details Api -->
+    <string name="details_field" translatable="false">name,rating,formatted_phone_number,place_id,photo,type,opening_hours,vicinity,geometry,website,review</string>
 
     <!-- Types -->
     <string name="type_dairy_farmer">Dairy farmer</string>
     <string name="type_vegetable">Vegetable</string>
+    <string name="description_google">Etablissement trouvé sur GoogleMap. Enregistrez-le sur la base de données de Ruralis pour pouvoir modifier ses informations !</string>
 
     <!-- Tab's title -->
     <string name="tab_info">Info général</string>

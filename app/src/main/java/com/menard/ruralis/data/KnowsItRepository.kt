@@ -1,4 +1,7 @@
-package com.menard.ruralis.knowsit
+package com.menard.ruralis.data
+
+import com.menard.ruralis.knowsit.KnowsIt
+import com.menard.ruralis.knowsit.KnowsItHelper
 
 class KnowsItRepository {
 

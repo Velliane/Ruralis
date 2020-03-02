@@ -1,4 +1,4 @@
-package com.menard.ruralis.details
+package com.menard.ruralis.details.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,16 +7,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.menard.ruralis.R
-import com.menard.ruralis.add_places.Place
+import com.menard.ruralis.add_places.PlaceDetailed
 
 class ContactFragment: Fragment() {
 
     private lateinit var addressTxtView: TextView
-    private lateinit var place: Place
+    private lateinit var placeDetailed: PlaceDetailed
 
     companion object{
-        fun newInstance(): ContactFragment {
-            return ContactFragment()
+        fun newInstance(place: PlaceDetailed): ContactFragment {
+            val fragment = ContactFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("place", place)
+            fragment.arguments = bundle
+            return fragment
         }
     }
 
@@ -27,7 +31,7 @@ class ContactFragment: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
         //address = arguments!!.getString("address")!!
-        place = arguments!!.getSerializable("place") as Place
+        placeDetailed = arguments!!.getSerializable("place") as PlaceDetailed
         addressTxtView = view.findViewById(R.id.details_address)
 
         updateViews()
@@ -35,6 +39,6 @@ class ContactFragment: Fragment() {
     }
 
     private fun updateViews() {
-        addressTxtView.text = place.address
+        addressTxtView.text = placeDetailed.address
     }
 }

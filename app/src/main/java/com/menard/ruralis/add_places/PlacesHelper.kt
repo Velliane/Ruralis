@@ -4,24 +4,29 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.menard.ruralis.add_places.Place
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.menard.ruralis.utils.Constants
 import kotlinx.coroutines.tasks.await
 
 open class PlacesHelper {
 
     open fun getPlacesCollection(): CollectionReference {
-        return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_PLACES)
+        val instance = FirebaseFirestore.getInstance()
+        //val settings = FirebaseFirestoreSettings.Builder().setTimestampsInSnapshotsEnabled(true).build()
+        //instance.firestoreSettings = settings
+        return instance.collection(Constants.COLLECTION_PLACES)
     }
 
-    open fun createPlaces(type: String, name: String, address: String, latitude: String, longitude: String): Task<Void> {
+
+    open fun createPlaces(type: String, name: String, address: String, photos: ArrayList<String>?, latitude: String, longitude: String): Task<Void> {
         val ref = getPlacesCollection().document()
         val id = ref.id
-        val newPlace = Place(
+        val newPlace = PlaceDetailed(
             id,
             type,
             name,
             address,
+            photos,
             latitude,
             longitude,
             true

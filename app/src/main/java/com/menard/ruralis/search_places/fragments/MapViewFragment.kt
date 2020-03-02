@@ -1,4 +1,4 @@
-package com.menard.ruralis.search_places
+package com.menard.ruralis.search_places.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -17,10 +17,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.menard.ruralis.R
 import com.menard.ruralis.BaseFragment
-import com.menard.ruralis.add_places.Place
-import com.menard.ruralis.search_places.textsearch_model.Result
-import com.menard.ruralis.search_places.textsearch_model.TextSearch
-import com.menard.ruralis.search_places.view_model.PlacesViewModel
+import com.menard.ruralis.add_places.PlaceDetailed
+import com.menard.ruralis.search_places.MainViewModel
+import com.menard.ruralis.search_places.PlaceForList
 import com.menard.ruralis.utils.Injection
 
 class MapViewFragment : BaseFragment(), OnMapReadyCallback {
@@ -35,11 +34,16 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
     private var googleMap: GoogleMap? = null
     /** FusedLocation */
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var viewModel: PlacesViewModel
+    private lateinit var viewModel: MainViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_map_view, container, false)
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
         Places.initialize(requireActivity(), context!!.getString(R.string.api_key_google))
 
         return view
@@ -47,8 +51,8 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val viewModelFactory = Injection.providePlacesViewModelFactory()
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(PlacesViewModel::class.java)
+        val viewModelFactory = Injection.provideMainViewModelFactory()
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -65,13 +69,13 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
         googleMap?.uiSettings?.isZoomControlsEnabled = true
 
         //-- Check if permissions are granted for FINE_LOCATION or request it --//
-        if(checkPermissions()){
+        if (checkPermissions()) {
             googleMap?.isMyLocationEnabled = true
             centerMapToUserLocation()
         }
     }
 
-    private fun centerMapToUserLocation(){
+    private fun centerMapToUserLocation() {
         //-- Create a LocationRequest --//
         val locationRequest = LocationRequest()
         locationRequest.interval = 10000
@@ -80,27 +84,40 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
 
 
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            object : LocationCallback() {
 
-            override fun onLocationResult(locationResult: LocationResult?) {
-                val latitude = locationResult!!.lastLocation.latitude
-                val longitude = locationResult.lastLocation.longitude
-                val lastLocation= LatLng(latitude, longitude)
+                override fun onLocationResult(locationResult: LocationResult?) {
+                    val latitude = locationResult!!.lastLocation.latitude
+                    val longitude = locationResult.lastLocation.longitude
+                    val lastLocation = LatLng(latitude, longitude)
 
-                googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 12F))
-                showPlaces(latitude.toString(), longitude.toString())
-            }
-        }, null)
+                    googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 12F))
+                    //showPlaces(latitude.toString(), longitude.toString())
+                }
+            },
+            null
+        )
     }
 
-    private fun showPlaces(latitude: String, longitude: String){
+    private fun showPlaces(latitude: String, longitude: String) {
 
-        viewModel.getTextSearch("$latitude, $longitude", "5000", "maraîcher", context!!.resources.getString(R.string.api_key_google)).observe(this, Observer<ArrayList<Place>> {
-            for (place in it){
+        viewModel.getAllPlaces("$latitude, $longitude", "5000", "maraîcher", context!!.resources.getString(R.string.api_key_google))
+        viewModel.allPlaceLiveData.observe(this, Observer {
+            for (place in it) {
                 val latLng = LatLng((place.latitude)!!.toDouble(), (place.longitude)!!.toDouble())
                 val markerOptions = MarkerOptions().position(latLng).title(place.name)
                 googleMap!!.addMarker(markerOptions)
             }
         })
+//        viewModel.getTextSearch("$latitude, $longitude", "5000", "maraîcher", context!!.resources.getString(R.string.api_key_google))
+//        viewModel.placeTextSearchListLiveData.observe(this, Observer<List<PlaceForList>> {
+//            for (place in it) {
+//                val latLng = LatLng((place.latitude)!!.toDouble(), (place.longitude)!!.toDouble())
+//                val markerOptions = MarkerOptions().position(latLng).title(place.name)
+//                googleMap!!.addMarker(markerOptions)
+//            }
+//        })
     }
 }

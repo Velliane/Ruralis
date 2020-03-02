@@ -1,4 +1,4 @@
-package com.menard.ruralis.details
+package com.menard.ruralis.details.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,12 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.menard.ruralis.R
+import com.menard.ruralis.add_places.PlaceDetailed
 
 class PhotoFragment: Fragment() {
 
     companion object {
-        fun newInstance(): PhotoFragment {
-            return PhotoFragment()
+        fun newInstance(place: PlaceDetailed): PhotoFragment {
+            val fragment = PhotoFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("place", place)
+            fragment.arguments = bundle
+            return fragment
         }
     }
 

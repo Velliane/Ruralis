@@ -1,20 +1,22 @@
 package com.menard.ruralis.utils
 
-import com.menard.ruralis.add_places.FirestoreDataRepository
+import com.menard.ruralis.data.FirestoreDataRepository
 import com.menard.ruralis.knowsit.HomeViewModelFactory
-import com.menard.ruralis.knowsit.KnowsItRepository
-import com.menard.ruralis.search_places.view_model.GoogleApiRepository
-import com.menard.ruralis.search_places.view_model.PlacesViewModelFactory
+import com.menard.ruralis.data.KnowsItRepository
+import com.menard.ruralis.data.GoogleApiRepository
+import com.menard.ruralis.details.DetailsViewModel
+import com.menard.ruralis.details.DetailsViewModelFactory
+import com.menard.ruralis.login.UserViewModelFactory
+import com.menard.ruralis.search_places.MainViewModelFactory
 
 class Injection {
 
     companion object {
 
-        fun providePlacesViewModelFactory(): PlacesViewModelFactory {
-            val textSearchRepository =
-                GoogleApiRepository()
+        fun provideMainViewModelFactory(): MainViewModelFactory {
+            val textSearchRepository = GoogleApiRepository()
             val firestoreDataRepository = FirestoreDataRepository()
-            return PlacesViewModelFactory(
+            return MainViewModelFactory(
                 textSearchRepository, firestoreDataRepository
             )
         }
@@ -22,6 +24,16 @@ class Injection {
         fun provideHomeViewModelFactory(): HomeViewModelFactory {
             val knowsItRepository = KnowsItRepository()
             return HomeViewModelFactory(knowsItRepository)
+        }
+
+        fun provideUserViewModelFactory(): UserViewModelFactory {
+            return UserViewModelFactory()
+        }
+
+        fun provideDetailsViewModelFactory(): DetailsViewModelFactory {
+            val textSearchRepository = GoogleApiRepository()
+            val firestoreDataRepository = FirestoreDataRepository()
+            return DetailsViewModelFactory(textSearchRepository, firestoreDataRepository)
         }
     }
 }

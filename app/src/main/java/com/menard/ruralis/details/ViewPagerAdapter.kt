@@ -1,40 +1,32 @@
 package com.menard.ruralis.details
 
 import android.content.Context
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.menard.ruralis.add_places.Place
+import com.menard.ruralis.add_places.PlaceDetailed
+import com.menard.ruralis.details.fragment.ContactFragment
+import com.menard.ruralis.details.fragment.InfosFragment
+import com.menard.ruralis.details.fragment.PhotoFragment
+import java.lang.IllegalStateException
 
-class ViewPagerAdapter constructor(manager:FragmentManager, val context: Context, private val place: Place):FragmentPagerAdapter(manager) {
+class ViewPagerAdapter constructor(manager:FragmentManager, val context: Context, private val placeDetailed: PlaceDetailed):FragmentPagerAdapter(manager) {
 
 
     override fun getItem(position: Int): Fragment {
-        val bundle = Bundle()
-        bundle.putSerializable("place", place)
-        when(position){
-            0 -> {
-                val fragment = InfosFragment.newInstance()
-                //bundle.putString("type", place.type)
-                fragment.arguments = bundle
-                return fragment
-            }
-            1 -> return PhotoFragment.newInstance()
-            2 -> {
-                val fragment = ContactFragment.newInstance()
-                //bundle.putString("address", place.address)
-                fragment.arguments = bundle
-                return fragment
-            }
+
+        return when(position){
+            0 -> InfosFragment.newInstance(placeDetailed)
+            1 -> PhotoFragment.newInstance(placeDetailed)
+            2 -> ContactFragment.newInstance(placeDetailed)
+            else -> throw IllegalStateException("No fragment thrown from position $position")
         }
-        return InfosFragment.newInstance()
     }
 
-    override fun getCount(): Int = DetailsCategory.values().size
+    override fun getCount(): Int = DetailsCategoryEnum.values().size
 
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return context.getString(DetailsCategory.values()[position].title)
+        return context.getString(DetailsCategoryEnum.values()[position].title)
     }
 }

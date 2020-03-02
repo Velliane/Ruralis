@@ -31,7 +31,7 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
                 val name: String = add_name.text.toString()
                 val type: String = add_edit_type_spinner.selectedItem.toString()
                 val address: String = add_address.text.toString()
-                placesHelper.createPlaces(type, name, address, "", "")
+                placesHelper.createPlaces(type, name, address, null, "", "")
             }
         }
     }

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ActionMode
 import android.view.View
+import androidx.lifecycle.ViewModelProviders
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
@@ -14,15 +15,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.menard.ruralis.R
 import com.menard.ruralis.knowsit.HomeActivity
 import com.menard.ruralis.utils.Constants
+import com.menard.ruralis.utils.Injection
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
+    private lateinit var userViewModel: UserViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val viewModelFactory = Injection.provideUserViewModelFactory()
+        userViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
 
         login_connexion_btn.setOnClickListener(this)
     }
@@ -50,8 +56,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             if(resultCode == Activity.RESULT_OK){
                 Snackbar.make(login_layout, "Connexion succeed" , Snackbar.LENGTH_SHORT).show()
                 val currentUser = FirebaseAuth.getInstance().currentUser
-                //val user = User(currentUser!!.uid, currentUser.displayName!!, currentUser.email!!, currentUser.photoUrl.toString())
-                createUser(currentUser!!.uid, currentUser.displayName!!, currentUser.email!!, currentUser.photoUrl.toString())
+                userViewModel.createUser(currentUser!!.uid, currentUser.displayName!!, currentUser.email!!, currentUser.photoUrl.toString())
                 startActivity(Intent(this, HomeActivity::class.java))
 
             }else {

@@ -12,11 +12,10 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.AddActivity
-import com.menard.ruralis.add_places.Place
-import com.menard.ruralis.search_places.view_model.PlacesViewModel
+import com.menard.ruralis.add_places.PlaceDetailed
+import com.menard.ruralis.search_places.MainViewModel
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
-import kotlin.properties.Delegates
 
 class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener{
 
@@ -27,7 +26,7 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener{
     /** From Boolean */
     private var fromRuralis: Boolean = false
     /** Place ViewModel */
-    private lateinit var viewModel: PlacesViewModel
+    private lateinit var viewModel: DetailsViewModel
     /** Name */
     private lateinit var name: TextView
 
@@ -47,23 +46,16 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener{
 
 
     private fun configureViewModel() {
-        val viewModelFactory = Injection.providePlacesViewModelFactory()
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(PlacesViewModel::class.java)
+        val viewModelFactory = Injection.provideDetailsViewModelFactory()
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
     }
 
     private fun getPlaceFromViewModel(){
-        if(fromRuralis){
-            viewModel.getPlaceFromFirestoreById(placeId)
-            viewModel.place.observe(this, Observer {
-                setViewPageAdapter(it)
-                name.text = it.name
-            })
-        }else{
-            viewModel.getDetailsById(placeId, "name,rating,formatted_phone_number,place_id,photo,type,opening_hours,vicinity,geometry,website,review", getString(R.string.api_key_google)).observe(this, Observer {
-                setViewPageAdapter(it)
-                name.text = it.name
-            })
-        }
+        viewModel.getPlaceAccordingItsOrigin(fromRuralis, placeId, getString(R.string.details_field), getString(R.string.api_key_google))
+        viewModel.placeLiveData.observe(this, Observer {
+            viewPager.adapter = ViewPagerAdapter(supportFragmentManager, this, it)
+            name.text = it.name
+        })
     }
 
     private fun configureViewPager() {
@@ -73,11 +65,6 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener{
         tabLayout.setupWithViewPager(viewPager)
         tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         tabLayout.setOnTabSelectedListener(this)
-
-    }
-
-    private fun setViewPageAdapter(place: Place) {
-        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, this, place)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
