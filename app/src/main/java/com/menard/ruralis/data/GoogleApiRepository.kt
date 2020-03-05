@@ -1,6 +1,7 @@
 package com.menard.ruralis.data
 
 import com.menard.ruralis.add_places.PlaceDetailed
+import com.menard.ruralis.details.comments.Comments
 import com.menard.ruralis.search_places.PlaceForList
 import com.menard.ruralis.utils.GooglePlacesAPI
 
@@ -39,8 +40,26 @@ class GoogleApiRepository {
         for (photo in photos) {
             listRef.add(photo.photoReference!!)
         }
-        return PlaceDetailed(result.placeId!!, "Etablissement trouvé sur GoogleMap", result.name!!, result.vicinity.toString(), listRef, lat, lng, false
+        return PlaceDetailed(result.placeId!!, "Etablissement trouvé sur GoogleMap", result.name!!, result.vicinity.toString(), listRef, result.website.toString(), result.formattedPhoneNumber.toString(), lat, lng, false
         )
+    }
+
+    suspend fun getComments(place_id: String, fields: String, key: String): List<Comments> {
+        val result = retrofit.getDetailsById(place_id, fields, key).result!!
+        val listOfComments = ArrayList<Comments>()
+        val listOfReview = result.reviews
+        if(listOfReview != null) {
+            for (review in listOfReview) {
+                val comments = Comments(
+                    review.authorName.toString(),
+                    review.text.toString()
+                )
+                listOfComments.add(comments)
+            }
+        }else{
+            listOfComments.isEmpty()
+        }
+        return listOfComments
     }
 }
 

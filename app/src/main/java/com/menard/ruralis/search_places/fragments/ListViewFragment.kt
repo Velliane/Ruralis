@@ -17,7 +17,6 @@ import com.google.android.gms.location.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.menard.ruralis.R
-import com.menard.ruralis.add_places.PlaceDetailed
 import com.menard.ruralis.details.DetailsActivity
 import com.menard.ruralis.search_places.ListAdapter
 import com.menard.ruralis.search_places.textsearch_model.Result
@@ -78,7 +77,7 @@ class ListViewFragment : Fragment(),
         Places.initialize(requireActivity(), context!!.resources.getString(R.string.api_key_google))
         placesClient = Places.createClient(requireActivity())
 
-        val viewModelFactory = Injection.provideMainViewModelFactory()
+        val viewModelFactory = Injection.provideViewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
         //getListOfPlaces()

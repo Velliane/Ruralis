@@ -18,4 +18,5 @@
     <string name="tab_info">Info général</string>
     <string name="tab_photos">Photos</string>
     <string name="tab_contact">contact</string>
+    <string name="tab_comments">Commentaires</string>
 </resources>

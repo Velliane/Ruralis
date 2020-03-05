@@ -1,4 +1,4 @@
-package com.menard.ruralis.details.fragment
+package com.menard.ruralis.details.photos
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -46,13 +46,12 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener{
 
 
     private fun configureViewModel() {
-        val viewModelFactory = Injection.provideDetailsViewModelFactory()
+        val viewModelFactory = Injection.provideViewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
     }
 
     private fun getPlaceFromViewModel(){
-        viewModel.getPlaceAccordingItsOrigin(fromRuralis, placeId, getString(R.string.details_field), getString(R.string.api_key_google))
-        viewModel.placeLiveData.observe(this, Observer {
+        viewModel.getPlaceAccordingItsOrigin(fromRuralis, placeId, getString(R.string.details_field), getString(R.string.api_key_google)).observe(this, Observer {
             viewPager.adapter = ViewPagerAdapter(supportFragmentManager, this, it)
             name.text = it.name
         })

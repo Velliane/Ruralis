@@ -19,6 +19,7 @@ class MainViewModel(private val googleApiRepository: GoogleApiRepository, privat
     private val liveDataMerger = MediatorLiveData<List<PlaceForList>>()
     val allPlaceLiveData: LiveData<List<PlaceForList>> = liveDataMerger
 
+
     fun getTextSearch(location: String, radius: String, query: String, key: String){
         viewModelScope.launch(Dispatchers.IO) {
             val list = googleApiRepository.getTextSearch(location, radius, query, key)

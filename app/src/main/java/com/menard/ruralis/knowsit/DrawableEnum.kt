@@ -1,4 +1,4 @@
-package com.menard.ruralis.utils
+package com.menard.ruralis.knowsit
 
 import androidx.annotation.DrawableRes
 import com.menard.ruralis.R

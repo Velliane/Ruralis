@@ -6,42 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".add_places.AddActivity">
 
-    <TextView
-        android:id="@+id/add_activity_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Ajouter un lieu"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/add_activity_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_activity_title"
-        android:text="Vous connaissez un lieu qui n'est pas encore présent sur l'application ? Remplissez le formulaire ci-dessous pour le partager avec les autres utilisateurs !"
-        android:textAlignment="center"/>
-
     <ScrollView
         android:id="@+id/add_container"
-        app:layout_constraintTop_toBottomOf="@id/add_activity_comment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/add_save_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp">
+        android:layout_margin="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="25dp"
-            android:background="@drawable/btn_background">
+            android:background="@drawable/btn_background"
+            android:padding="25dp">
+
+            <TextView
+                android:id="@+id/add_activity_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ajouter un lieu"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/add_activity_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vous connaissez un lieu qui n'est pas encore présent sur l'application ? Remplissez le formulaire ci-dessous pour le partager avec les autres utilisateurs !"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_activity_title" />
+
 
             <!-- Place's name -->
 
@@ -53,7 +54,7 @@
                 android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/add_activity_comment">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_name"
@@ -66,19 +67,20 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/add_edit_type"
-                app:layout_constraintTop_toBottomOf="@id/add_edit_name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 style="@style/TextInputLayoutStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="5dp">
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_edit_name">
+
                 <Spinner
                     android:id="@+id/add_edit_type_spinner"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints="Type"/>
+                    android:autofillHints="Type" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Place's address -->
@@ -88,8 +90,8 @@
                 style="@style/TextInputLayoutStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:hint="Address"
+                android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/add_edit_type">
@@ -106,19 +108,29 @@
                 android:id="@+id/add_opening_title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:text="Horaires"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/add_edit_address"
-                android:text="Horaires" />
+                app:layout_constraintTop_toBottomOf="@id/add_edit_address" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/add_opening_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:layout_constraintBottom_toTopOf="@id/add_opening_new"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_opening_title"
+                tools:listitem="@layout/item_opening_hours_preview" />
 
             <LinearLayout
                 android:id="@+id/add_opening_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/add_opening_title"
-                android:weightSum="4">
+                android:weightSum="4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_opening_recycler_view">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/new_opening_day"
@@ -126,8 +138,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:padding="5dp"
-                    android:hint="Day">
+                    android:hint="Day"
+                    android:padding="5dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -140,8 +152,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:padding="5dp"
-                    android:hint="Hours">
+                    android:hint="Hours"
+                    android:padding="5dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -151,29 +163,125 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:src="@drawable/add"
-                    android:layout_gravity="center_vertical"/>
+                    android:src="@drawable/add" />
             </LinearLayout>
+            <!-- Contact -->
+
+            <TextView
+                android:id="@+id/add_contact_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Contact"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_opening_new" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/contact_edit_phone_number"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="Phone number"
+                android:padding="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_contact_title">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/contact_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/contact_edit_website"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="Website"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/contact_edit_phone_number"
+                android:padding="5dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/contact_website"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Photos -->
+            <TextView
+                android:id="@+id/add_photos_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Photos"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/contact_edit_website" />
+
+            <ImageView
+                android:id="@+id/add_photos_preview"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_photos_title" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_photos_btn"
+                style="@style/ButtonHome"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:padding="5dp"
+                android:text="AJOUTER"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/colorPrimaryDark"
+                app:cornerRadius="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_photos_preview"
+                app:strokeColor="@color/colorPrimaryDark"
+                app:strokeWidth="2dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/add_photos_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@id/add_photos_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/add_photos_preview"
+                app:layout_constraintTop_toTopOf="@id/add_photos_preview"
+                tools:listitem="@layout/item_photo" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_save_btn"
+                style="@style/ButtonHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:layout_marginTop="15dp"
+                android:text="SAUVEGARDER"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/colorPrimaryDark"
+                app:cornerRadius="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_photos_btn"
+                app:strokeColor="@color/colorPrimaryDark"
+                app:strokeWidth="2dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </ScrollView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/add_save_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="AJOUTER"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:padding="15dp"
-        app:strokeWidth="2dp"
-        app:cornerRadius="12dp"
-        android:textColor="@color/colorPrimaryDark"
-        app:strokeColor="@color/colorPrimaryDark"
-        style="@style/ButtonHome"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_container"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

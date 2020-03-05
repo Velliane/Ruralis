@@ -7,11 +7,13 @@ class Constants {
         //-- REQUEST CODE --//
         const val RC_FINE_LOCATION = 1
         const val RC_LOGIN = 2
+        const val REQUEST_CODE_CALL_PHONE = 3
 
         //-- FIRESTORE COLLECTION --//
-        const val COLLECTION_KNOWSIT = "knowsit"
+        const val COLLECTION_KNOWS_IT = "knowsit"
         const val COLLECTION_USERS = "users"
         const val COLLECTION_PLACES = "places"
+        const val COLLECTION_COMMENTS = "comments"
 
         //-- SHARED PREFERENCES --//
         const val SHARED_PREFERENCES = "SHARED_PREFERENCES"

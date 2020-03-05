@@ -1,29 +1,102 @@
 package com.menard.ruralis.data
 
+import android.net.Uri
+import android.util.Log
+import com.google.firebase.storage.FirebaseStorage
 import com.menard.ruralis.add_places.PlaceDetailed
 import com.menard.ruralis.add_places.PlacesHelper
+import com.menard.ruralis.details.comments.Comments
+import com.menard.ruralis.details.comments.CommentsHelper
 import com.menard.ruralis.search_places.PlaceForList
+import kotlinx.coroutines.tasks.await
 
 
 class FirestoreDataRepository {
 
+    private val placesHelper = PlacesHelper()
+    private val commentsHelper = CommentsHelper()
+
     suspend fun getAllPlacesFromFirestore(): List<PlaceForList> {
         val list = ArrayList<PlaceForList>()
-        val placesHelper = PlacesHelper()
         val listDocument = placesHelper.getAllPlaces()
-        for(document in listDocument){
-            val listPhoto: List<String> = listOf(document.get("photos").toString())
-           val placeForList = PlaceForList(document.id, document.getString("name")!!, document.getString("type")!!, listPhoto, document.getString("latitude"), document.getString("longitude"), document.getBoolean("fromRuralis")!!)
-//            val place = document.toObject<PlaceForList>(
-//                PlaceForList::class.java)
+        for (document in listDocument) {
+            val photos = document.data!!["list_photos"]
+            var listPhoto: List<String>? = null
+            if (photos != null) {
+                listPhoto = photos as List<String>
+            }
+            val placeForList = PlaceForList(
+                document.id,
+                document.getString("name")!!,
+                document.getString("type")!!,
+                listPhoto,
+                document.getString("latitude"),
+                document.getString("longitude"),
+                document.getBoolean("fromRuralis")!!
+            )
             list.add(placeForList)
         }
         return list
     }
 
     suspend fun getPlaceFromFirestoreById(id: String): PlaceDetailed {
-        val placesHelper = PlacesHelper()
         return placesHelper.getPlaceById(id).toObject<PlaceDetailed>(
-            PlaceDetailed::class.java)!!
+            PlaceDetailed::class.java
+        )!!
+    }
+
+    suspend fun savePlaceInFirestore(
+        id: String,
+        type: String,
+        name: String,
+        address: String,
+        photos: List<Uri>,
+        website: String,
+        phoneNumber: String,
+        latitude: String,
+        longitude: String,
+        edit: Boolean
+    ) {
+        if (!edit) {
+            //-- New object --//
+            val ref = placesHelper.getPlacesCollection().document()
+            val newId = ref.id
+            val listPhotos = getListOfPath(photos, newId)
+            placesHelper.createPlaces(newId, type, name, address, website, phoneNumber, listPhotos, latitude, longitude)
+        } else {
+            //-- Update object --//
+            val listPhotos = getListOfPath(photos, id)
+            placesHelper.createPlaces(id, type, name, address, website, phoneNumber, listPhotos, latitude, longitude)
+        }
+    }
+
+    suspend fun getCommentsOfPlace(id: String): List<Comments> {
+        var listComments = ArrayList<Comments>()
+        val querySnapshot = commentsHelper.getAllComments(id)
+        for (query in querySnapshot!!.documents) {
+            val comment = query.toObject(Comments::class.java)!!
+            listComments.add(comment)
+        }
+        return listComments
+    }
+
+    //-- Image --//
+
+    private suspend fun saveImageToFirestore(uri: Uri, id: String): String {
+        var stringPath = ""
+        val storageReference = FirebaseStorage.getInstance().getReference("/images$id/")
+        storageReference.putFile(uri).addOnSuccessListener {
+            Log.d("PHOTO", "Photo successfully saved in Firebase")
+            stringPath = it.metadata!!.path
+        }.await()
+        return stringPath
+    }
+
+    private suspend fun getListOfPath(listUri: List<Uri>, id: String): List<String> {
+        val listPhotos = ArrayList<String>()
+        for (uri in listUri) {
+            listPhotos.add(saveImageToFirestore(uri, id))
+        }
+        return listPhotos
     }
 }

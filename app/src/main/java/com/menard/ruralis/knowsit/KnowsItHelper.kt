@@ -10,7 +10,7 @@ import kotlinx.coroutines.tasks.await
 open class KnowsItHelper{
 
     open fun getKnowsItCollection(): CollectionReference {
-        return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_KNOWSIT)
+        return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_KNOWS_IT)
     }
 
     open suspend fun getAllIds(): DocumentSnapshot {

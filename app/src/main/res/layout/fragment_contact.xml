@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/contact_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,11 +10,54 @@
         android:id="@+id/details_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/details_make_call"
         android:textAlignment="center"
         android:textSize="23sp"
         android:text="Address"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/details_make_call"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="15dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        style="@style/ButtonHome"
+        android:text="Make a call"
+        android:textSize="19sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/colorPrimaryDark"
+        android:layout_margin="15dp"
+        app:cornerRadius="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/details_visit_website"
+        app:layout_constraintTop_toBottomOf="@id/details_address"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/details_visit_website"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="15dp"
+        style="@style/ButtonHome"
+        android:text="Visit website"
+        android:textSize="19sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/colorPrimaryDark"
+        android:layout_margin="15dp"
+        app:cornerRadius="12dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/details_make_call"
+        app:layout_constraintTop_toBottomOf="@id/details_address"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

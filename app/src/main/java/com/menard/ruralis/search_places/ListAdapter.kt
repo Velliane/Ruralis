@@ -30,6 +30,7 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
         data = newData
         notifyDataSetChanged()
     }
+
     override fun getItemCount(): Int {
         return data.size
     }
@@ -49,17 +50,17 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
         fun bind(placeForList: PlaceForList) {
             name.text = placeForList.name
 
-            if (placeForList.photos != null) {
-                val photoUrl = context.getString(R.string.photos_list_view, placeForList.photos, context.getString(R.string.api_key_google))
-                Glide.with(context).load(photoUrl).into(photo)
-            }else{
-                Glide.with(context).load(R.drawable.no_image_available_64).into(photo)
-            }
-
             if(placeForList.fromRuralis){
                 itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.items_from_ruralis))
+                Glide.with(context).load(R.drawable.no_image_available_64).into(photo)
             }else{
                 itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.items_from_maps))
+                if (placeForList.photos != null) {
+                    val photoUrl = context.getString(R.string.photos_list_view, placeForList.photos[0], context.getString(R.string.api_key_google))
+                    Glide.with(context).load(photoUrl).error(R.drawable.no_image_available_64).into(photo)
+                } else {
+                    Glide.with(context).load(R.drawable.no_image_available_64).error(R.drawable.no_image_available_64).into(photo)
+                }
             }
 
             itemView.setOnClickListener {

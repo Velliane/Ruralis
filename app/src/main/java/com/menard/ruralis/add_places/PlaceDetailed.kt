@@ -10,8 +10,10 @@ data class PlaceDetailed  (
     val type: String = "",
     val name: String = "",
     val address: String = "",
-    //val openingHours: Map<String, String>,
     val photos: List<String>? = null,
+
+    val website: String = "",
+    val phone_number: String = "",
 
     val latitude: String? = "",
     val longitude: String? = "",

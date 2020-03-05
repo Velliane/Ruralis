@@ -17,9 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.menard.ruralis.R
 import com.menard.ruralis.BaseFragment
-import com.menard.ruralis.add_places.PlaceDetailed
 import com.menard.ruralis.search_places.MainViewModel
-import com.menard.ruralis.search_places.PlaceForList
 import com.menard.ruralis.utils.Injection
 
 class MapViewFragment : BaseFragment(), OnMapReadyCallback {
@@ -51,7 +49,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val viewModelFactory = Injection.provideMainViewModelFactory()
+        val viewModelFactory = Injection.provideViewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
     }
 
@@ -94,7 +92,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
                     val lastLocation = LatLng(latitude, longitude)
 
                     googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 12F))
-                    //showPlaces(latitude.toString(), longitude.toString())
+                    showPlaces(latitude.toString(), longitude.toString())
                 }
             },
             null

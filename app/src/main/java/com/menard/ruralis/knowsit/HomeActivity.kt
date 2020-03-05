@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -20,7 +19,6 @@ import com.google.android.material.navigation.NavigationView
 import com.menard.ruralis.R
 import com.menard.ruralis.search_places.MainActivity
 import com.menard.ruralis.settings.SettingsActivity
-import com.menard.ruralis.utils.DrawableEnum
 import com.menard.ruralis.utils.Injection
 import java.util.*
 
@@ -47,7 +45,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun getKnowsIt() {
-        val viewModelFactory = Injection.provideHomeViewModelFactory()
+        val viewModelFactory = Injection.provideViewModelFactory()
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         viewModel.getRandomKnowsIt()
         viewModel.randomKnowsIt.observe(this, Observer {
