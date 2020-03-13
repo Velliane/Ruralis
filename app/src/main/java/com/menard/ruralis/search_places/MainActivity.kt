@@ -15,8 +15,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.AddActivity
-import com.menard.ruralis.search_places.fragments.ListViewFragment
-import com.menard.ruralis.search_places.fragments.MapViewFragment
+import com.menard.ruralis.search_places.list.ListViewFragment
+import com.menard.ruralis.search_places.map.MapViewFragment
 import com.menard.ruralis.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 

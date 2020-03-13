@@ -1,4 +1,4 @@
-package com.menard.ruralis.search_places.fragments
+package com.menard.ruralis.search_places.list
 
 import android.content.Context
 import android.content.Intent
@@ -38,7 +38,7 @@ class ListViewFragment : Fragment(),
     private lateinit var listResult: List<Result>
     /** Shared Preferences */
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: ListViewModel
 
     companion object {
         fun newInstance(): ListViewFragment {
@@ -78,7 +78,7 @@ class ListViewFragment : Fragment(),
         placesClient = Places.createClient(requireActivity())
 
         val viewModelFactory = Injection.provideViewModelFactory()
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ListViewModel::class.java)
 
         //getListOfPlaces()
         //getPlacesFromFirestore()
@@ -114,9 +114,10 @@ class ListViewFragment : Fragment(),
     }
 
 
-    private fun getAllPlaces(location: String) {
+    private fun getAllPlaces(location: String){
 //        viewModel.getAllPlaces(location, "10000", "producteur", context!!.resources.getString(R.string.api_key_google)
 //        )
+
 //        viewModel.allPlaceLiveData.observe(this, Observer {
 //            if (it.isNotEmpty()) {
 //                recyclerView.adapter = adapter
@@ -124,6 +125,15 @@ class ListViewFragment : Fragment(),
 //                adapter.notifyDataSetChanged()
 //            }
 //        })
+
+
+//        viewModel.getAllPlaces(location, "10000", "producteur", context!!.resources.getString(R.string.api_key_google))
+//        viewModel.allPlaceLiveData.observe(this, Observer {
+//            recyclerView.adapter = adapter
+//            adapter.setData(it)
+//            adapter.notifyDataSetChanged()
+//        })
+
         val listOfAll = ArrayList<PlaceForList>()
         viewModel.getAllPlacesFromFirestore()
         viewModel.placeListLiveData.observe(this, Observer {fromFirestore ->
@@ -131,7 +141,6 @@ class ListViewFragment : Fragment(),
             viewModel.getTextSearch(location, "10000", "producteur", context!!.resources.getString(R.string.api_key_google))
             viewModel.placeTextSearchListLiveData.observe(this, Observer {fromMaps ->
                 listOfAll.addAll(fromMaps)
-
                 if (listOfAll.isNotEmpty()) {
                     recyclerView.adapter = adapter
                     adapter.setData(listOfAll)

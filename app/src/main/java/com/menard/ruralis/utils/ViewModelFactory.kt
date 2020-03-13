@@ -11,6 +11,8 @@ import com.menard.ruralis.details.DetailsViewModel
 import com.menard.ruralis.knowsit.HomeViewModel
 import com.menard.ruralis.login.UserViewModel
 import com.menard.ruralis.search_places.MainViewModel
+import com.menard.ruralis.search_places.list.ListViewModel
+import com.menard.ruralis.search_places.map.MapViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory(private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository, private val knowsItRepository: KnowsItRepository) : ViewModelProvider.Factory {
@@ -33,7 +35,7 @@ class ViewModelFactory(private val googleApiRepository: GoogleApiRepository, pri
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 return HomeViewModel(
-                    knowsItRepository
+                    knowsItRepository, googleApiRepository, firestoreDataRepository
                 ) as T
             }
             modelClass.isAssignableFrom(UserViewModel::class.java) -> {
@@ -45,6 +47,12 @@ class ViewModelFactory(private val googleApiRepository: GoogleApiRepository, pri
                     firestoreDataRepository,
                     googleApiRepository
                 ) as T
+            }
+            modelClass.isAssignableFrom(ListViewModel::class.java) -> {
+                return ListViewModel(googleApiRepository, firestoreDataRepository) as T
+            }
+            modelClass.isAssignableFrom(MapViewModel::class.java) -> {
+                return MapViewModel(googleApiRepository, firestoreDataRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel")
         }

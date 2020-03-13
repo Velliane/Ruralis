@@ -36,30 +36,30 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data[position], onItemClickListener)
     }
 
 
 
-    inner class ListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class ListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         var name = itemView.findViewById<TextView>(R.id.item_name)
         var photo = itemView.findViewById<ImageView>(R.id.item_photo)
         var distance = itemView.findViewById<TextView>(R.id.item_distance)
 
-        fun bind(placeForList: PlaceForList) {
+        fun bind(placeForList: PlaceForList, onItemClickListener: OnItemClickListener) {
             name.text = placeForList.name
 
             if(placeForList.fromRuralis){
-                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.items_from_ruralis))
-                Glide.with(context).load(R.drawable.no_image_available_64).into(photo)
+                itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.items_from_ruralis))
+                Glide.with(itemView.context).load(R.drawable.no_image_available_64).into(photo)
             }else{
-                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.items_from_maps))
+                itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.items_from_maps))
                 if (placeForList.photos != null) {
-                    val photoUrl = context.getString(R.string.photos_list_view, placeForList.photos[0], context.getString(R.string.api_key_google))
-                    Glide.with(context).load(photoUrl).error(R.drawable.no_image_available_64).into(photo)
+                    val photoUrl = itemView.context.getString(R.string.photos_list_view, placeForList.photos[0], itemView.context.getString(R.string.api_key_google))
+                    Glide.with(itemView.context).load(photoUrl).error(R.drawable.no_image_available_64).into(photo)
                 } else {
-                    Glide.with(context).load(R.drawable.no_image_available_64).error(R.drawable.no_image_available_64).into(photo)
+                    Glide.with(itemView.context).load(R.drawable.no_image_available_64).error(R.drawable.no_image_available_64).into(photo)
                 }
             }
 

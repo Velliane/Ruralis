@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.PlaceDetailed
@@ -43,8 +44,9 @@ class CommentsFragment : Fragment() {
         commentsViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(CommentsViewModel::class.java)
 
-        adapter = CommentsAdapter(requireContext())
+        adapter = CommentsAdapter(context!!)
         recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
         updateViews(placeDetailed)
         return view
     }
@@ -56,9 +58,8 @@ class CommentsFragment : Fragment() {
             requireContext().getString(R.string.details_field),
             requireContext().getString(R.string.api_key_google)
         )
-        commentsViewModel.commentsLiveData.observe(this, Observer<List<Comments>> {
+        commentsViewModel.allCommentsLiveData.observe(this, Observer<List<Comments>> {
             adapter.setData(it)
-            adapter.notifyDataSetChanged()
         })
     }
 }

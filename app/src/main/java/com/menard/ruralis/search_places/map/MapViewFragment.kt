@@ -1,4 +1,4 @@
-package com.menard.ruralis.search_places.fragments
+package com.menard.ruralis.search_places.map
 
 import android.content.Context
 import android.os.Bundle
@@ -12,6 +12,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
@@ -32,7 +33,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
     private var googleMap: GoogleMap? = null
     /** FusedLocation */
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MapViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +51,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val viewModelFactory = Injection.provideViewModelFactory()
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -105,8 +106,13 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
         viewModel.allPlaceLiveData.observe(this, Observer {
             for (place in it) {
                 val latLng = LatLng((place.latitude)!!.toDouble(), (place.longitude)!!.toDouble())
-                val markerOptions = MarkerOptions().position(latLng).title(place.name)
+                if(!place.fromRuralis){
+                val markerOptions = MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).title(place.name)
                 googleMap!!.addMarker(markerOptions)
+                }else{
+                    val markerOptions = MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).title(place.name+"From Ruralis")
+                    googleMap!!.addMarker(markerOptions)
+                }
             }
         })
 //        viewModel.getTextSearch("$latitude, $longitude", "5000", "maraîcher", context!!.resources.getString(R.string.api_key_google))

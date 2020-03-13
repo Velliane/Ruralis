@@ -1,22 +1,30 @@
-package com.menard.ruralis.search_places
+package com.menard.ruralis.search_places.list
 
 import androidx.lifecycle.*
 import com.menard.ruralis.data.FirestoreDataRepository
-import com.menard.ruralis.add_places.PlaceDetailed
 import com.menard.ruralis.data.GoogleApiRepository
-import com.menard.ruralis.login.UserHelper
+import com.menard.ruralis.search_places.PlaceForList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel(private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
+class ListViewModel(private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
 
     val placeListLiveData = MutableLiveData<List<PlaceForList>>()
     val placeTextSearchListLiveData = MutableLiveData<List<PlaceForList>>()
 
-    private val liveDataMerger = MediatorLiveData<List<PlaceForList>>()
-    val allPlaceLiveData: LiveData<List<PlaceForList>> = liveDataMerger
+    val liveDataMerger = MediatorLiveData<List<PlaceForList>>()
+    val allPlaceLiveData: LiveData<List<PlaceForList>> get() = liveDataMerger
 
+//    init {
+//        getAllPlacesFromFirestore()
+//        liveDataMerger.addSource(placeListLiveData, Observer {
+//            mergeList(it, placeTextSearchListLiveData.value)
+//        })
+//        liveDataMerger.addSource(placeTextSearchListLiveData, Observer {
+//            mergeList(placeListLiveData.value, it)
+//        })
+//    }
 
     fun getTextSearch(location: String, radius: String, query: String, key: String){
         viewModelScope.launch(Dispatchers.IO) {
@@ -42,19 +50,16 @@ class MainViewModel(private val googleApiRepository: GoogleApiRepository, privat
         getAllPlacesFromFirestore()
         getTextSearch(location, radius, query, key)
         liveDataMerger.addSource(placeListLiveData){
-            if(it != null){
-                liveDataMerger.value = mergeList(it, placeTextSearchListLiveData.value!!)
-            }
+                mergeList(it, placeTextSearchListLiveData.value)
         }
         liveDataMerger.addSource(placeTextSearchListLiveData){
-            if(it != null){
-                liveDataMerger.value = mergeList(placeListLiveData.value!!, it)
-            }
+                 mergeList(placeListLiveData.value, it)
         }
     }
 
-    private fun mergeList(placeDetailedList: List<PlaceForList>, placeTextSearchList: List<PlaceForList>): List<PlaceForList> {
-        val listPlaces  = placeDetailedList + placeTextSearchList
-        return listPlaces.distinct()
+    private fun mergeList(placeFromFirestoreList: List<PlaceForList>?, placeTextSearchList: List<PlaceForList>?){
+        val listPlaces  = placeFromFirestoreList?.let { list1 ->
+            placeTextSearchList?.let { list2 -> list1 + list2 } }
+        liveDataMerger.value = listPlaces
     }
 }

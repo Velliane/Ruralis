@@ -1,15 +1,14 @@
-package com.menard.ruralis.search_places
+package com.menard.ruralis.search_places.map
 
 import androidx.lifecycle.*
 import com.menard.ruralis.data.FirestoreDataRepository
-import com.menard.ruralis.add_places.PlaceDetailed
 import com.menard.ruralis.data.GoogleApiRepository
-import com.menard.ruralis.login.UserHelper
+import com.menard.ruralis.search_places.PlaceForList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel(private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
+class MapViewModel(private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
 
     val placeListLiveData = MutableLiveData<List<PlaceForList>>()
     val placeTextSearchListLiveData = MutableLiveData<List<PlaceForList>>()

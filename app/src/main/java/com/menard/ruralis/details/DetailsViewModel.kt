@@ -1,5 +1,6 @@
 package com.menard.ruralis.details
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.menard.ruralis.add_places.PlaceDetailed
 import com.menard.ruralis.data.FirestoreDataRepository
 import com.menard.ruralis.data.GoogleApiRepository
+import com.menard.ruralis.utils.SharedPreference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -14,6 +16,7 @@ import kotlinx.coroutines.withContext
 class DetailsViewModel(private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
 
     private val placeLiveData = MutableLiveData<PlaceDetailed>()
+    private val sharedPreference = SharedPreference()
 
     private fun getDetailsById(place_id: String, fields: String, key: String){
         viewModelScope.launch(Dispatchers.IO) {
@@ -41,5 +44,19 @@ class DetailsViewModel(private val googleApiRepository: GoogleApiRepository, pri
         }
 
         return placeLiveData
+    }
+
+    fun checkFavorites(context: Context, favoriteChecked: Favorite): Boolean{
+        var check = false
+        val list = sharedPreference.getFavorites(context)
+        if(list != null){
+            for (favorite in list) {
+                if(favorite!!.id == favoriteChecked.id) {
+                    check = true
+                    break
+                }
+            }
+        }
+        return check
     }
 }

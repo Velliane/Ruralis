@@ -18,6 +18,7 @@ class Constants {
         //-- SHARED PREFERENCES --//
         const val SHARED_PREFERENCES = "SHARED_PREFERENCES"
         const val PREF_ID_PLACE = "PREF_ID_PLACE"
+        const val PREF_FAVORITES = "PREF_FAVORITES"
 
         //-- INTENT --//
         const val INTENT_ID = "INTENT_ID"

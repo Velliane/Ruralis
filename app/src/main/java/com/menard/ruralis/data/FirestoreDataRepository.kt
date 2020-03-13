@@ -39,6 +39,24 @@ class FirestoreDataRepository {
         return list
     }
 
+    suspend fun getPlaceForListById(place_id: String): PlaceForList {
+        val document = placesHelper.getPlaceById(place_id)
+        val photos = document.data!!["list_photos"]
+        var listPhoto: List<String>? = null
+        if (photos != null) {
+            listPhoto = photos as List<String>
+        }
+        return PlaceForList(
+            document.id,
+            document.getString("name")!!,
+            document.getString("type")!!,
+            listPhoto,
+            document.getString("latitude"),
+            document.getString("longitude"),
+            document.getBoolean("fromRuralis")!!
+        )
+    }
+
     suspend fun getPlaceFromFirestoreById(id: String): PlaceDetailed {
         return placesHelper.getPlaceById(id).toObject<PlaceDetailed>(
             PlaceDetailed::class.java
@@ -71,7 +89,7 @@ class FirestoreDataRepository {
     }
 
     suspend fun getCommentsOfPlace(id: String): List<Comments> {
-        var listComments = ArrayList<Comments>()
+        val listComments = ArrayList<Comments>()
         val querySnapshot = commentsHelper.getAllComments(id)
         for (query in querySnapshot!!.documents) {
             val comment = query.toObject(Comments::class.java)!!

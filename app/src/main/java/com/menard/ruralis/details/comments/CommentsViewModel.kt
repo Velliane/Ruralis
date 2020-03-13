@@ -1,8 +1,6 @@
 package com.menard.ruralis.details.comments
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.menard.ruralis.data.FirestoreDataRepository
 import com.menard.ruralis.data.GoogleApiRepository
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +9,9 @@ import kotlinx.coroutines.withContext
 
 class CommentsViewModel(private val firestoreDataRepository: FirestoreDataRepository, private val googleApiRepository: GoogleApiRepository): ViewModel() {
 
-    val commentsLiveData = MutableLiveData<List<Comments>>()
+    private val commentsLiveData = MutableLiveData<List<Comments>>()
+    val allCommentsLiveData: LiveData<List<Comments>> get() = commentsLiveData
+
 
     fun getCommentsOfPlace(id: String, fromRuralis: Boolean, fields: String, key: String){
         if(fromRuralis) {
@@ -30,4 +30,5 @@ class CommentsViewModel(private val firestoreDataRepository: FirestoreDataReposi
             }
         }
     }
+
 }

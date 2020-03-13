@@ -22,9 +22,8 @@ class CommentsAdapter (private val context: Context): RecyclerView.Adapter<Comme
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: CommentsViewHolder, position: Int) {
-        if(data.isNotEmpty()) {
             holder.bind(data[position])
-        }
+
     }
 
     fun setData(newData: List<Comments>) {
@@ -33,9 +32,9 @@ class CommentsAdapter (private val context: Context): RecyclerView.Adapter<Comme
     }
 
 
-    inner class CommentsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class CommentsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        private var nameUser = itemView.findViewById<TextView>(R.id.item_comments_name)
+        private val nameUser = itemView.findViewById<TextView>(R.id.item_comments_name)
         private val commentTxt = itemView.findViewById<TextView>(R.id.item_comments_text)
 
         fun bind(comments: Comments){
