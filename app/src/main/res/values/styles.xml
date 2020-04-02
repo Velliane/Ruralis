@@ -14,10 +14,10 @@
         <item name="colorAccent">#1FBF87</item>
     </style>
 
-    <style name="GreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/green_theme_primary</item>
-        <item name="colorPrimaryDark">@color/green_theme_primary_dark</item>
-        <item name="colorAccent">@color/green_theme_accent</item>
+    <style name="FlowerTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#495CE3</item>
+        <item name="colorPrimaryDark">#2635A1</item>
+        <item name="colorAccent">#BD1B62</item>
     </style>
 
     <style name="LoginTheme" parent="FirebaseUI">

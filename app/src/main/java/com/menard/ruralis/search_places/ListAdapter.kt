@@ -64,13 +64,15 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
             }
 
             itemView.setOnClickListener {
-                onItemClickListener.onItemClicked(placeForList.placeId, placeForList.fromRuralis)
+                onItemClickListener.onItemClicked(placeForList.placeId, placeForList.fromRuralis,
+                    placeForList.photos?.get(0)
+                )
             }
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClicked(id: String, from: Boolean)
+        fun onItemClicked(id: String, from: Boolean, photo: String?)
     }
 
 }

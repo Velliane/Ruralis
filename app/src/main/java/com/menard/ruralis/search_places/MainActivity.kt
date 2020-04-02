@@ -34,10 +34,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         bindViews()
         configureDrawerLayout()
-
         // Set BottomNavigationView to ListFragment by default
         bottomNavigationView.selectedItemId = R.id.action_list_view
     }
@@ -93,7 +91,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 return true
             }
             R.id.toolbar_menu_add -> {
-                startActivity(Intent(this, AddActivity::class.java))
+                val intent = Intent(this, AddActivity::class.java)
+                intent.putExtra("Edit", false)
+                intent.putExtra("Id", "")
+                startActivity(intent)
                 return true
             }
         }

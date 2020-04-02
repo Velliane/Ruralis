@@ -9,5 +9,4 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:background="@color/colorPrimary"
 app:titleTextColor="@android:color/black"
-android:theme= "@style/AppTheme"
-app:menu="@menu/menu_toolbar"/>
+android:theme= "@style/AppTheme"/>

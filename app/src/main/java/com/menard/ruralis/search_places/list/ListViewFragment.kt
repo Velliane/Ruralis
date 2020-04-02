@@ -20,7 +20,6 @@ import com.menard.ruralis.R
 import com.menard.ruralis.details.DetailsActivity
 import com.menard.ruralis.search_places.ListAdapter
 import com.menard.ruralis.search_places.textsearch_model.Result
-import com.menard.ruralis.search_places.MainViewModel
 import com.menard.ruralis.search_places.PlaceForList
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
@@ -77,7 +76,7 @@ class ListViewFragment : Fragment(),
         Places.initialize(requireActivity(), context!!.resources.getString(R.string.api_key_google))
         placesClient = Places.createClient(requireActivity())
 
-        val viewModelFactory = Injection.provideViewModelFactory()
+        val viewModelFactory = Injection.provideViewModelFactory(requireContext())
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ListViewModel::class.java)
 
         //getListOfPlaces()
@@ -183,11 +182,12 @@ class ListViewFragment : Fragment(),
         })
     }
 
-    override fun onItemClicked(id: String, from: Boolean) {
+    override fun onItemClicked(id: String, from: Boolean, photo: String?) {
         sharedPreferences.edit().putString(Constants.PREF_ID_PLACE, id).apply()
         val intent = Intent(context, DetailsActivity::class.java).apply {
             putExtra(Constants.INTENT_ID, id)
             putExtra(Constants.INTENT_FROM, from)
+            putExtra(Constants.INTENT_URI, photo)
         }
         startActivity(intent)
     }

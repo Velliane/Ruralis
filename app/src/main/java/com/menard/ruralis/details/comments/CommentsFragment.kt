@@ -40,7 +40,7 @@ class CommentsFragment : Fragment() {
         recyclerView = view.findViewById(R.id.fragment_comments_list)
 
 
-        val viewModelFactory = Injection.provideViewModelFactory()
+        val viewModelFactory = Injection.provideViewModelFactory(requireContext())
         commentsViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(CommentsViewModel::class.java)
 

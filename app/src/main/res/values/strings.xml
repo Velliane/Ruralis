@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Ruralis</string>
 
-    <string name="main_drawer_open">Open navigation drawer</string>
-    <string name="main_drawer_close">Close navigation drawer</string>
+    <string name="main_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="main_drawer_close" translatable="false">Close navigation drawer</string>
 
     <!-- Photos Api -->
     <string name="photos_list_view" translatable="false">https://maps.googleapis.com/maps/api/place/photo?maxheight=200&amp;photoreference=%1$s&amp;key=%2$s</string>
@@ -15,8 +15,14 @@
     <string name="description_google">Etablissement trouvé sur GoogleMap. Enregistrez-le sur la base de données de Ruralis pour pouvoir modifier ses informations !</string>
 
     <!-- Tab's title -->
-    <string name="tab_info">Info général</string>
+    <string name="tab_info">Info general</string>
     <string name="tab_photos">Photos</string>
     <string name="tab_contact">contact</string>
-    <string name="tab_comments">Commentaires</string>
+    <string name="tab_comments">Comments</string>
+    <string name="type_honey">Honey</string>
+    <string name="no_phone_number">No phone number</string>
+    <string name="no_website">No website</string>
+    <string name="favorite_establishment_name">Establishment\'s name</string>
+    <string name="favorite_descr_photo">Favorite\'s photo</string>
+    <string name="home_title_favorites">Mes favoris</string>
 </resources>

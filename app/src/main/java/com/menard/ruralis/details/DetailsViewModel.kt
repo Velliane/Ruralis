@@ -1,22 +1,21 @@
 package com.menard.ruralis.details
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.menard.ruralis.add_places.PlaceDetailed
+import com.menard.ruralis.data.FavoritesDataRepository
 import com.menard.ruralis.data.FirestoreDataRepository
 import com.menard.ruralis.data.GoogleApiRepository
-import com.menard.ruralis.utils.SharedPreference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class DetailsViewModel(private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
+class DetailsViewModel(private val favoritesDataRepository: FavoritesDataRepository, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
 
-    private val placeLiveData = MutableLiveData<PlaceDetailed>()
-    private val sharedPreference = SharedPreference()
+    val placeLiveData = MutableLiveData<PlaceDetailed>()
+    private val isFavoriteLiveData = MutableLiveData<Boolean>()
 
     private fun getDetailsById(place_id: String, fields: String, key: String){
         viewModelScope.launch(Dispatchers.IO) {
@@ -27,7 +26,7 @@ class DetailsViewModel(private val googleApiRepository: GoogleApiRepository, pri
         }
     }
 
-    private fun getPlaceFromFirestoreById(id: String){
+    fun getPlaceFromFirestoreById(id: String?){
         viewModelScope.launch(Dispatchers.IO) {
             val place = firestoreDataRepository.getPlaceFromFirestoreById(id)
             withContext(Dispatchers.Main){
@@ -42,21 +41,29 @@ class DetailsViewModel(private val googleApiRepository: GoogleApiRepository, pri
         }else {
             getPlaceFromFirestoreById(place_id)
         }
-
         return placeLiveData
     }
 
-    fun checkFavorites(context: Context, favoriteChecked: Favorite): Boolean{
-        var check = false
-        val list = sharedPreference.getFavorites(context)
-        if(list != null){
-            for (favorite in list) {
-                if(favorite!!.id == favoriteChecked.id) {
-                    check = true
-                    break
-                }
+    fun addToFavorites(placeId: String?, fromRuralis: Boolean, photoUri: String?, name: String) {
+        val favorite = Favorite(placeId!!, name, photoUri, fromRuralis)
+        viewModelScope.launch(Dispatchers.IO) {
+            favoritesDataRepository.addFavorites(favorite)
+        }
+    }
+
+    fun deleteFromFavorites(placeId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            favoritesDataRepository.deleteFavorite(placeId)
+        }
+    }
+
+    fun checkIfAlreadyInFavorites(placeId: String): LiveData<Boolean> {
+        viewModelScope.launch(Dispatchers.IO) {
+            val favorite = favoritesDataRepository.getFavoriteById(placeId)
+            withContext(Dispatchers.Main){
+                isFavoriteLiveData.value = favorite != null
             }
         }
-        return check
+        return isFavoriteLiveData
     }
 }

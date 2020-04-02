@@ -13,11 +13,11 @@ open class PlacesHelper {
     }
 
 
-    open fun createPlaces(id: String, type: String, name: String, address: String, website: String, phone_number: String, photos: List<String>?, latitude: String, longitude: String): Task<Void> {
-        val newPlace = PlaceDetailed(id, type, name, address, photos, website, phone_number, latitude, longitude,
+    open fun createPlaces(id: String?, type: String, name: String, address: String, openings: List<String>?, website: String, phone_number: String, photos: List<String>?, latitude: String, longitude: String): Task<Void> {
+        val newPlace = PlaceDetailed(id, type, name, address, photos, openings, website, phone_number, latitude, longitude,
             true
         )
-        return getPlacesCollection().document().set(newPlace)
+        return getPlacesCollection().document(id!!).set(newPlace)
     }
 
     open suspend fun getAllPlaces(): List<DocumentSnapshot> {

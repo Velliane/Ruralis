@@ -13,7 +13,7 @@ class CommentsViewModel(private val firestoreDataRepository: FirestoreDataReposi
     val allCommentsLiveData: LiveData<List<Comments>> get() = commentsLiveData
 
 
-    fun getCommentsOfPlace(id: String, fromRuralis: Boolean, fields: String, key: String){
+    fun getCommentsOfPlace(id: String?, fromRuralis: Boolean, fields: String, key: String){
         if(fromRuralis) {
             viewModelScope.launch(Dispatchers.IO) {
                 val list: List<Comments> = firestoreDataRepository.getCommentsOfPlace(id)

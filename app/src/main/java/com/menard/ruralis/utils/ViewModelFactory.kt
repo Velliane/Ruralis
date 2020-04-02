@@ -3,6 +3,7 @@ package com.menard.ruralis.utils
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.menard.ruralis.add_places.AddViewModel
+import com.menard.ruralis.data.FavoritesDataRepository
 import com.menard.ruralis.data.FirestoreDataRepository
 import com.menard.ruralis.data.GoogleApiRepository
 import com.menard.ruralis.data.KnowsItRepository
@@ -15,7 +16,7 @@ import com.menard.ruralis.search_places.list.ListViewModel
 import com.menard.ruralis.search_places.map.MapViewModel
 import java.lang.IllegalArgumentException
 
-class ViewModelFactory(private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository, private val knowsItRepository: KnowsItRepository) : ViewModelProvider.Factory {
+class ViewModelFactory(private val favoritesDataRepository: FavoritesDataRepository, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository, private val knowsItRepository: KnowsItRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
@@ -25,7 +26,7 @@ class ViewModelFactory(private val googleApiRepository: GoogleApiRepository, pri
             }
             modelClass.isAssignableFrom(DetailsViewModel::class.java) -> {
                 return DetailsViewModel(
-                    googleApiRepository, firestoreDataRepository
+                    favoritesDataRepository, googleApiRepository, firestoreDataRepository
                 ) as T
             }
             modelClass.isAssignableFrom(AddViewModel::class.java) -> {
@@ -35,7 +36,7 @@ class ViewModelFactory(private val googleApiRepository: GoogleApiRepository, pri
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 return HomeViewModel(
-                    knowsItRepository, googleApiRepository, firestoreDataRepository
+                    favoritesDataRepository, knowsItRepository, googleApiRepository, firestoreDataRepository
                 ) as T
             }
             modelClass.isAssignableFrom(UserViewModel::class.java) -> {

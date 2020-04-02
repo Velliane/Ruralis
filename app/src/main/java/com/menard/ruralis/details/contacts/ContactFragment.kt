@@ -68,14 +68,14 @@ class ContactFragment : Fragment(), View.OnClickListener {
                 if (makeCallBtn.tag != null) {
                     startCall(makeCallBtn.tag.toString())
                 } else {
-                    showSnackBar("No website")
+                    showSnackBar(getString(R.string.no_phone_number))
                 }
             }
             visitWebsiteBtn -> {
                 if (visitWebsiteBtn.tag != null) {
                     openWebsite(visitWebsiteBtn.tag.toString())
                 } else {
-                    showSnackBar("No phone number")
+                    showSnackBar(getString(R.string.no_website))
                 }
             }
         }

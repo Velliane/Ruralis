@@ -1,20 +1,23 @@
 package com.menard.ruralis.knowsit
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.menard.ruralis.R
-import com.menard.ruralis.search_places.ListAdapter
-import com.menard.ruralis.search_places.PlaceForList
+import com.menard.ruralis.details.Favorite
 
 class FavoritesAdapter(private val context: Context) : RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder>() {
 
-    private var data: List<PlaceForList> = ArrayList()
+    private var data: List<Favorite> = ArrayList()
     private lateinit var mContext: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {
@@ -24,7 +27,7 @@ class FavoritesAdapter(private val context: Context) : RecyclerView.Adapter<Favo
         return FavoritesViewHolder(view)
     }
 
-    fun setData(newData: List<PlaceForList>){
+    fun setData(newData: List<Favorite>){
         data = newData
         notifyDataSetChanged()
     }
@@ -39,15 +42,28 @@ class FavoritesAdapter(private val context: Context) : RecyclerView.Adapter<Favo
 
         private val favPhoto = itemView.findViewById<ImageView>(R.id.favorites_photo)
         private val favName = itemView.findViewById<TextView>(R.id.favorites_name)
+        private val container = itemView.findViewById<ConstraintLayout>(R.id.favorites_container)
 
-        fun bind(placeForList: PlaceForList){
-            if (placeForList.photos != null) {
-                val photoUrl = itemView.context.getString(R.string.photos_list_view, placeForList.photos[0], itemView.context.getString(R.string.api_key_google))
-                Glide.with(itemView.context).load(photoUrl).error(R.drawable.no_image_available_64).into(favPhoto)
-            } else {
-                Glide.with(itemView.context).load(R.drawable.no_image_available_64).error(R.drawable.no_image_available_64).into(favPhoto)
+        fun bind(favorite: Favorite){
+            if(favorite.fromRuralis){
+                container.setBackgroundResource(R.color.items_from_ruralis)
+                if (favorite.photo != null) {
+                    Glide.with(itemView.context).load(Uri.parse(favorite.photo)).centerCrop().error(R.drawable.no_image_available_64).into(favPhoto)
+                } else {
+                    Glide.with(itemView.context).load(R.drawable.no_image_available_64).error(R.drawable.no_image_available_64).into(favPhoto)
+                }
+            }else{
+                container.setBackgroundResource(R.color.items_from_maps)
+                if (favorite.photo != null) {
+                    val photoUrl = itemView.context.getString(R.string.photos_list_view, favorite.photo, itemView.context.getString(R.string.api_key_google))
+                    Glide.with(itemView.context).load(photoUrl).centerCrop().error(R.drawable.no_image_available_64).into(favPhoto)
+                } else {
+                    Glide.with(itemView.context).load(R.drawable.no_image_available_64).error(R.drawable.no_image_available_64).into(favPhoto)
+                }
             }
-            favName.text = placeForList.name
+
+            favName.text = favorite.name
+
         }
     }
 

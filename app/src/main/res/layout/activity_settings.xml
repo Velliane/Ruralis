@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="5dp"
     tools:context=".settings.SettingsActivity">
 
     <TextView
@@ -70,4 +71,55 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/settings_color_accent"
         app:colorSeeds="@array/material_colors"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settings_slider_color_accent"
+    >
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settings_reset_color"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            style="@style/ButtonHome"
+            android:text="Réinitialiser"
+            android:textSize="17sp"
+            android:textColor="@color/colorPrimaryDark"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/colorPrimaryDark"
+            app:cornerRadius="12dp"
+            android:layout_margin="5dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/settings_save_color"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settings_save_color"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:text="Sauvegarder"
+            android:textSize="17sp"
+            android:textColor="@color/colorPrimaryDark"
+            app:strokeWidth="2dp"
+            android:background="@color/colorPrimary"
+            app:strokeColor="@color/colorPrimaryDark"
+            android:layout_margin="5dp"
+            app:cornerRadius="12dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/settings_reset_color"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

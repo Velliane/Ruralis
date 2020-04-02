@@ -1,7 +1,6 @@
 package com.menard.ruralis.knowsit
 
 import android.content.Intent
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -21,12 +20,9 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 import com.menard.ruralis.R
 import com.menard.ruralis.search_places.MainActivity
-import com.menard.ruralis.search_places.PlaceForList
 import com.menard.ruralis.settings.SettingsActivity
 import com.menard.ruralis.utils.Injection
-import com.menard.ruralis.utils.SharedPreference
 import java.util.*
-import kotlin.collections.ArrayList
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     View.OnClickListener {
@@ -50,32 +46,26 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val viewModelFactory = Injection.provideViewModelFactory()
+        val viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
-        val sharedPreference = SharedPreference()
         adapter = FavoritesAdapter(this)
 
         bindViews()
         configureDrawerLayout()
         getKnowsIt()
-        updateFavorites(sharedPreference)
+        updateFavorites()
     }
 
-    private fun updateFavorites(sharedPreference: SharedPreference) {
-        var placeFavorites = ArrayList<PlaceForList>()
-        val favorites = sharedPreference.getFavorites(this)
-        if(favorites != null) {
-            textNoFav.visibility = View.INVISIBLE
-            favoritesRecyclerView.visibility = View.VISIBLE
-            for (place in favorites) {
-                viewModel.getPlaceFavoriteAccordingItsOrigin(place!!.fromRuralis, place.id, getString(R.string.details_field), getString(R.string.api_key_google)).observe(this, Observer {
-                    placeFavorites.add(it)
-                })
+    private fun updateFavorites() {
+        viewModel.showAllFavorites().observe(this, Observer {
+            if(it != null){
+                textNoFav.visibility = View.INVISIBLE
+                favoritesRecyclerView.visibility = View.VISIBLE
+                favoritesRecyclerView.adapter = adapter
+                adapter.setData(it)
+                adapter.notifyDataSetChanged()
             }
-            favoritesRecyclerView.adapter = adapter
-            adapter.setData(placeFavorites)
-            adapter.notifyDataSetChanged()
-        }
+        })
     }
 
     private fun getKnowsIt() {

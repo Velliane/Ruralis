@@ -50,7 +50,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val viewModelFactory = Injection.provideViewModelFactory()
+        val viewModelFactory = Injection.provideViewModelFactory(requireContext())
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
     }
 

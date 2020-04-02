@@ -11,8 +11,7 @@ import com.menard.ruralis.details.fragment.InfosFragment
 import com.menard.ruralis.details.photos.PhotoFragment
 import java.lang.IllegalStateException
 
-class ViewPagerAdapter constructor(manager:FragmentManager, val context: Context, private val placeDetailed: PlaceDetailed):FragmentPagerAdapter(manager) {
-
+class ViewPagerAdapter constructor(manager:FragmentManager, val context: Context, private var placeDetailed: PlaceDetailed):FragmentPagerAdapter(manager) {
 
     override fun getItem(position: Int): Fragment {
 
@@ -24,6 +23,12 @@ class ViewPagerAdapter constructor(manager:FragmentManager, val context: Context
             else -> throw IllegalStateException("No fragment thrown from position $position")
         }
     }
+
+    fun refreshData(placeRefresh: PlaceDetailed){
+        placeDetailed = placeRefresh
+        notifyDataSetChanged()
+    }
+
 
     override fun getCount(): Int = DetailsCategoryEnum.values().size
 

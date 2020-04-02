@@ -12,7 +12,6 @@
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-<!--        android:background="@drawable/lamb"-->
 
         <ScrollView
             android:layout_width="match_parent"
@@ -74,26 +73,6 @@
                     app:layout_constraintTop_toBottomOf="@id/knows_it_txt"
                     app:layout_constraintBottom_toTopOf="@id/home_btn_container"/>
 
-<!--                <TextView-->
-<!--                    android:id="@+id/bubble_home"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:maxWidth="@dimen/bubble_max_width"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/knows_it_img"-->
-<!--                    app:layout_constraintBottom_toTopOf="@id/home_btn_container"-->
-<!--                    android:paddingTop="20dp"-->
-<!--                    android:paddingStart="15dp"-->
-<!--                    android:paddingEnd="15dp"-->
-<!--                    android:paddingBottom="10dp"-->
-<!--                    android:layout_marginBottom="20dp"-->
-<!--                    android:text="Bonjour User ! \n Bienvenue sur l'appli Ruralis."-->
-<!--                    android:background="@drawable/bubble_down"-->
-<!--                    android:textAlignment="center"-->
-<!--                    android:gravity="center"-->
-<!--                    android:textSize="13sp"/>-->
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/home_btn_container"
                     android:layout_width="0dp"
@@ -102,36 +81,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/knows_it_img"
                     app:layout_constraintBottom_toTopOf="@id/home_fav_title">
-
-<!--                    <LinearLayout-->
-<!--                        android:id="@+id/home_search_btn"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:orientation="vertical"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toStartOf="@id/home_quiz_btn"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        android:background="@drawable/btn_background"-->
-<!--                        android:padding="12dp"-->
-<!--                        android:layout_margin="15dp">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:src="@drawable/search" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:textColor="@color/colorPrimaryDark"-->
-<!--                        android:text="Rechercher un producteur"-->
-<!--                        android:textAlignment="center"-->
-<!--                        android:textSize="18sp"/>-->
-
-<!--                    </LinearLayout>-->
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/home_search_btn"
@@ -176,46 +125,15 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/home_search_btn"/>
 
-<!--                    <LinearLayout-->
-<!--                        android:id="@+id/home_quiz_btn"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:background="@drawable/btn_background"-->
-<!--                        android:layout_margin="15dp"-->
-<!--                        android:padding="12dp"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintStart_toEndOf="@id/home_search_btn">-->
-
-<!--                        <ImageView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_gravity="center"-->
-<!--                            android:src="@drawable/quiz" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_gravity="center"-->
-<!--                            android:textColor="@color/colorPrimaryDark"-->
-<!--                            android:textAlignment="center"-->
-<!--                            android:textSize="18sp"-->
-<!--                            android:text="Tester mes connaissances" />-->
-<!--                    </LinearLayout>-->
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
                 <TextView
                     android:id="@+id/home_fav_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Mes favoris"
+                    android:text="@string/home_title_favorites"
                     android:gravity="center_horizontal"
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     android:textStyle="bold"
                     android:layout_marginTop="?actionBarSize"
                     android:textColor="@color/colorPrimaryDark"

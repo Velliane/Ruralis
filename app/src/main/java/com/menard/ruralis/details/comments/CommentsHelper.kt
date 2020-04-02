@@ -19,7 +19,7 @@ class CommentsHelper {
         return getCommentsCollection().document().set(newComments)
     }
 
-    open suspend fun getAllComments(id: String): QuerySnapshot? {
+    open suspend fun getAllComments(id: String?): QuerySnapshot? {
         return getCommentsCollection().whereEqualTo("id", id).get().await()
     }
 }

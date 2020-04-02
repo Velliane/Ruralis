@@ -7,36 +7,38 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.AddActivity
-import com.menard.ruralis.add_places.PlaceDetailed
-import com.menard.ruralis.search_places.MainViewModel
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
-import com.menard.ruralis.utils.SharedPreference
+import kotlinx.android.synthetic.main.activity_details.*
 
 class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, View.OnClickListener {
 
     /** Viewpager */
     private lateinit var viewPager: ViewPager
+    private lateinit var pagerAdapter: ViewPagerAdapter
+    private lateinit var toolbar: Toolbar
+
     /** Place id */
-    private lateinit var placeId: String
+    private var placeId: String? = null
     /** From Boolean */
     private var fromRuralis: Boolean = false
+    private var photoUri: String? = null
     /** Place ViewModel */
     private lateinit var viewModel: DetailsViewModel
     /** Name */
     private lateinit var name: TextView
     /** FAB for Favorites */
     private lateinit var favoriteFab: FloatingActionButton
-    /** SharedPreference class for managing Favorites */
-    private val sharedPreference = SharedPreference()
-    private var favorite = Favorite()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,37 +46,45 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
         name = findViewById(R.id.details_name)
         favoriteFab = findViewById(R.id.details_favorite_fab)
         favoriteFab.setOnClickListener(this)
+        toolbar = findViewById(R.id.details_toolbar)
+        setSupportActionBar(toolbar)
 
         placeId = intent.getStringExtra(Constants.INTENT_ID)!!
         fromRuralis = intent.getBooleanExtra(Constants.INTENT_FROM, false)
-        favorite = Favorite(placeId, fromRuralis)
-
+        photoUri = intent.getStringExtra(Constants.INTENT_URI)
         configureViewModel()
         getPlaceFromViewModel()
-        setFavorites()
         configureViewPager()
+        setFavorites()
     }
 
     private fun setFavorites() {
-        val check = viewModel.checkFavorites(this, favorite)
-        if(check){
-            favoriteFab.setImageResource(R.drawable.star_clicked)
-            favoriteFab.tag = "Favorite"
-        }else{
-            favoriteFab.setImageResource(R.drawable.star_unclicked)
-            favoriteFab.tag = "No favorite"
-        }
+        viewModel.checkIfAlreadyInFavorites(placeId!!).observe(this, Observer {
+            if (it) {
+                favoriteFab.setImageResource(R.drawable.star_clicked)
+                favoriteFab.tag = "Favorite"
+            } else {
+                favoriteFab.setImageResource(R.drawable.star_unclicked)
+                favoriteFab.tag = "No favorite"
+            }
+        })
     }
 
 
     private fun configureViewModel() {
-        val viewModelFactory = Injection.provideViewModelFactory()
+        val viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
     }
 
-    private fun getPlaceFromViewModel(){
-        viewModel.getPlaceAccordingItsOrigin(fromRuralis, placeId, getString(R.string.details_field), getString(R.string.api_key_google)).observe(this, Observer {
-            viewPager.adapter = ViewPagerAdapter(supportFragmentManager, this, it)
+    private fun getPlaceFromViewModel() {
+        viewModel.getPlaceAccordingItsOrigin(
+            fromRuralis,
+            placeId!!,
+            getString(R.string.details_field),
+            getString(R.string.api_key_google)
+        ).observe(this, Observer {
+            pagerAdapter = ViewPagerAdapter(supportFragmentManager, this, it)
+            viewPager.adapter = pagerAdapter
             name.text = it.name
         })
     }
@@ -94,24 +104,35 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.toolbar_menu_modify -> {
-                startActivity(Intent(this, AddActivity::class.java))
-                return true
+                if (fromRuralis) {
+                    val intent = Intent(this, AddActivity::class.java)
+                    intent.putExtra("Edit", true)
+                    intent.putExtra("Id", placeId)
+                    startActivityForResult(intent, 5)
+                    return true
+                } else {
+                    Snackbar.make(
+                        details_container,
+                        "Cet établissement ne peut pas être modifié",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
         return true
     }
 
     override fun onClick(view: View?) {
-        when(view){
+        when (view) {
             favoriteFab -> {
-                if(favoriteFab.tag == "No favorite"){
-                    sharedPreference.addFavorite(this, favorite)
+                if (favoriteFab.tag == "No favorite") {
+                    viewModel.addToFavorites(placeId, fromRuralis, photoUri, name.text.toString())
                     favoriteFab.setImageResource(R.drawable.star_clicked)
                     favoriteFab.tag = "Favorite"
-                }else{
-                    sharedPreference.removeFavorite(this, favorite)
+                } else {
+                    viewModel.deleteFromFavorites(placeId!!)
                     favoriteFab.setImageResource(R.drawable.star_unclicked)
                     favoriteFab.tag = "No favorite"
                 }
@@ -128,5 +149,16 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
     override fun onTabSelected(p0: TabLayout.Tab?) {
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        placeId = data?.getStringExtra("New place id")
+        if (placeId != null) {
+            viewModel.getPlaceFromFirestoreById(placeId)
+            viewModel.placeLiveData.observe(this, Observer {
+                pagerAdapter.refreshData(it)
+                name.text = it.name
+            })
+        }
+    }
 
 }

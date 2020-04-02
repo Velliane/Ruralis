@@ -10,14 +10,14 @@ import kotlinx.coroutines.withContext
 
 class MapViewModel(private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
 
-    val placeListLiveData = MutableLiveData<List<PlaceForList>>()
-    val placeTextSearchListLiveData = MutableLiveData<List<PlaceForList>>()
+    private val placeListLiveData = MutableLiveData<List<PlaceForList>>()
+    private val placeTextSearchListLiveData = MutableLiveData<List<PlaceForList>>()
 
     private val liveDataMerger = MediatorLiveData<List<PlaceForList>>()
     val allPlaceLiveData: LiveData<List<PlaceForList>> = liveDataMerger
 
 
-    fun getTextSearch(location: String, radius: String, query: String, key: String){
+    private fun getTextSearch(location: String, radius: String, query: String, key: String){
         viewModelScope.launch(Dispatchers.IO) {
             val list = googleApiRepository.getTextSearch(location, radius, query, key)
             withContext(Dispatchers.Main){
@@ -27,7 +27,7 @@ class MapViewModel(private val googleApiRepository: GoogleApiRepository, private
     }
 
 
-    fun getAllPlacesFromFirestore(){
+    private fun getAllPlacesFromFirestore(){
         viewModelScope.launch(Dispatchers.IO) {
             val list = firestoreDataRepository.getAllPlacesFromFirestore()
             withContext(Dispatchers.Main){
@@ -41,19 +41,18 @@ class MapViewModel(private val googleApiRepository: GoogleApiRepository, private
         getAllPlacesFromFirestore()
         getTextSearch(location, radius, query, key)
         liveDataMerger.addSource(placeListLiveData){
-            if(it != null){
-                liveDataMerger.value = mergeList(it, placeTextSearchListLiveData.value!!)
-            }
+            mergeList(it, placeTextSearchListLiveData.value)
         }
         liveDataMerger.addSource(placeTextSearchListLiveData){
-            if(it != null){
-                liveDataMerger.value = mergeList(placeListLiveData.value!!, it)
-            }
+            mergeList(placeListLiveData.value, it)
         }
     }
 
-    private fun mergeList(placeDetailedList: List<PlaceForList>, placeTextSearchList: List<PlaceForList>): List<PlaceForList> {
+    private fun mergeList(placeDetailedList: List<PlaceForList>?, placeTextSearchList: List<PlaceForList>?){
+        if(placeDetailedList == null || placeTextSearchList == null){
+            return
+        }
         val listPlaces  = placeDetailedList + placeTextSearchList
-        return listPlaces.distinct()
+        liveDataMerger.value = listPlaces.distinct()
     }
 }

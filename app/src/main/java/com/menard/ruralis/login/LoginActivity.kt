@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val viewModelFactory = Injection.provideViewModelFactory()
+        val viewModelFactory = Injection.provideViewModelFactory(this)
         userViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
 
         login_connexion_btn.setOnClickListener(this)
