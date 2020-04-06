@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.OpeningsListAdapter
 import com.menard.ruralis.add_places.PlaceDetailed
-import com.menard.ruralis.add_places.Types
-import kotlinx.android.synthetic.main.activity_add.*
+import com.menard.ruralis.add_places.TypesEnum
 
 class InfosFragment: Fragment() {
 
@@ -31,15 +30,10 @@ class InfosFragment: Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_infos, container, false)
         //-- Get args --//
         placeDetailed = arguments!!.getSerializable("place") as PlaceDetailed
-
         openingsRecyclerView = view.findViewById(R.id.details_openings_hours)
         openingsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         typeTextView = view.findViewById(R.id.info_title_description)
@@ -49,7 +43,7 @@ class InfosFragment: Fragment() {
 
     private fun updateViews() {
         if(placeDetailed.fromRuralis) {
-            typeTextView.text = requireContext().getString(Types.valueOf(placeDetailed.type).res)
+            typeTextView.text = requireContext().getString(TypesEnum.valueOf(placeDetailed.type).res)
         }else{
             typeTextView.text = placeDetailed.type
         }

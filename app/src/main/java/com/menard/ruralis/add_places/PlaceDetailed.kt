@@ -10,7 +10,7 @@ data class PlaceDetailed  (
     val type: String = "",
     val name: String = "",
     val address: String = "",
-    val photos: List<String>? = null,
+    val photos: List<String?> = emptyList(),
     val openingsHours: List<String>? = null,
     val website: String = "",
     val phone_number: String = "",

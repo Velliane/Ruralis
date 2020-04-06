@@ -50,14 +50,6 @@
                 layout="@layout/toolbar"
                 android:visibility="visible" />
 
-            <include
-                android:id="@+id/activity_main_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="?actionBarSize"
-                layout="@layout/custom_search"
-                android:visibility="gone"/>
-
 
         </RelativeLayout>
 

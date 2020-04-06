@@ -8,10 +8,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.menard.ruralis.R
@@ -20,6 +22,7 @@ import com.menard.ruralis.utils.Constants
 import kotlinx.android.synthetic.main.fragment_contact.*
 import saschpe.android.customtabs.CustomTabsHelper
 import saschpe.android.customtabs.WebViewFallback
+import java.util.*
 
 class ContactFragment : Fragment(), View.OnClickListener {
 
@@ -27,6 +30,9 @@ class ContactFragment : Fragment(), View.OnClickListener {
     private lateinit var placeDetailed: PlaceDetailed
     private lateinit var makeCallBtn: MaterialButton
     private lateinit var visitWebsiteBtn: MaterialButton
+    private lateinit var phoneNbr: TextView
+    private lateinit var website: TextView
+    private lateinit var map: ImageView
 
     companion object {
         fun newInstance(place: PlaceDetailed): ContactFragment {
@@ -38,11 +44,7 @@ class ContactFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
         //address = arguments!!.getString("address")!!
         placeDetailed = arguments!!.getSerializable("place") as PlaceDetailed
@@ -51,7 +53,10 @@ class ContactFragment : Fragment(), View.OnClickListener {
         makeCallBtn.setOnClickListener(this)
         visitWebsiteBtn = view.findViewById(R.id.details_visit_website)
         visitWebsiteBtn.setOnClickListener(this)
-
+        phoneNbr = view.findViewById(R.id.details_phone_number)
+        website = view.findViewById(R.id.details_website)
+        map = view.findViewById(R.id.details_map)
+        map.setOnClickListener(this)
         updateViews()
         return view
     }
@@ -60,6 +65,12 @@ class ContactFragment : Fragment(), View.OnClickListener {
         addressTxtView.text = placeDetailed.address
         makeCallBtn.tag = placeDetailed.phone_number
         visitWebsiteBtn.tag = placeDetailed.website
+        phoneNbr.text = placeDetailed.phone_number
+        website.text = placeDetailed.website
+        val key = context!!.resources.getString(R.string.api_key_google)
+        val url = "https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=300x300&maptype=roadmap\n" +
+                "&key=$key&markers=color:blue%7Clabel:S%7C${placeDetailed.latitude},${placeDetailed.longitude}"
+        Glide.with(this).load(url).into(map)
     }
 
     override fun onClick(view: View?) {
@@ -77,6 +88,12 @@ class ContactFragment : Fragment(), View.OnClickListener {
                 } else {
                     showSnackBar(getString(R.string.no_website))
                 }
+            }
+            map -> {
+                val uri = "http://maps.google.com/maps?daddr=${placeDetailed.latitude},${placeDetailed.longitude}(${placeDetailed.name})"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                intent.setPackage("com.google.android.apps.maps")
+                context?.startActivity(intent)
             }
         }
     }

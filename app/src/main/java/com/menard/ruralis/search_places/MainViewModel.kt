@@ -18,43 +18,44 @@ class MainViewModel(private val googleApiRepository: GoogleApiRepository, privat
     val allPlaceLiveData: LiveData<List<PlaceForList>> = liveDataMerger
 
 
-    fun getTextSearch(location: String, radius: String, query: String, key: String){
-        viewModelScope.launch(Dispatchers.IO) {
-            val list = googleApiRepository.getTextSearch(location, radius, query, key)
-            withContext(Dispatchers.Main){
-                placeTextSearchListLiveData.value = list
-            }
-        }
-    }
+//    fun getTextSearch(location: String, radius: String, query: String, key: String){
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val list = googleApiRepository.getTextSearch(location, radius, query, key)
+//            withContext(Dispatchers.Main){
+//                placeTextSearchListLiveData.value = list
+//            }
+//        }
+//    }
 
 
-    fun getAllPlacesFromFirestore(){
+    /*fun getAllPlacesFromFirestore(){
         viewModelScope.launch(Dispatchers.IO) {
             val list = firestoreDataRepository.getAllPlacesFromFirestore()
             withContext(Dispatchers.Main){
                 placeListLiveData.value = list
             }
         }
-    }
+    }*/
 
 
-    fun getAllPlaces(location: String, radius: String, query: String, key: String){
-        getAllPlacesFromFirestore()
-        getTextSearch(location, radius, query, key)
-        liveDataMerger.addSource(placeListLiveData){
-            if(it != null){
-                liveDataMerger.value = mergeList(it, placeTextSearchListLiveData.value!!)
-            }
-        }
-        liveDataMerger.addSource(placeTextSearchListLiveData){
-            if(it != null){
-                liveDataMerger.value = mergeList(placeListLiveData.value!!, it)
-            }
-        }
-    }
-
-    private fun mergeList(placeDetailedList: List<PlaceForList>, placeTextSearchList: List<PlaceForList>): List<PlaceForList> {
-        val listPlaces  = placeDetailedList + placeTextSearchList
-        return listPlaces.distinct()
-    }
+//    fun getAllPlaces(location: String, radius: String, query: String, key: String){
+//        getAllPlacesFromFirestore()
+//        getTextSearch(location, radius, query, key)
+//        liveDataMerger.addSource(placeListLiveData){
+//            if(it != null){
+//                liveDataMerger.value = mergeList(it, placeTextSearchListLiveData.value!!)
+//            }
+//        }
+//        liveDataMerger.addSource(placeTextSearchListLiveData){
+//            if(it != null){
+//                liveDataMerger.value = mergeList(placeListLiveData.value!!, it)
+//            }
+//        }
+//    }
+//
+//    private fun mergeList(placeDetailedList: List<PlaceForList>, placeTextSearchList: List<PlaceForList>): List<PlaceForList> {
+//        val listPlaces  = placeDetailedList + placeTextSearchList
+//        return listPlaces.distinct()
+//    }
+//}
 }

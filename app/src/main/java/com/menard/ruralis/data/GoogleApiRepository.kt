@@ -23,7 +23,8 @@ class GoogleApiRepository {
                 if (photos.isNotEmpty()) {
                     listRef.add(photos[0].photoReference!!)
                 }
-                val place = PlaceForList(result.placeId!!, result.name!!, result.types!![0], listRef, lat, lng, false)
+                val place = PlaceForList(result.placeId!!, result.name!!, result.types!![0],
+                    listRef[0], lat, lng, false)
                 list.add(place)
             }
         }
@@ -54,7 +55,7 @@ class GoogleApiRepository {
         for (photo in photos) {
             listRef.add(photo.photoReference!!)
         }
-        return PlaceForList(result.placeId!!, result.name!!, result.types!![0], listRef, lat, lng, false)
+        return PlaceForList(result.placeId!!, result.name!!, result.types!![0], listRef[0], lat, lng, false)
     }
 
     suspend fun getComments(place_id: String?, fields: String, key: String): List<Comments> {

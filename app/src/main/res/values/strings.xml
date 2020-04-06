@@ -12,17 +12,29 @@
     <!-- Types -->
     <string name="type_dairy_farmer">Dairy farmer</string>
     <string name="type_vegetable">Vegetable</string>
-    <string name="description_google">Etablissement trouvé sur GoogleMap. Enregistrez-le sur la base de données de Ruralis pour pouvoir modifier ses informations !</string>
+    <string name="type_honey">Honey</string>
+    <string name="type_educational_farm">Education farm</string>
+    <string name="type_egg_poultry">Egg/Poultry</string>
+    <string name="type_beef_meat">Beef meat</string>
+    <string name="type_pork_meat">Pork meat</string>
+    <string name="type_mixed_livestock">Mixed livestock</string>
+    <string name="type_other">Other</string>
 
     <!-- Tab's title -->
+    <string name="description_google">Establishment find son GoogleMap. Save it on Ruralis to modify his data !</string>
     <string name="tab_info">Info general</string>
     <string name="tab_photos">Photos</string>
     <string name="tab_contact">contact</string>
     <string name="tab_comments">Comments</string>
-    <string name="type_honey">Honey</string>
     <string name="no_phone_number">No phone number</string>
     <string name="no_website">No website</string>
     <string name="favorite_establishment_name">Establishment\'s name</string>
     <string name="favorite_descr_photo">Favorite\'s photo</string>
-    <string name="home_title_favorites">Mes favoris</string>
+    <string name="home_title_favorites">My favorites</string>
+    <string name="photo_uploading">Téléchargement en cours...</string>
+    <string name="settings_radius_km">Périmètre de recherche(en km)</string>
+    <string name="details_opening_hours">Opening Hours</string>
+    <string name="details_opening_example">Monday : 9h-18h</string>
+    <string name="details_contact_map_info">Cliquez sur la carte pour afficher l\'itinéraire</string>
+
 </resources>

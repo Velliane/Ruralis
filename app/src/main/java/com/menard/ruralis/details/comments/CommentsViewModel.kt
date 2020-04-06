@@ -1,6 +1,7 @@
 package com.menard.ruralis.details.comments
 
 import androidx.lifecycle.*
+import com.google.firebase.auth.FirebaseAuth
 import com.menard.ruralis.data.FirestoreDataRepository
 import com.menard.ruralis.data.GoogleApiRepository
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,10 @@ class CommentsViewModel(private val firestoreDataRepository: FirestoreDataReposi
                 }
             }
         }
+    }
+
+    fun addComment(id: String?, comment: String) {
+        firestoreDataRepository.addComment(id, FirebaseAuth.getInstance().currentUser?.displayName.toString(), comment)
     }
 
 }

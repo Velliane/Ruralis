@@ -221,52 +221,6 @@
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Photos -->
-            <TextView
-                android:id="@+id/add_photos_title"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Photos"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/contact_edit_website" />
-
-            <ImageView
-                android:id="@+id/add_photos_preview"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@color/colorAccent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/add_photos_title" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/add_photos_btn"
-                style="@style/ButtonHome"
-                android:layout_width="100dp"
-                android:layout_height="45dp"
-                android:padding="5dp"
-                android:text="AJOUTER"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textColor="@color/colorPrimaryDark"
-                app:cornerRadius="12dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/add_photos_preview"
-                app:strokeColor="@color/colorPrimaryDark"
-                app:strokeWidth="2dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/add_photos_list"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="@id/add_photos_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/add_photos_preview"
-                app:layout_constraintTop_toTopOf="@id/add_photos_preview"
-                tools:listitem="@layout/item_photo" />
-
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/add_save_btn"
                 style="@style/ButtonHome"
@@ -281,7 +235,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_photos_btn"
+                app:layout_constraintTop_toBottomOf="@+id/contact_edit_website"
                 app:strokeColor="@color/colorPrimaryDark"
                 app:strokeWidth="2dp" />
 

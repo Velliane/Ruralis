@@ -1,7 +1,6 @@
 package com.menard.ruralis.add_places
 
 import android.content.Context
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.menard.ruralis.R
 
-class TypeSpinnerAdapter(context: Context, list: List<Types>) : ArrayAdapter<Types>(context, R.layout.spinner_item, list){
+class TypeSpinnerAdapter(context: Context, list: List<TypesEnum>) : ArrayAdapter<TypesEnum>(context, R.layout.spinner_item, list){
 
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {

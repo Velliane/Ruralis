@@ -11,6 +11,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="Monday : 9h-18h"/>
+        android:layout_margin="3dp"
+        android:textSize="16sp"
+        android:text="@string/details_opening_example"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

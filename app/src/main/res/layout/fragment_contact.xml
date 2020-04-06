@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+
    android:id="@+id/contact_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp">
 
@@ -14,21 +19,68 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/details_make_call"
+        app:layout_constraintBottom_toTopOf="@id/details_map"
         android:textAlignment="center"
         android:textSize="23sp"
         android:text="Address"/>
 
+    <ImageView
+        android:id="@+id/details_map"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/details_address"
+        app:layout_constraintBottom_toTopOf="@id/details_phone_number"/>
+
+    <TextView
+        android:id="@+id/details_map_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/details_contact_map_info"
+        android:textStyle="italic"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/details_map"
+        app:layout_constraintBottom_toTopOf="@id/details_phone_number"/>
+
+    <TextView
+        android:id="@+id/details_phone_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="23sp"
+        android:text="Phone number"
+        android:textStyle="italic"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/details_map_info"
+        app:layout_constraintBottom_toTopOf="@id/details_website"/>
+
+    <TextView
+        android:id="@+id/details_website"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:text="Website"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/details_phone_number"
+        app:layout_constraintBottom_toTopOf="@id/details_make_call"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/details_make_call"
         android:layout_width="150dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginTop="15dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         style="@style/ButtonHome"
         android:text="Make a call"
-        android:textSize="19sp"
+        android:textSize="17sp"
         android:textColor="@color/colorPrimaryDark"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
@@ -38,16 +90,17 @@
         app:cornerRadius="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/details_visit_website"
-        app:layout_constraintTop_toBottomOf="@id/details_address"/>
+        app:layout_constraintTop_toBottomOf="@id/details_website"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/details_visit_website"
         android:layout_width="150dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginTop="15dp"
         style="@style/ButtonHome"
         android:text="Visit website"
-        android:textSize="19sp"
+        android:textSize="17sp"
         android:textColor="@color/colorPrimaryDark"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
@@ -58,6 +111,8 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/details_make_call"
-        app:layout_constraintTop_toBottomOf="@id/details_address"/>
+        app:layout_constraintTop_toBottomOf="@id/details_website"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

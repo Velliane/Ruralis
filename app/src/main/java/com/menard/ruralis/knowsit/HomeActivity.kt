@@ -142,4 +142,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    //-- LIFECYCLE --//
+    override fun onResume() {
+        super.onResume()
+        updateFavorites()
+    }
 }

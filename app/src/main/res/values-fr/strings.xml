@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Ruralis</string>
+
+    <!-- Types -->
     <string name="type_dairy_farmer">Produits laitiers</string>
     <string name="type_vegetable">Fruits et légumes</string>
+    <string name="type_honey">Miel</string>
+    <string name="type_educational_farm">Ferme pédagogique</string>
+    <string name="type_egg_poultry">Oeufs/Volailles</string>
+    <string name="type_beef_meat">Viande bovine</string>
+    <string name="type_pork_meat">Viande de porc</string>
+    <string name="type_mixed_livestock">Polyélevage</string>
+    <string name="type_other">Autres</string>
+
     <string name="description_google">Etablissement trouvé sur GoogleMap. Enregistrez-le sur la base de données de Ruralis pour pouvoir modifier ses informations !</string>
     <string name="tab_comments">Commentaires</string>
-    <string name="type_honey">Miel</string>
     <string name="no_phone_number">Aucun numéro de téléphone n\'a été renseigné</string>
     <string name="no_website">Aucun site internet trouvé</string>
     <string name="tab_contact">Contact</string>
     <string name="tab_info">Info général</string>
     <string name="tab_photos">Photos</string>
-    <string name="favorite_establishment_name">Establishment\'s name</string>
-    <string name="favorite_descr_photo">Favorite\'s photo</string>
+    <string name="favorite_establishment_name">Nom de l\'établissement</string>
+    <string name="favorite_descr_photo">Photo du favori</string>
     <string name="home_title_favorites">Mes favoris</string>
+    <string name="photo_uploading">Téléchargement en cours...</string>
+    <string name="settings_radius_km">Périmètre de recherche(en km)</string>
+    <string name="details_opening_hours">Horaires d\'ouverture</string>
+    <string name="details_opening_example">Monday : 9h-18h</string>
+    <string name="details_contact_map_info">Cliquez sur la carte pour afficher l\'itinéraire</string>
+
 </resources>

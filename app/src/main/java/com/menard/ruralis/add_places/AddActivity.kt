@@ -1,18 +1,13 @@
 package com.menard.ruralis.add_places
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
-import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.menard.ruralis.R
 import com.menard.ruralis.utils.Injection
@@ -22,15 +17,7 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
 
     /** ViewModel */
     private lateinit var viewModel: AddViewModel
-
-    /** List of photos */
-    private var listUri = ArrayList<Uri>()
-    private lateinit var uriPhoto: Uri
-    private lateinit var recyclerView: RecyclerView
-    private val adapter = PhotoAdapter(this)
-    private lateinit var photoPreview: ImageView
     private lateinit var spinnerAdapter: TypeSpinnerAdapter
-
     /** Opening Hours Views */
     private lateinit var day: TextInputEditText
     private lateinit var hours: TextInputEditText
@@ -70,36 +57,35 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             add_save_btn -> {
-                val name: String = add_name.text.toString()
-                val type: String = add_edit_type_spinner.selectedItem.toString()
-                val address: String = add_address.text.toString()
-                val website: String = contact_website.text.toString()
-                val phoneNumber: String = contact_phone_number.text.toString()
-                viewModel.savePlace(id,
-                    type, name,
-                    address, listOfOpenings,
-                    website, phoneNumber,
-                    listUri, "", "", isEdit
-                )
-
-                if (isEdit) {
-                    val intent = Intent()
-                    intent.putExtra("New place id", id)
-                    setResult(5, intent)
+                if (checkRequiredInfo()) {
+                    val name: String = add_name.text.toString()
+                    val type: String = add_edit_type_spinner.selectedItem.toString()
+                    val address: String = add_address.text.toString()
+                    val website: String = contact_website.text.toString()
+                    val phoneNumber: String = contact_phone_number.text.toString()
+                    viewModel.savePlace(id, type, name, address, listOfOpenings, website, phoneNumber, isEdit, "country:FR", resources.getString(R.string.api_key_google))
+                    if (isEdit) {
+                        val intent = Intent()
+                        intent.putExtra("New place id", id)
+                        setResult(5, intent)
+                        finish()
+                    }
                     finish()
+                }else{
+                    if(add_name.text.toString() == "") {
+                        add_name.error = "Please write a name"
+                    }
+                    if(add_address.text.toString() == "") {
+                        add_address.error = "Please write an address"
+                    }
                 }
-
             }
-            add_photos_btn -> {
-                addImageToList()
-            }
-            photoPreview -> {
-                selectAnImageFromPhone()
-            }
-            add_opening_btn -> {
-                addOpeningsToRecyclerView()
-            }
+            add_opening_btn -> { addOpeningsToRecyclerView() }
         }
+    }
+
+    private fun checkRequiredInfo(): Boolean{
+        return add_name.text.toString() != "" && add_address.text.toString() != ""
     }
 
     private fun addOpeningsToRecyclerView() {
@@ -124,44 +110,11 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
         new_opening_hours.isErrorEnabled = false
     }
 
-    //-- PHOTOS --//
-    private fun addImageToList() {
-        if (uriPhoto != null) {
-            listUri.add(uriPhoto)
-            recyclerView.adapter = adapter
-            adapter.setData(listUri)
-            adapter.notifyDataSetChanged()
-        }
-    }
-
-    private fun selectAnImageFromPhone() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, 4)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        loadImageInPreview(requestCode, resultCode, data)
-    }
-
-    private fun loadImageInPreview(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 4) {
-            if (resultCode == Activity.RESULT_OK) {
-                uriPhoto = data!!.data!!
-                Glide.with(this).load(uriPhoto).into(photoPreview)
-            }
-        }
-    }
-
     private fun bindViews() {
         day = findViewById(R.id.opening_day_edit)
         hours = findViewById(R.id.opening_hours_edit)
-        photoPreview = findViewById(R.id.add_photos_preview)
-        photoPreview.setOnClickListener(this)
-        add_save_btn.setOnClickListener(this)
-        add_photos_btn.setOnClickListener(this)
         add_opening_btn.setOnClickListener(this)
-        recyclerView = findViewById(R.id.add_photos_list)
+        add_save_btn.setOnClickListener(this)
         openingsList = findViewById(R.id.add_opening_recycler_view)
         openingsList.layoutManager = LinearLayoutManager(this)
         openingsList.adapter = openingsAdapter

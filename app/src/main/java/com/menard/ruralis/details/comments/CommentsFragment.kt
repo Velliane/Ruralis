@@ -1,24 +1,34 @@
 package com.menard.ruralis.details.comments
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.PlaceDetailed
 import com.menard.ruralis.utils.Injection
 
-class CommentsFragment : Fragment() {
+class CommentsFragment : Fragment(), View.OnClickListener {
 
+    /** PlaceDetailed get from DetailsActivity */
     private lateinit var placeDetailed: PlaceDetailed
+    /** RecyclerView */
     private lateinit var recyclerView: RecyclerView
-    private lateinit var commentsViewModel: CommentsViewModel
     private lateinit var adapter: CommentsAdapter
+    /** ViewModel */
+    private lateinit var commentsViewModel: CommentsViewModel
+    /** AddComment FAB */
+    private lateinit var addCommentBtn: FloatingActionButton
 
     companion object {
         fun newInstance(place: PlaceDetailed): CommentsFragment {
@@ -30,19 +40,17 @@ class CommentsFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_comments, container, false)
         placeDetailed = arguments!!.getSerializable("place") as PlaceDetailed
         recyclerView = view.findViewById(R.id.fragment_comments_list)
-
-
+        addCommentBtn = view.findViewById(R.id.comments_add_fab)
+        addCommentBtn.setOnClickListener(this)
+        if(!placeDetailed.fromRuralis){
+            addCommentBtn.hide()
+        }
         val viewModelFactory = Injection.provideViewModelFactory(requireContext())
-        commentsViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(CommentsViewModel::class.java)
+        commentsViewModel = ViewModelProviders.of(this, viewModelFactory).get(CommentsViewModel::class.java)
 
         adapter = CommentsAdapter(context!!)
         recyclerView.adapter = adapter
@@ -61,5 +69,25 @@ class CommentsFragment : Fragment() {
         commentsViewModel.allCommentsLiveData.observe(this, Observer<List<Comments>> {
             adapter.setData(it)
         })
+    }
+
+    override fun onClick(v: View?) {
+        val dialog = AlertDialog.Builder(context)
+        val comment = EditText(requireContext())
+        val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        comment.layoutParams = lp
+        dialog.setView(comment)
+        dialog.setTitle("Rédiger un commentaire")
+        dialog.setPositiveButton("Sauvegarder"){ dialog, _ ->
+            if(comment.text.toString() != "") {
+                commentsViewModel.addComment(placeDetailed.placeId, comment.text.toString())
+                updateViews(placeDetailed)
+                dialog.dismiss()
+            }
+        }
+        dialog.setNegativeButton("Annuler"){ dialog, _ ->
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 }

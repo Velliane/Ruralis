@@ -16,4 +16,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_comments"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/comments_add_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="10dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/add_comments"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

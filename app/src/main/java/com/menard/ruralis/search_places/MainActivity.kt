@@ -1,12 +1,12 @@
 package com.menard.ruralis.search_places
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
+import android.widget.ImageButton
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -18,10 +18,9 @@ import com.menard.ruralis.add_places.AddActivity
 import com.menard.ruralis.search_places.list.ListViewFragment
 import com.menard.ruralis.search_places.map.MapViewFragment
 import com.menard.ruralis.settings.SettingsActivity
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    BottomNavigationView.OnNavigationItemSelectedListener {
+    BottomNavigationView.OnNavigationItemSelectedListener{
 
     /** Toolbar*/
     private lateinit var toolbar: Toolbar
@@ -84,12 +83,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.findItem(R.id.toolbar_menu_filter)?.isVisible = false
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.toolbar_menu_filter -> {
-                activity_main_search.visibility = View.VISIBLE
-                return true
-            }
             R.id.toolbar_menu_add -> {
                 val intent = Intent(this, AddActivity::class.java)
                 intent.putExtra("Edit", false)
