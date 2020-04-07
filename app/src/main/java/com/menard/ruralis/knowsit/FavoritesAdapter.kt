@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.menard.ruralis.R
 import com.menard.ruralis.details.Favorite
 
-class FavoritesAdapter(private val context: Context) : RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder>() {
+class FavoritesAdapter(private val context: Context, private val listener: OnItemClickListener) : RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder>() {
 
     private var data: List<Favorite> = ArrayList()
     private lateinit var mContext: Context
@@ -35,7 +35,7 @@ class FavoritesAdapter(private val context: Context) : RecyclerView.Adapter<Favo
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: FavoritesViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data[position], listener)
     }
 
     class FavoritesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -44,7 +44,7 @@ class FavoritesAdapter(private val context: Context) : RecyclerView.Adapter<Favo
         private val favName = itemView.findViewById<TextView>(R.id.favorites_name)
         private val container = itemView.findViewById<ConstraintLayout>(R.id.favorites_container)
 
-        fun bind(favorite: Favorite){
+        fun bind(favorite: Favorite, listener: OnItemClickListener){
             if(favorite.fromRuralis){
                 container.setBackgroundResource(R.color.items_from_ruralis)
                 if (favorite.photo != null) {
@@ -61,6 +61,9 @@ class FavoritesAdapter(private val context: Context) : RecyclerView.Adapter<Favo
                     Glide.with(itemView.context).load(R.drawable.no_image_available_64).error(R.drawable.no_image_available_64).into(favPhoto)
                 }
             }
+            itemView.setOnClickListener{
+                listener.onItemClicked(favorite.id, favorite.fromRuralis, favorite.photo)
+            }
 
             favName.text = favorite.name
 
@@ -68,6 +71,6 @@ class FavoritesAdapter(private val context: Context) : RecyclerView.Adapter<Favo
     }
 
     interface OnItemClickListener {
-        fun onItemClicked(id: String, from: Boolean)
+        fun onItemClicked(id: String, from: Boolean, photoUri: String?)
     }
 }

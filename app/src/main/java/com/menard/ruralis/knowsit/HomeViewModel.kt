@@ -25,33 +25,6 @@ class HomeViewModel(private val favoritesDataRepository: FavoritesDataRepository
         }
     }
 
-//    private fun getPlaceFromFirestoreById(id: String){
-//        viewModelScope.launch(Dispatchers.IO) {
-//            val place = firestoreDataRepository.getPlaceForListById(id)
-//            withContext(Dispatchers.Main){
-//                listFavoritesLiveData.value = place
-//            }
-//        }
-//    }
-//
-//    fun getPlaceFavoriteAccordingItsOrigin(fromRuralis: Boolean, place_id: String, fields: String, key: String): LiveData<PlaceForList> {
-//        if(!fromRuralis){
-//            getPlaceFromRoomById(place_id, fields, key)
-//        }else {
-//            getPlaceFromFirestoreById(place_id)
-//        }
-//        return listFavoritesLiveData
-//    }
-//
-//    private fun getPlaceFromRoomById(placeId: String, fields: String, key: String) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            val place = googleApiRepository.getPlaceFavorites(placeId, fields, key)
-//            withContext(Dispatchers.Main) {
-//                listFavoritesLiveData.value = place
-//            }
-//        }
-//    }
-
     fun showAllFavorites(): LiveData<List<Favorite>>{
         viewModelScope.launch(Dispatchers.IO) {
             val list = favoritesDataRepository.getAllFavorites()

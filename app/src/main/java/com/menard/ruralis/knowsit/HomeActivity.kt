@@ -19,13 +19,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 import com.menard.ruralis.R
+import com.menard.ruralis.details.DetailsActivity
 import com.menard.ruralis.search_places.MainActivity
 import com.menard.ruralis.settings.SettingsActivity
+import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
 import java.util.*
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    View.OnClickListener {
+    View.OnClickListener, FavoritesAdapter.OnItemClickListener {
 
     /** Drawer */
     private lateinit var drawerLayout: DrawerLayout
@@ -48,7 +50,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
-        adapter = FavoritesAdapter(this)
+        adapter = FavoritesAdapter(this, this)
 
         bindViews()
         configureDrawerLayout()
@@ -146,5 +148,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onResume() {
         super.onResume()
         updateFavorites()
+    }
+
+    override fun onItemClicked(id: String, from: Boolean, photoUri: String?) {
+        val intent = Intent(this, DetailsActivity::class.java).apply {
+            putExtra(Constants.INTENT_ID, id)
+            putExtra(Constants.INTENT_FROM, from)
+            putExtra(Constants.INTENT_URI, photoUri)
+        }
+        startActivity(intent)
     }
 }

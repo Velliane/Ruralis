@@ -1,6 +1,7 @@
 package com.menard.ruralis.details.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,5 +56,18 @@ class InfosFragment: Fragment() {
         }
     }
 
+    override fun onPause() {
+        Log.d("InfoFragment", "onPause()")
+        super.onPause()
+    }
 
+    override fun onDestroy() {
+        Log.d("InfoFragment", "onDestroy()")
+        super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+        Log.d("InfoFragment", "onDestroyView()")
+        super.onDestroyView()
+    }
 }

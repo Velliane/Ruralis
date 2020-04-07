@@ -60,10 +60,25 @@ class ListViewFragment : Fragment(),
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_list_view, container, false)
         setHasOptionsMenu(true)
+        bindViews(view)
+        //-- Shared Preferences --//
         sharedPreferences = activity!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
         fromMaps = sharedPreferences.getBoolean(Constants.PREF_SEARCH_FROM_MAPS, true)
         radius = sharedPreferences.getString(Constants.PREF_SEARCH_AROUND, "50")
-        //-- configure Recycler View --//
+        //-- Places SDK initialisation --//
+        Places.initialize(requireActivity(), context!!.resources.getString(R.string.api_key_google))
+        placesClient = Places.createClient(requireActivity())
+        //-- Location --//
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        //-- View Model --//
+        val viewModelFactory = Injection.provideViewModelFactory(requireContext())
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ListViewModel::class.java)
+        //-- Show Places --//
+        getUserLocation()
+        return view
+    }
+
+    private fun bindViews(view: View) {
         listResult = ArrayList()
         recyclerView = view.findViewById(R.id.fragment_list_recycler_view)
         recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL))
@@ -76,16 +91,6 @@ class ListViewFragment : Fragment(),
         }
         searchBtn = view.findViewById(R.id.custom_search_keyword_btn)
         searchBtn.setOnClickListener(this)
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        //-- Places SDK initialisation --//
-        Places.initialize(requireActivity(), context!!.resources.getString(R.string.api_key_google))
-        placesClient = Places.createClient(requireActivity())
-
-        val viewModelFactory = Injection.provideViewModelFactory(requireContext())
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ListViewModel::class.java)
-
-        getUserLocation()
-        return view
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -115,7 +120,6 @@ class ListViewFragment : Fragment(),
         locationRequest.smallestDisplacement = 50F
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
 
-
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult?) {
                     val latitude = locationResult!!.lastLocation.latitude
@@ -134,7 +138,6 @@ class ListViewFragment : Fragment(),
             }, null
         )
     }
-
 
     /**
      * Get places from Firestore and GoogleMaps
