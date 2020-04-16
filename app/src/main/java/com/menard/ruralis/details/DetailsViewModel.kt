@@ -1,5 +1,6 @@
 package com.menard.ruralis.details
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,14 +13,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class DetailsViewModel(private val favoritesDataRepository: FavoritesDataRepository, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
+class DetailsViewModel(private val context: Context, private val favoritesDataRepository: FavoritesDataRepository, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
 
     val placeLiveData = MutableLiveData<PlaceDetailed>()
     private val isFavoriteLiveData = MutableLiveData<Boolean>()
 
     private fun getDetailsById(place_id: String, fields: String, key: String){
         viewModelScope.launch(Dispatchers.IO) {
-            val place = googleApiRepository.getDetails(place_id, fields, key)
+            val place = googleApiRepository.getDetails(place_id, fields, key, context)
             withContext(Dispatchers.Main) {
                 placeLiveData.value = place
             }

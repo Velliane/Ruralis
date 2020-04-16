@@ -11,6 +11,7 @@ import com.menard.ruralis.details.comments.Comments
 import com.menard.ruralis.details.comments.CommentsHelper
 import com.menard.ruralis.details.photos.PhotoHelper
 import com.menard.ruralis.search_places.PlaceForList
+import com.menard.ruralis.utils.onFailureListener
 import kotlin.collections.ArrayList
 
 
@@ -20,32 +21,59 @@ class FirestoreDataRepository {
     private val commentsHelper = CommentsHelper()
     private val photoHelper = PhotoHelper()
 
-    suspend fun getAllPlacesFromFirestore(userLocation: Location, radius: String, context: Context): List<PlaceForList> {
+    suspend fun getAllPlacesFromFirestore(
+        userLocation: Location?,
+        radius: String?,
+        context: Context
+    ): List<PlaceForList> {
         val list = ArrayList<PlaceForList>()
-        val listDocument = placesHelper.getAllPlaces()
-        for (document in listDocument) {
-            val location = Location("")
-            location.latitude = document.getString("latitude")!!.toDouble()
-            location.longitude = document.getString("longitude")!!.toDouble()
-            if(userLocation.distanceTo(location) < radius.toInt()) {
-                val listOfPhoto = getListOfPhotosFromFirestore(document.id)
-                var uriPhoto: String? = null
-                if (listOfPhoto.isNotEmpty()) {
-                    uriPhoto = listOfPhoto[0].uri
+        placesHelper.getAllPlaces().addOnSuccessListener {
+            val listDocument = it.documents
+            for (document in listDocument) {
+                if(userLocation != null && radius != null){
+                    val location = Location("")
+                    location.latitude = document.getString("latitude")!!.toDouble()
+                    location.longitude = document.getString("longitude")!!.toDouble()
+                    if (userLocation.distanceTo(location) < radius.toInt()) {
+                        val listOfPhoto = getListOfPhotosFromFirestore(document.id, context)
+                        var uriPhoto: String? = null
+                        if (listOfPhoto.isNotEmpty()) {
+                            uriPhoto = listOfPhoto[0].uri
+                        }
+                        val type = document.getString("type")
+                        val placeForList = PlaceForList(
+                            document.id,
+                            document.getString("name")!!,
+                            context.getString(TypesEnum.valueOf(type!!).res),
+                            uriPhoto,
+                            document.getString("latitude"),
+                            document.getString("longitude"),
+                            document.getBoolean("fromRuralis")!!
+                        )
+                        list.add(placeForList)
+                    }
+                }else{
+                    val listOfPhoto = getListOfPhotosFromFirestore(document.id, context)
+                    var uriPhoto: String? = null
+                    if (listOfPhoto.isNotEmpty()) {
+                        uriPhoto = listOfPhoto[0].uri
+                    }
+                    val type = document.getString("type")
+                    val placeForList = PlaceForList(
+                        document.id,
+                        document.getString("name")!!,
+                        context.getString(TypesEnum.valueOf(type!!).res),
+                        uriPhoto,
+                        document.getString("latitude"),
+                        document.getString("longitude"),
+                        document.getBoolean("fromRuralis")!!
+                    )
+                    list.add(placeForList)
                 }
-                val type = document.getString("type")
-                val placeForList = PlaceForList(
-                    document.id,
-                    document.getString("name")!!,
-                    context.getString(TypesEnum.valueOf(type!!).res),
-                    uriPhoto,
-                    document.getString("latitude"),
-                    document.getString("longitude"),
-                    document.getBoolean("fromRuralis")!!
-                )
-                list.add(placeForList)
             }
-        }
+
+            }.addOnFailureListener (onFailureListener(context))
+
         return list
     }
 
@@ -79,17 +107,40 @@ class FirestoreDataRepository {
         )!!
     }
 
-    fun savePlaceInFirestore(id: String?, type: String, name: String, address: String, photos: List<String?>, openings: List<String>?, website: String, phoneNumber: String, latitude: String, longitude: String, edit: Boolean) {
+    fun savePlaceInFirestore(
+        id: String?,
+        type: String,
+        name: String,
+        address: String,
+        photos: List<String?>,
+        openings: String,
+        website: String,
+        phoneNumber: String,
+        latitude: String,
+        longitude: String,
+        edit: Boolean
+    ) {
         if (!edit) {
             //-- New object --//
             val ref = placesHelper.getPlacesCollection().document()
             val newId = ref.id
-            placesHelper.createPlaces(newId, type, name, address, openings, website, phoneNumber, photos, latitude, longitude
+            placesHelper.createPlaces(
+                newId,
+                type,
+                name,
+                address,
+                openings,
+                website,
+                phoneNumber,
+                photos,
+                latitude,
+                longitude
             )
         } else {
             //-- Update object --//
             placesHelper.createPlaces(
-                id, type, name, address, openings, website, phoneNumber, photos, latitude, longitude)
+                id, type, name, address, openings, website, phoneNumber, photos, latitude, longitude
+            )
         }
     }
 
@@ -103,23 +154,25 @@ class FirestoreDataRepository {
         return listComments
     }
 
-    fun addComment(id: String?, name: String, comment: String){
+    fun addComment(id: String?, name: String, comment: String) {
         commentsHelper.addComment(id!!, name, comment)
     }
 
     //-- Image --//
 
-    suspend fun getListOfPhotosFromFirestore(id: String): ArrayList<Photo> {
+    fun getListOfPhotosFromFirestore(id: String, context: Context): ArrayList<Photo> {
         val listOfPhotos = ArrayList<Photo>()
-        photoHelper.getAllPhotosById(id)?.documents?.forEach {
-            val photo = Photo(
-                it.getString("uri"),
-                it.id,
-                it.getBoolean("selected"),
-                it.getString("place_id")
-            )
-            listOfPhotos.add(photo)
-        }
+        photoHelper.getAllPhotosById(id).addOnSuccessListener {
+            it?.documents?.forEach { document ->
+                val photo = Photo(
+                    document.getString("uri"),
+                    document.id,
+                    document.getBoolean("selected"),
+                    document.getString("place_id")
+                )
+                listOfPhotos.add(photo)
+            }
+        }.addOnFailureListener (onFailureListener(context))
         return listOfPhotos
     }
 

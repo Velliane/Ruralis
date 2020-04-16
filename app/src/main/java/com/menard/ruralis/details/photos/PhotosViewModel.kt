@@ -1,5 +1,6 @@
 package com.menard.ruralis.details.photos
 
+import android.content.Context
 import android.net.Uri
 import androidx.annotation.NonNull
 import androidx.lifecycle.MediatorLiveData
@@ -70,10 +71,10 @@ class PhotosViewModel(private val firestoreDataRepository: FirestoreDataReposito
     }
 
 
-    fun getAllPhotosAccordingOrigin(fromRuralis: Boolean, id: String, listUri: List<String?>) {
+    fun getAllPhotosAccordingOrigin(fromRuralis: Boolean, id: String, listUri: List<String?>, context: Context) {
         if (fromRuralis) {
             viewModelScope.launch(Dispatchers.IO) {
-                val list = firestoreDataRepository.getListOfPhotosFromFirestore(id)
+                val list = firestoreDataRepository.getListOfPhotosFromFirestore(id, context)
                 withContext(Dispatchers.Main) {
                     allPhotosLiveData.value = list
                 }

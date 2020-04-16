@@ -36,5 +36,20 @@
     <string name="details_opening_hours">Opening Hours</string>
     <string name="details_opening_example">Monday : 9h-18h</string>
     <string name="details_contact_map_info">Cliquez sur la carte pour afficher l\'itinéraire</string>
+    <string name="login_connexion">Connexion</string>
+    <string name="login_description_logo">Logo</string>
+    <string name="error_firestore">Something went wrong, please check your connection</string>
+
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="closed">Closed</string>
+    <string name="type_product_shop">Magasin de producteur</string>
+    <string name="type_alcool">Vin/Spiriteux</string>
+    <string name="type_food_general">Alimentation</string>
 
 </resources>

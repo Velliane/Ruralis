@@ -21,7 +21,7 @@ class MapViewModel(private val context: Context, private val googleApiRepository
 
     private fun getTextSearch(location: String, radius: String, query: String, key: String){
         viewModelScope.launch(Dispatchers.IO) {
-            val list = googleApiRepository.getTextSearch(location, radius, query, key)
+            val list = googleApiRepository.getTextSearch(context, location, radius, query, key)
             withContext(Dispatchers.Main){
                 placeTextSearchListLiveData.value = list
             }
@@ -42,12 +42,16 @@ class MapViewModel(private val context: Context, private val googleApiRepository
     fun getAllPlaces(location: String, radius: String, query: String, key: String, locationForFirestore: Location){
         getAllPlacesFromFirestore(locationForFirestore, radius)
         getTextSearch(location, radius, query, key)
-        liveDataMerger.addSource(placeListLiveData){
+        if(liveDataMerger.hasObservers()){
+            liveDataMerger.removeSource(placeListLiveData)
+            liveDataMerger.removeSource(placeTextSearchListLiveData)
+        }
+        liveDataMerger.addSource(placeListLiveData, Observer {
             mergeList(it, placeTextSearchListLiveData.value)
-        }
-        liveDataMerger.addSource(placeTextSearchListLiveData){
+        })
+        liveDataMerger.addSource(placeTextSearchListLiveData, Observer {
             mergeList(placeListLiveData.value, it)
-        }
+        })
     }
 
     private fun mergeList(placeDetailedList: List<PlaceForList>?, placeTextSearchList: List<PlaceForList>?){

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- Bubble width -->
-    <dimen name="bubble_max_width">500dp</dimen>
-</resources>

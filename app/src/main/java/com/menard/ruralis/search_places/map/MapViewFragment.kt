@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.location.*
@@ -24,6 +26,7 @@ import com.menard.ruralis.R
 import com.menard.ruralis.details.DetailsActivity
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
+import com.menard.ruralis.utils.isInternetAvailable
 import com.menard.ruralis.utils.setMarker
 
 class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnCameraIdleListener {
@@ -45,6 +48,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerCl
     private var radius: String? = "50"
     /** Add fromMaps */
     private var fromMaps: Boolean = true
+    private lateinit var noInternet: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_map_view, container, false)
@@ -54,6 +58,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerCl
         sharedPreferences = activity!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
         fromMaps = sharedPreferences.getBoolean(Constants.PREF_SEARCH_FROM_MAPS, true)
         radius = sharedPreferences.getString(Constants.PREF_SEARCH_AROUND, "50")
+        noInternet = view.findViewById(R.id.list_no_internet)
         return view
     }
 
@@ -65,8 +70,8 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerCl
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val fragment = childFragmentManager.findFragmentById(R.id.map_fragment)
-        (fragment as SupportMapFragment).getMapAsync(this)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment)
+        (mapFragment as SupportMapFragment).getMapAsync(this)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -98,22 +103,32 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerCl
         locationRequest.smallestDisplacement = 50F
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
 
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
-                override fun onLocationResult(locationResult: LocationResult?) {
-                    val latitude = locationResult!!.lastLocation.latitude
-                    val longitude = locationResult.lastLocation.longitude
-                    val lastLocation = LatLng(latitude, longitude)
-                    //-- Create Location object to get distance between place and user --//
-                    val location = Location("")
-                    location.latitude = latitude
-                    location.longitude = longitude
-                    googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 10F))
-                    //-- Search places --//
-                    showPlaces(latitude.toString(), longitude.toString(),location, radius+"000")
-                }
-            },
-            null
-        )
+        if(isInternetAvailable(requireContext())) {
+            fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest, object : LocationCallback() {
+                    override fun onLocationResult(locationResult: LocationResult?) {
+                        val latitude = locationResult!!.lastLocation.latitude
+                        val longitude = locationResult.lastLocation.longitude
+                        val lastLocation = LatLng(latitude, longitude)
+                        //-- Create Location object to get distance between place and user --//
+                        val location = Location("")
+                        location.latitude = latitude
+                        location.longitude = longitude
+                        googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 10F))
+                        //-- Search places --//
+                        showPlaces(
+                            latitude.toString(),
+                            longitude.toString(),
+                            location,
+                            radius + "000"
+                        )
+                    }
+                },
+                null
+            )
+        }else{
+           noInternet.visibility = View.VISIBLE
+        }
     }
 
 

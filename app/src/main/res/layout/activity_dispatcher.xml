@@ -6,4 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".DispatcherActivity">
 
+    <ImageView
+        android:id="@+id/dispatchers_logo"
+        android:layout_width="@dimen/logo_width"
+        android:layout_height="@dimen/logo_height"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

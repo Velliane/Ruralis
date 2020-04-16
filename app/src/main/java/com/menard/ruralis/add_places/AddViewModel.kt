@@ -9,10 +9,12 @@ import androidx.lifecycle.viewModelScope
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.geocode_model.GeocodeRepository
 import com.menard.ruralis.data.FirestoreDataRepository
+import com.menard.ruralis.utils.transformListOfOpeningToString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.lang.StringBuilder
 
 class AddViewModel(
     private val firestoreDataRepository: FirestoreDataRepository,
@@ -26,7 +28,7 @@ class AddViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val location = geocodeRepository.getLatLng(address, countryCode, key)
             withContext(Dispatchers.Main){
-                firestoreDataRepository.savePlaceInFirestore(id, type, name, address, emptyList(), openings, website, phone_number, location?.latitude.toString(), location?.longitude.toString(), edit)
+                firestoreDataRepository.savePlaceInFirestore(id, type, name, address, emptyList(), transformListOfOpeningToString(openings), website, phone_number, location?.latitude.toString(), location?.longitude.toString(), edit)
             }
         }
     }

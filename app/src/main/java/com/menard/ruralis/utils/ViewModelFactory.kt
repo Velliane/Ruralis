@@ -3,6 +3,8 @@ package com.menard.ruralis.utils
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
 import com.menard.ruralis.add_places.AddViewModel
 import com.menard.ruralis.add_places.geocode_model.GeocodeRepository
 import com.menard.ruralis.data.FavoritesDataRepository
@@ -24,12 +26,12 @@ class ViewModelFactory(private val context: Context, private val geocodeReposito
         when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 return MainViewModel(
-                    googleApiRepository, firestoreDataRepository
+                    context, AuthUI.getInstance(), googleApiRepository, firestoreDataRepository
                 ) as T
             }
             modelClass.isAssignableFrom(DetailsViewModel::class.java) -> {
                 return DetailsViewModel(
-                    favoritesDataRepository, googleApiRepository, firestoreDataRepository
+                    context, favoritesDataRepository, googleApiRepository, firestoreDataRepository
                 ) as T
             }
             modelClass.isAssignableFrom(AddViewModel::class.java) -> {

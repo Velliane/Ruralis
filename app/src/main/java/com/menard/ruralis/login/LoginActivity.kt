@@ -2,10 +2,12 @@ package com.menard.ruralis.login
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ActionMode
 import android.view.View
+import android.widget.ImageView
 import androidx.lifecycle.ViewModelProviders
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
@@ -21,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var userViewModel: UserViewModel
+    private lateinit var goatAnimation: AnimationDrawable
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +32,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         val viewModelFactory = Injection.provideViewModelFactory(this)
         userViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
+
+        findViewById<ImageView>(R.id.login_logo).apply {
+            setBackgroundResource(R.drawable.goat_animation)
+            goatAnimation = background as AnimationDrawable
+            goatAnimation.start()
+        }
 
         login_connexion_btn.setOnClickListener(this)
     }
@@ -58,7 +67,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 val currentUser = FirebaseAuth.getInstance().currentUser
                 userViewModel.createUser(currentUser!!.uid, currentUser.displayName!!, currentUser.email!!, currentUser.photoUrl.toString())
                 startActivity(Intent(this, HomeActivity::class.java))
-
+                goatAnimation.stop()
             }else {
                 when {
                     response == null -> Snackbar.make(login_layout, "Connexion canceled" , Snackbar.LENGTH_SHORT).show()
@@ -69,5 +78,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onBackPressed() {
+        //
     }
 }

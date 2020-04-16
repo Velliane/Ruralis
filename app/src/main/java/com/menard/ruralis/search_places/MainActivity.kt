@@ -1,23 +1,37 @@
 package com.menard.ruralis.search_places
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.AddActivity
 import com.menard.ruralis.search_places.list.ListViewFragment
 import com.menard.ruralis.search_places.map.MapViewFragment
 import com.menard.ruralis.settings.SettingsActivity
+import com.menard.ruralis.utils.Constants
+import com.menard.ruralis.utils.Injection
+import de.hdodenhof.circleimageview.CircleImageView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener{
@@ -29,6 +43,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var navigationView: NavigationView
     /**Bottom Navigation View */
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var viewModel: MainViewModel
+    /** Header Views */
+    private lateinit var photo: CircleImageView
+    private lateinit var name: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +56,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         configureDrawerLayout()
         // Set BottomNavigationView to ListFragment by default
         bottomNavigationView.selectedItemId = R.id.action_list_view
+        val viewModelFactory = Injection.provideViewModelFactory(this)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        configureHeader()
     }
 
     //-- CONFIGURATION --//
@@ -66,8 +88,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toogle.syncState()
     }
 
-    private fun configureNavigationView() {
-        //TODO Header
+    /**
+     * Configure the DrawerMenu, add a header
+     */
+    private fun configureHeader() {
+        navigationView.setNavigationItemSelectedListener(this)
+        val view = navigationView.getHeaderView(0)
+        photo = view.findViewById(R.id.header_photo)
+        name = view.findViewById(R.id.header_name)
+        viewModel.updateHeader(FirebaseAuth.getInstance().currentUser?.displayName.toString(),FirebaseAuth.getInstance().currentUser?.photoUrl.toString(), FirebaseAuth.getInstance().currentUser?.email.toString()).observe(this, Observer {
+            name.text = it.name
+            Glide.with(applicationContext).load(Uri.parse((it.photo))).apply(RequestOptions.circleCropTransform()).centerCrop().into(photo)
+        })
     }
 
     //-- FRAGMENT --//
@@ -116,6 +148,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.action_map_view -> {
                 val mapViewFragment = MapViewFragment.newInstance()
                 addFragmentToLayout(mapViewFragment)
+                return true
+            }
+            R.id.action_log_out -> {
+                viewModel.logOut()
                 return true
             }
         }

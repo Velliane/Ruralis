@@ -52,7 +52,7 @@ class PhotoFragment: Fragment(), View.OnClickListener, PhotoAdapter.OnItemClickL
         adapter = PhotoAdapter(requireContext(), placeDetailed.fromRuralis, this)
         recyclerView.adapter = adapter
 
-        viewModel.getAllPhotosAccordingOrigin(placeDetailed.fromRuralis, placeDetailed.placeId!!, placeDetailed.photos)
+        viewModel.getAllPhotosAccordingOrigin(placeDetailed.fromRuralis, placeDetailed.placeId!!, placeDetailed.photos, requireContext())
         viewModel.listPhotosLiveData.observe(this, Observer {
             adapter.setData(it)
         })

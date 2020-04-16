@@ -18,7 +18,7 @@ open class PhotoHelper {
         return getPhotosCollection().document(name).set(photo)
     }
 
-    suspend fun getAllPhotosById(id: String): QuerySnapshot? {
-        return getPhotosCollection().whereEqualTo("place_id", id).get().await()
+    fun getAllPhotosById(id: String): Task<QuerySnapshot> {
+        return getPhotosCollection().whereEqualTo("place_id", id).get()
     }
 }

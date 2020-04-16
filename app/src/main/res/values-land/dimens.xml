@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="width_photo_list">150dp</dimen>
+    <dimen name="height_photo_list">150dp</dimen>
+    <!-- Bubble width -->
+    <dimen name="bubble_max_width">500dp</dimen>
+
+    <!-- Login layout -->
+    <dimen name="padding_connexion_btn">25dp</dimen>
+    <dimen name="text_size_connexion_btn">30sp</dimen>
+    <dimen name="logo_width">200dp</dimen>
+    <dimen name="logo_height">275dp</dimen>
+
+</resources>

@@ -45,12 +45,13 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun refreshViews(placeDetailed: PlaceDetailed) {
         add_name.setText(placeDetailed.name)
-        //add_edit_type_spinner.setSelection(spinnerAdapter.getPosition(placeDetailed.type))
+        add_edit_type_spinner.setSelection(spinnerAdapter.getPosition(TypesEnum.valueOf(placeDetailed.type)))
         add_address.setText(placeDetailed.address)
         contact_website.setText(placeDetailed.website)
         contact_phone_number.setText(placeDetailed.phone_number)
         if (placeDetailed.openingsHours != null) {
-            openingsAdapter.setData(placeDetailed.openingsHours)
+            val list = placeDetailed.openingsHours.split(",").toTypedArray()
+            openingsAdapter.setData(list.asList())
         }
     }
 

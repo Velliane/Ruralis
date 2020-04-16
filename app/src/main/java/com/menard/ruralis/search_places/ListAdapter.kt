@@ -5,10 +5,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,10 +13,9 @@ import com.menard.ruralis.R
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ListAdapter(private val listener: OnItemClickListener, private val context: Context): RecyclerView.Adapter<ListAdapter.ListViewHolder>(), Filterable {
+class ListAdapter(private val listener: OnItemClickListener, private val context: Context): RecyclerView.Adapter<ListAdapter.ListViewHolder>(){
 
     private var data: List<PlaceForList> = ArrayList()
-    private var listFiltered: List<PlaceForList> = ArrayList()
     private lateinit var onItemClickListener: OnItemClickListener
     private lateinit var mContext: Context
 
@@ -37,11 +33,11 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
     }
 
     override fun getItemCount(): Int {
-        return listFiltered.size
+        return data.size
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(listFiltered[position], onItemClickListener)
+        holder.bind(data[position], onItemClickListener)
     }
 
     class ListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -50,8 +46,10 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
         var photo = itemView.findViewById<ImageView>(R.id.item_photo)
         var type = itemView.findViewById<TextView>(R.id.item_type)
         var distance = itemView.findViewById<TextView>(R.id.item_distance)
+        var progress = itemView.findViewById<ProgressBar>(R.id.list_item_progress)
 
         fun bind(placeForList: PlaceForList, onItemClickListener: OnItemClickListener) {
+            progress.visibility = View.VISIBLE
             name.text = placeForList.name
             type.text = placeForList.type
             if(placeForList.fromRuralis){
@@ -70,7 +68,7 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
                     Glide.with(itemView.context).load(R.drawable.no_image_available_64).error(R.drawable.no_image_available_64).into(photo)
                 }
             }
-
+            progress.visibility = View.GONE
             itemView.setOnClickListener {
                 onItemClickListener.onItemClicked(placeForList.placeId, placeForList.fromRuralis,
                     placeForList.photos
@@ -83,37 +81,5 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
         fun onItemClicked(id: String, from: Boolean, photo: String?)
     }
 
-    override fun getFilter(): Filter {
-        return object:Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val query = constraint.toString()
-                if(query.isEmpty()){
-                    listFiltered = data
-                }else{
-                    val list = ArrayList<PlaceForList>()
-                    data.forEach { place ->
-                    if(place.name.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT)) || place.type.toLowerCase(
-                            Locale.ROOT
-                        ).contains(query.toLowerCase(Locale.ROOT))
-                    ) {
-                        list.add(place)
-                        }
-                    }
-                    listFiltered = list
-                }
-                val filterResult = FilterResults()
-                filterResult.values = listFiltered
-                return filterResult
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                if(results != null && results.count > 0){
-                    listFiltered = results.values as List<PlaceForList>
-                    notifyDataSetChanged()
-                }
-            }
-
-        }
-    }
 
 }

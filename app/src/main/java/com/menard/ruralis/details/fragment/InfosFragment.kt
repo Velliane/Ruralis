@@ -51,7 +51,8 @@ class InfosFragment: Fragment() {
         val adapter = OpeningsListAdapter(requireContext())
         openingsRecyclerView.adapter = adapter
         if(placeDetailed.openingsHours != null) {
-            adapter.setData(placeDetailed.openingsHours!!)
+            val list = placeDetailed.openingsHours!!.split(",").toTypedArray()
+            adapter.setData(list.asList())
             adapter.notifyDataSetChanged()
         }
     }

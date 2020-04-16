@@ -16,6 +16,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.AddActivity
+import com.menard.ruralis.details.comments.CommentsFragment
+import com.menard.ruralis.details.contacts.ContactFragment
+import com.menard.ruralis.details.fragment.InfosFragment
+import com.menard.ruralis.details.photos.PhotoFragment
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
 import kotlinx.android.synthetic.main.activity_details.*
@@ -27,6 +31,11 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
     private lateinit var pagerAdapter: ViewPagerAdapter
     private lateinit var toolbar: Toolbar
 
+    /** Fragments */
+    private lateinit var fragmentInfo: InfosFragment
+    private lateinit var contactFragment: ContactFragment
+    private lateinit var photoFragment: PhotoFragment
+    private lateinit var commentsFragment: CommentsFragment
     /** Place id */
     private var placeId: String? = null
     /** From Boolean */
@@ -77,15 +86,17 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
     }
 
     private fun getPlaceFromViewModel() {
-        viewModel.getPlaceAccordingItsOrigin(
-            fromRuralis,
-            placeId!!,
-            getString(R.string.details_field),
-            getString(R.string.api_key_google)
+        viewModel.getPlaceAccordingItsOrigin(fromRuralis, placeId!!, getString(R.string.details_field), getString(R.string.api_key_google)
         ).observe(this, Observer {
             pagerAdapter = ViewPagerAdapter(supportFragmentManager, this, it)
             viewPager.adapter = pagerAdapter
             name.text = it.name
+            pagerAdapter.startUpdate(viewPager)
+            fragmentInfo = pagerAdapter.instantiateItem(viewPager, 0) as InfosFragment
+            photoFragment = pagerAdapter.instantiateItem(viewPager, 1) as PhotoFragment
+            contactFragment = pagerAdapter.instantiateItem(viewPager, 2) as ContactFragment
+            commentsFragment = pagerAdapter.instantiateItem(viewPager, 3) as CommentsFragment
+            pagerAdapter.finishUpdate(viewPager)
         })
     }
 

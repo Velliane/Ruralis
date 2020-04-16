@@ -1,61 +1,34 @@
 package com.menard.ruralis.search_places
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.*
+import com.firebase.ui.auth.AuthUI
 import com.menard.ruralis.data.FirestoreDataRepository
-import com.menard.ruralis.add_places.PlaceDetailed
 import com.menard.ruralis.data.GoogleApiRepository
-import com.menard.ruralis.login.UserHelper
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.menard.ruralis.login.LoginActivity
+import com.menard.ruralis.login.User
 
-class MainViewModel(private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
+class MainViewModel(private val context: Context, private val authUI: AuthUI, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
 
-    val placeListLiveData = MutableLiveData<List<PlaceForList>>()
-    val placeTextSearchListLiveData = MutableLiveData<List<PlaceForList>>()
+    val userLiveData = MutableLiveData<User>()
 
-    private val liveDataMerger = MediatorLiveData<List<PlaceForList>>()
-    val allPlaceLiveData: LiveData<List<PlaceForList>> = liveDataMerger
-
-
-//    fun getTextSearch(location: String, radius: String, query: String, key: String){
-//        viewModelScope.launch(Dispatchers.IO) {
-//            val list = googleApiRepository.getTextSearch(location, radius, query, key)
-//            withContext(Dispatchers.Main){
-//                placeTextSearchListLiveData.value = list
-//            }
-//        }
-//    }
-
-
-    /*fun getAllPlacesFromFirestore(){
-        viewModelScope.launch(Dispatchers.IO) {
-            val list = firestoreDataRepository.getAllPlacesFromFirestore()
-            withContext(Dispatchers.Main){
-                placeListLiveData.value = list
+    fun updateHeader(displayName: String, photoUrl: String, email: String): LiveData<User> {
+        val user = User()
+            //-- If connected to internet, get user's information from Firebase --//
+            if (photoUrl != "") {
+                user.photo = photoUrl
             }
+            user.name = displayName
+            user.email = email
+            userLiveData.value = user
+        return userLiveData
+    }
+
+    //-- LOG OUT --//
+    fun logOut(){
+        authUI.signOut(context).addOnCompleteListener {
+            context.startActivity(Intent(context, LoginActivity::class.java))
         }
-    }*/
-
-
-//    fun getAllPlaces(location: String, radius: String, query: String, key: String){
-//        getAllPlacesFromFirestore()
-//        getTextSearch(location, radius, query, key)
-//        liveDataMerger.addSource(placeListLiveData){
-//            if(it != null){
-//                liveDataMerger.value = mergeList(it, placeTextSearchListLiveData.value!!)
-//            }
-//        }
-//        liveDataMerger.addSource(placeTextSearchListLiveData){
-//            if(it != null){
-//                liveDataMerger.value = mergeList(placeListLiveData.value!!, it)
-//            }
-//        }
-//    }
-//
-//    private fun mergeList(placeDetailedList: List<PlaceForList>, placeTextSearchList: List<PlaceForList>): List<PlaceForList> {
-//        val listPlaces  = placeDetailedList + placeTextSearchList
-//        return listPlaces.distinct()
-//    }
-//}
+    }
 }
