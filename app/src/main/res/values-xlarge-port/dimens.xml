@@ -8,7 +8,8 @@
     <!-- Login layout -->
     <dimen name="padding_connexion_btn">15dp</dimen>
     <dimen name="text_size_connexion_btn">35sp</dimen>
-    <dimen name="logo_width">200dp</dimen>
-    <dimen name="logo_height">275dp</dimen>
-
+    <dimen name="logo_width">250dp</dimen>
+    <dimen name="logo_height">330dp</dimen>
+    <dimen name="welcome_text_login_size">35sp</dimen>
+    <dimen name="info_text_login_size">29sp</dimen>
 </resources>

@@ -18,7 +18,7 @@ import com.menard.ruralis.R
 import com.menard.ruralis.add_places.AddActivity
 import com.menard.ruralis.details.comments.CommentsFragment
 import com.menard.ruralis.details.contacts.ContactFragment
-import com.menard.ruralis.details.fragment.InfosFragment
+import com.menard.ruralis.details.info.InfosFragment
 import com.menard.ruralis.details.photos.PhotoFragment
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection

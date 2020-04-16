@@ -75,20 +75,13 @@ class ListViewModelTest {
         )
         val mockGoogleApiRepository = mock<GoogleApiRepository> {
             onBlocking {
-                getTextSearch(
-                    "46.66554,5.65446",
-                    "6000",
-                    "producteur",
-                    "XXXX"
-                )
-            } doReturn list
+                getTextSearch(context, "46.66554,5.65446", "6000", "XXXX", "XX") } doReturn list
         }
         viewModel = ListViewModel(context, mockGoogleApiRepository, firestoreDataRepository)
 
         viewModel.getTextSearch("46.66554,5.65446", "6000", "producteur", "XXXX")
         val listPlaceFound = viewModel.placeTextSearchListLiveData.getOrAwaitValue()
 
-        assertTrue(listPlaceFound.isNotEmpty())
         assertEquals("La ruche", listPlaceFound[0].name)
         assertEquals("02", listPlaceFound[1].placeId)
     }
@@ -107,7 +100,7 @@ class ListViewModelTest {
         }
         viewModel = ListViewModel(context, googleApiRepository, mockFirestoreDataRepository)
 
-        viewModel.getAllPlacesFromFirestore(location, "6000")
+        viewModel.getAllPlacesFromFirestore()
         val listPlaceFound = viewModel.placeListLiveData.getOrAwaitValue()
 
         assertTrue(listPlaceFound.isNotEmpty())

@@ -10,5 +10,7 @@
     <dimen name="text_size_connexion_btn">25sp</dimen>
     <dimen name="logo_width">173dp</dimen>
     <dimen name="logo_height">238dp</dimen>
+    <dimen name="welcome_text_login_size">23sp</dimen>
+    <dimen name="info_text_login_size">20sp</dimen>
 
 </resources>

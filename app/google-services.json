@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "606697327355-5ic9ldbvgog6ospohl90vos965imevec.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.menard.ruralis",
+            "certificate_hash": "119023c5309b86622ad38f286149ecc7437b07d2"
+          }
+        },
+        {
+          "client_id": "606697327355-h6t4e8b3n491nint1eucua04uocdbv21.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.menard.ruralis",
+            "certificate_hash": "d3abd0b9c91c705591087ceea5bc7843cfbd8cd4"
+          }
+        },
+        {
           "client_id": "606697327355-61tmc39c97e9c6i45dgjeo7a9e5ptmpe.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -23,12 +23,16 @@ class AddViewModel(
 ) : ViewModel() {
 
     private val placeDetailedLiveData = MutableLiveData<PlaceDetailed>()
+    val addingSuccessLiveData = MutableLiveData<Boolean>()
 
     fun savePlace(id: String?, type: String, name: String, address: String, openings: List<String>?, website: String, phone_number: String, edit: Boolean, countryCode: String, key: String) {
+        addingSuccessLiveData.value = false
         viewModelScope.launch(Dispatchers.IO) {
             val location = geocodeRepository.getLatLng(address, countryCode, key)
             withContext(Dispatchers.Main){
-                firestoreDataRepository.savePlaceInFirestore(id, type, name, address, emptyList(), transformListOfOpeningToString(openings), website, phone_number, location?.latitude.toString(), location?.longitude.toString(), edit)
+                val hours = transformListOfOpeningToString(openings)
+                firestoreDataRepository.savePlaceInFirestore(id, type, name, address, emptyList(), hours, website, phone_number, location?.latitude.toString(), location?.longitude.toString(), edit)
+                addingSuccessLiveData.value = true
             }
         }
     }

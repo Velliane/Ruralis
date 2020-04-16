@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.menard.ruralis.BaseFragment
 import com.menard.ruralis.R
 import com.menard.ruralis.details.DetailsActivity
 import com.menard.ruralis.search_places.ListAdapter
@@ -29,7 +30,7 @@ import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
 import kotlinx.android.synthetic.main.fragment_list_view.*
 
-class ListViewFragment : Fragment(),
+class ListViewFragment : BaseFragment(),
     ListAdapter.OnItemClickListener, View.OnClickListener{
 
 
@@ -77,7 +78,9 @@ class ListViewFragment : Fragment(),
         connectionLiveData.observe(this, Observer {
             if(it.isConnected) {
                 Log.d("IsConnected", it.isConnected.toString())
-                getUserLocation()
+                if(checkPermissions()) {
+                    getUserLocation()
+                }
             }else {
                 recyclerView.visibility = View.GONE
                 noInternet.visibility = View.VISIBLE

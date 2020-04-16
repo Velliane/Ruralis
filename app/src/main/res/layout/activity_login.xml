@@ -10,10 +10,14 @@
 
     <TextView
         android:id="@+id/login_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Bienvenue sur Ruralis, mon panier fermier"
         android:layout_marginTop="25dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:textSize="@dimen/welcome_text_login_size"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -34,6 +38,10 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="Créez un compte ou connectez-vous pour accéder au contenu de l'application"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:textSize="@dimen/info_text_login_size"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@id/login_connexion_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

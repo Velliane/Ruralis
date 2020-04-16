@@ -3,11 +3,15 @@ package com.menard.ruralis.add_places
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.menard.ruralis.R
 import com.menard.ruralis.utils.Injection
@@ -18,6 +22,7 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
     /** ViewModel */
     private lateinit var viewModel: AddViewModel
     private lateinit var spinnerAdapter: TypeSpinnerAdapter
+
     /** Opening Hours Views */
     private lateinit var day: TextInputEditText
     private lateinit var hours: TextInputEditText
@@ -26,6 +31,9 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
     private var listOfOpenings = ArrayList<String>()
     private var isEdit: Boolean = false
     private var id: String? = null
+
+    /** Container */
+    private lateinit var container: ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +53,13 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun refreshViews(placeDetailed: PlaceDetailed) {
         add_name.setText(placeDetailed.name)
-        add_edit_type_spinner.setSelection(spinnerAdapter.getPosition(TypesEnum.valueOf(placeDetailed.type)))
+        add_edit_type_spinner.setSelection(
+            spinnerAdapter.getPosition(
+                TypesEnum.valueOf(
+                    placeDetailed.type
+                )
+            )
+        )
         add_address.setText(placeDetailed.address)
         contact_website.setText(placeDetailed.website)
         contact_phone_number.setText(placeDetailed.phone_number)
@@ -64,28 +78,53 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
                     val address: String = add_address.text.toString()
                     val website: String = contact_website.text.toString()
                     val phoneNumber: String = contact_phone_number.text.toString()
-                    viewModel.savePlace(id, type, name, address, listOfOpenings, website, phoneNumber, isEdit, "country:FR", resources.getString(R.string.api_key_google))
+                    viewModel.savePlace(
+                        id,
+                        type,
+                        name,
+                        address,
+                        listOfOpenings,
+                        website,
+                        phoneNumber,
+                        isEdit,
+                        "country:FR",
+                        resources.getString(R.string.api_key_google)
+                    )
                     if (isEdit) {
                         val intent = Intent()
                         intent.putExtra("New place id", id)
                         setResult(5, intent)
                         finish()
+                    } else {
+                        add_name.text = null
+                        add_address.text = null
+                        contact_website.text = null
+                        contact_phone_number.text = null
+                        viewModel.addingSuccessLiveData.observe(this, Observer {
+                            if (it) {
+                                listOfOpenings.clear()
+                                openingsAdapter.setData(listOfOpenings)
+                                showLongSnackBar()
+                            }
+                        })
+
                     }
-                    finish()
-                }else{
-                    if(add_name.text.toString() == "") {
+                } else {
+                    if (add_name.text.toString() == "") {
                         add_name.error = "Please write a name"
                     }
-                    if(add_address.text.toString() == "") {
+                    if (add_address.text.toString() == "") {
                         add_address.error = "Please write an address"
                     }
                 }
             }
-            add_opening_btn -> { addOpeningsToRecyclerView() }
+            add_opening_btn -> {
+                addOpeningsToRecyclerView()
+            }
         }
     }
 
-    private fun checkRequiredInfo(): Boolean{
+    private fun checkRequiredInfo(): Boolean {
         return add_name.text.toString() != "" && add_address.text.toString() != ""
     }
 
@@ -121,6 +160,19 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
         openingsList.adapter = openingsAdapter
         spinnerAdapter = TypeSpinnerAdapter(this, viewModel.getTypeEnumList())
         add_edit_type_spinner.adapter = spinnerAdapter
+        container = findViewById(R.id.add_activity_container)
+    }
+
+    private fun showLongSnackBar(){
+        val snackbar = Snackbar.make(
+            container,
+            "L'établissement a bien été ajouté ! Il peut se passer quelques minutes avant qu'il n'apparaisse sur l'application. Soyez patient !",
+            Snackbar.LENGTH_INDEFINITE)
+        val view = snackbar.view
+        val textView =
+            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        textView.maxLines = 4
+        snackbar.show()
     }
 
     override fun onBackPressed() {

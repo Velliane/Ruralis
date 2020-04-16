@@ -1,15 +1,13 @@
 package com.menard.ruralis.details
 
 import android.content.Context
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.menard.ruralis.add_places.PlaceDetailed
 import com.menard.ruralis.details.comments.CommentsFragment
 import com.menard.ruralis.details.contacts.ContactFragment
-import com.menard.ruralis.details.fragment.InfosFragment
+import com.menard.ruralis.details.info.InfosFragment
 import com.menard.ruralis.details.photos.PhotoFragment
 import java.lang.IllegalStateException
 
