@@ -28,4 +28,27 @@
         app:backgroundTint="@color/colorPrimary"
         android:src="@drawable/add_image"/>
 
+    <TextView
+        android:id="@+id/photos_no_data"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:text="Aucune photo ! Cliquez sur le bouton pour en ajouter"
+        android:visibility="gone"/>
+
+    <ProgressBar
+        android:id="@+id/photos_progress"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="150dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

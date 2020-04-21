@@ -7,13 +7,16 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.NonNull
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.AddActivity
 import com.menard.ruralis.details.comments.CommentsFragment
@@ -27,15 +30,9 @@ import kotlinx.android.synthetic.main.activity_details.*
 class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, View.OnClickListener {
 
     /** Viewpager */
-    private lateinit var viewPager: ViewPager
+    private lateinit var viewPager: ViewPager2
     private lateinit var pagerAdapter: ViewPagerAdapter
     private lateinit var toolbar: Toolbar
-
-    /** Fragments */
-    private lateinit var fragmentInfo: InfosFragment
-    private lateinit var contactFragment: ContactFragment
-    private lateinit var photoFragment: PhotoFragment
-    private lateinit var commentsFragment: CommentsFragment
     /** Place id */
     private var placeId: String? = null
     /** From Boolean */
@@ -43,8 +40,6 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
     private var photoUri: String? = null
     /** Place ViewModel */
     private lateinit var viewModel: DetailsViewModel
-    /** Name */
-    private lateinit var name: TextView
     /** FAB for Favorites */
     private lateinit var favoriteFab: FloatingActionButton
 
@@ -52,10 +47,10 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
-        name = findViewById(R.id.details_name)
         favoriteFab = findViewById(R.id.details_favorite_fab)
         favoriteFab.setOnClickListener(this)
         toolbar = findViewById(R.id.details_toolbar)
+        viewPager = findViewById(R.id.details_fragments_container)
         setSupportActionBar(toolbar)
 
         placeId = intent.getStringExtra(Constants.INTENT_ID)!!
@@ -63,10 +58,22 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
         photoUri = intent.getStringExtra(Constants.INTENT_URI)
         configureViewModel()
         getPlaceFromViewModel()
-        configureViewPager()
         setFavorites()
     }
 
+    private fun getPlaceFromViewModel() {
+        viewModel.getPlaceAccordingItsOrigin(fromRuralis, placeId!!, getString(R.string.details_field), getString(R.string.api_key_google)
+        ).observe(this, Observer {
+            pagerAdapter = ViewPagerAdapter(this, it, this)
+            viewPager.adapter = pagerAdapter
+            configureViewPager()
+            details_name.text = it.name
+        })
+    }
+
+    /**
+     * Check if place is save in FavoritesDatabase
+     */
     private fun setFavorites() {
         viewModel.checkIfAlreadyInFavorites(placeId!!).observe(this, Observer {
             if (it) {
@@ -79,34 +86,19 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
         })
     }
 
-
+    //-- CONFIGURATION --//
     private fun configureViewModel() {
         val viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
     }
 
-    private fun getPlaceFromViewModel() {
-        viewModel.getPlaceAccordingItsOrigin(fromRuralis, placeId!!, getString(R.string.details_field), getString(R.string.api_key_google)
-        ).observe(this, Observer {
-            pagerAdapter = ViewPagerAdapter(supportFragmentManager, this, it)
-            viewPager.adapter = pagerAdapter
-            name.text = it.name
-            pagerAdapter.startUpdate(viewPager)
-            fragmentInfo = pagerAdapter.instantiateItem(viewPager, 0) as InfosFragment
-            photoFragment = pagerAdapter.instantiateItem(viewPager, 1) as PhotoFragment
-            contactFragment = pagerAdapter.instantiateItem(viewPager, 2) as ContactFragment
-            commentsFragment = pagerAdapter.instantiateItem(viewPager, 3) as CommentsFragment
-            pagerAdapter.finishUpdate(viewPager)
-        })
-    }
-
     private fun configureViewPager() {
-        viewPager = findViewById(R.id.details_fragments_container)
         //-- Tabs --//
         val tabLayout = findViewById<TabLayout>(R.id.details_tab_layout)
-        tabLayout.setupWithViewPager(viewPager)
-        tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
-        tabLayout.setOnTabSelectedListener(this)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = getString(DetailsCategoryEnum.values()[position].title)
+            viewPager.setCurrentItem(tab.position, true)
+        }.attach()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -119,14 +111,14 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
             R.id.toolbar_menu_modify -> {
                 if (fromRuralis) {
                     val intent = Intent(this, AddActivity::class.java)
-                    intent.putExtra("Edit", true)
-                    intent.putExtra("Id", placeId)
+                    intent.putExtra(Constants.INTENT_EDIT, true)
+                    intent.putExtra(Constants.INTENT_ID, placeId)
                     startActivityForResult(intent, 5)
                     return true
                 } else {
                     Snackbar.make(
                         details_container,
-                        "Cet établissement ne peut pas être modifié",
+                        getString(R.string.cannot_modify),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -135,11 +127,12 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
         return true
     }
 
+    /** When click on Favorite FAB */
     override fun onClick(view: View?) {
         when (view) {
             favoriteFab -> {
                 if (favoriteFab.tag == "No favorite") {
-                    viewModel.addToFavorites(placeId, fromRuralis, photoUri, name.text.toString())
+                    viewModel.addToFavorites(placeId, fromRuralis, photoUri, details_name.text.toString())
                     favoriteFab.setImageResource(R.drawable.star_clicked)
                     favoriteFab.tag = "Favorite"
                 } else {
@@ -151,14 +144,6 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
         }
     }
 
-    override fun onTabReselected(p0: TabLayout.Tab?) {
-    }
-
-    override fun onTabUnselected(p0: TabLayout.Tab?) {
-    }
-
-    override fun onTabSelected(p0: TabLayout.Tab?) {
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -167,9 +152,21 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
             viewModel.getPlaceFromFirestoreById(placeId)
             viewModel.placeLiveData.observe(this, Observer {
                 pagerAdapter.refreshData(it)
-                name.text = it.name
+                details_name.text = it.name
             })
         }
+    }
+
+    override fun onTabReselected(tab: TabLayout.Tab?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onTabUnselected(tab: TabLayout.Tab?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onTabSelected(tab: TabLayout.Tab?) {
+        TODO("Not yet implemented")
     }
 
 }

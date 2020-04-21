@@ -54,12 +54,15 @@ class MapViewModel(private val context: Context, private val googleApiRepository
         })
     }
 
-    private fun mergeList(placeDetailedList: List<PlaceForList>?, placeTextSearchList: List<PlaceForList>?){
-        if(placeDetailedList == null || placeTextSearchList == null){
+    private fun mergeList(placeDetailedList: List<PlaceForList>?, placeTextSearchList: List<PlaceForList>?) {
+        if (placeDetailedList != null && placeTextSearchList != null) {
+            val listPlaces = placeDetailedList + placeTextSearchList
+            liveDataMerger.value = listPlaces.distinct()
+        } else if (placeDetailedList != null && placeTextSearchList == null) {
+            liveDataMerger.value = placeDetailedList
+        } else {
             return
         }
-        val listPlaces  = placeDetailedList + placeTextSearchList
-        liveDataMerger.value = listPlaces.distinct()
     }
 
     fun refreshList(locationForFirestore: Location, radius: String, query: String, key: String, location: String){

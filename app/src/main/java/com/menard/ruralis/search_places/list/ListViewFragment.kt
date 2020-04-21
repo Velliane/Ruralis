@@ -11,7 +11,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -28,7 +27,9 @@ import com.menard.ruralis.search_places.textsearch_model.Result
 import com.menard.ruralis.utils.ConnectionLiveData
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
+import kotlinx.android.synthetic.main.custom_search.view.*
 import kotlinx.android.synthetic.main.fragment_list_view.*
+import kotlinx.android.synthetic.main.fragment_list_view.view.*
 
 class ListViewFragment : BaseFragment(),
     ListAdapter.OnItemClickListener, View.OnClickListener{
@@ -45,13 +46,11 @@ class ListViewFragment : BaseFragment(),
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var viewModel: ListViewModel
     /** Radius */
-    private var radius: String? = "80000"
+    private var radius: String? = ""
     /** Add fromMaps */
     private var fromMaps: Boolean = true
     private lateinit var textSearch: AppCompatAutoCompleteTextView
     private lateinit var searchBtn: ImageButton
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var noInternet: TextView
     private lateinit var connectionLiveData: ConnectionLiveData
 
     companion object {
@@ -67,10 +66,12 @@ class ListViewFragment : BaseFragment(),
         //-- Shared Preferences --//
         sharedPreferences = activity!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
         fromMaps = sharedPreferences.getBoolean(Constants.PREF_SEARCH_FROM_MAPS, true)
-        radius = sharedPreferences.getString(Constants.PREF_SEARCH_AROUND, "50000")
+        radius = sharedPreferences.getString(Constants.PREF_SEARCH_AROUND, "50")
         //-- Places SDK initialisation --//
         Places.initialize(requireActivity(), context!!.resources.getString(R.string.api_key_google))
         placesClient = Places.createClient(requireActivity())
+
+
         connectionLiveData = ConnectionLiveData(requireContext())
         //-- Location --//
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -82,8 +83,8 @@ class ListViewFragment : BaseFragment(),
                     getUserLocation()
                 }
             }else {
-                recyclerView.visibility = View.GONE
-                noInternet.visibility = View.VISIBLE
+                view.fragment_list_recycler_view.visibility = View.GONE
+                list_no_internet.visibility = View.VISIBLE
             }
         })
         return view
@@ -93,19 +94,17 @@ class ListViewFragment : BaseFragment(),
         super.onAttach(context)
         val viewModelFactory = Injection.provideViewModelFactory(requireContext())
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ListViewModel::class.java)
-        viewModel.init()
+        //viewModel.init()
     }
 
     private fun bindViews(view: View) {
         listResult = ArrayList()
-        recyclerView = view.findViewById(R.id.fragment_list_recycler_view)
-        recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL))
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        view.fragment_list_recycler_view.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL))
+        view.fragment_list_recycler_view.layoutManager = LinearLayoutManager(activity)
         adapter = ListAdapter(this, requireContext())
-        recyclerView.adapter = adapter
-        noInternet = view.findViewById(R.id.list_no_internet)
+        view.fragment_list_recycler_view.adapter = adapter
         textSearch = view.findViewById(R.id.edit_search)
-        textSearch.addTextChangedListener {
+        view.edit_search.addTextChangedListener {
             viewModel.filter(it.toString())
             viewModel.filteredPlacesLiveData.observe(this, Observer {list ->
                 adapter.setData(list)
@@ -151,12 +150,8 @@ class ListViewFragment : BaseFragment(),
                         location.latitude = latitude
                         location.longitude = longitude
                         //-- Search places --//
-                        viewModel.initViewModel("$latitude,$longitude", radius!!, "producteur", location)
-                        if (fromMaps) {
-                            showAllPlaces()
-                        } else {
-                            getPlacesFromFirestore()
-                        }
+                        viewModel.initViewModel("$latitude,$longitude", radius+"000", "producteur", location, fromMaps)
+                        showAllPlaces()
                     }
                 }, null
             )
@@ -172,19 +167,6 @@ class ListViewFragment : BaseFragment(),
             }
         })
     }
-
-    /**
-     * Get only Places from Firestore Database
-     */
-    private fun getPlacesFromFirestore() {
-        viewModel.getOnlyPlaceFromFirestore()
-            viewModel.placeListLiveData.observe(this, Observer {
-            if (it.isNotEmpty()) {
-                adapter.setData(it)
-            }
-        })
-    }
-
 
     /**
      * Start DetailsActivity when an item is clicked

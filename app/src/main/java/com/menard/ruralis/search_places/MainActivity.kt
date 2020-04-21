@@ -1,14 +1,10 @@
 package com.menard.ruralis.search_places
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +16,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -31,7 +26,8 @@ import com.menard.ruralis.search_places.map.MapViewFragment
 import com.menard.ruralis.settings.SettingsActivity
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
-import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.header.view.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener{
@@ -41,13 +37,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     /** Drawer */
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-    /**Bottom Navigation View */
-    private lateinit var bottomNavigationView: BottomNavigationView
-    private lateinit var viewModel: MainViewModel
-    /** Header Views */
-    private lateinit var photo: CircleImageView
-    private lateinit var name: TextView
 
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,9 +46,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         bindViews()
         configureDrawerLayout()
         // Set BottomNavigationView to ListFragment by default
-        bottomNavigationView.selectedItemId = R.id.action_list_view
+        activity_main_bottom_navigation.selectedItemId = R.id.action_list_view
         val viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        addFragmentToLayout(ListViewFragment.newInstance())
         configureHeader()
     }
 
@@ -68,11 +60,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun bindViews() {
         toolbar = findViewById(R.id.activity_main_toolbar)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         drawerLayout = findViewById(R.id.activity_main_drawer_layout)
         navigationView = findViewById(R.id.main_drawer)
-        navigationView.setNavigationItemSelectedListener(this)
-        bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation)
-        bottomNavigationView.setOnNavigationItemSelectedListener(this)
+        activity_main_bottom_navigation.setOnNavigationItemSelectedListener(this)
     }
 
     private fun configureDrawerLayout() {
@@ -94,11 +85,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun configureHeader() {
         navigationView.setNavigationItemSelectedListener(this)
         val view = navigationView.getHeaderView(0)
-        photo = view.findViewById(R.id.header_photo)
-        name = view.findViewById(R.id.header_name)
         viewModel.updateHeader(FirebaseAuth.getInstance().currentUser?.displayName.toString(),FirebaseAuth.getInstance().currentUser?.photoUrl.toString(), FirebaseAuth.getInstance().currentUser?.email.toString()).observe(this, Observer {
-            name.text = it.name
-            Glide.with(applicationContext).load(Uri.parse((it.photo))).apply(RequestOptions.circleCropTransform()).centerCrop().into(photo)
+            view.header_name.text = it.name
+            Glide.with(applicationContext).load(Uri.parse((it.photo))).apply(RequestOptions.circleCropTransform()).centerCrop().into(view.header_photo)
         })
     }
 
@@ -124,8 +113,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when(item.itemId){
             R.id.toolbar_menu_add -> {
                 val intent = Intent(this, AddActivity::class.java)
-                intent.putExtra("Edit", false)
-                intent.putExtra("Id", "")
+                intent.putExtra(Constants.INTENT_EDIT, false)
+                intent.putExtra(Constants.INTENT_ID, "")
                 startActivity(intent)
                 return true
             }

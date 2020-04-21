@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.SnapHelper
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.menard.ruralis.R
+import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
 import kotlinx.android.synthetic.main.activity_add.*
 
@@ -22,16 +23,13 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
     /** ViewModel */
     private lateinit var viewModel: AddViewModel
     private lateinit var spinnerAdapter: TypeSpinnerAdapter
-
     /** Opening Hours Views */
-    private lateinit var day: TextInputEditText
-    private lateinit var hours: TextInputEditText
     private lateinit var openingsList: RecyclerView
     private val openingsAdapter = OpeningsListAdapter(this)
     private var listOfOpenings = ArrayList<String>()
+
     private var isEdit: Boolean = false
     private var id: String? = null
-
     /** Container */
     private lateinit var container: ConstraintLayout
 
@@ -42,8 +40,8 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddViewModel::class.java)
         bindViews()
 
-        isEdit = intent.getBooleanExtra("Edit", false)
-        id = intent.getStringExtra("Id")
+        isEdit = intent.getBooleanExtra(Constants.INTENT_EDIT, false)
+        id = intent.getStringExtra(Constants.INTENT_ID)
         if (id != "") {
             viewModel.getPlaceDetailsById(id!!).observe(this, Observer {
                 refreshViews(it)
@@ -53,13 +51,7 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun refreshViews(placeDetailed: PlaceDetailed) {
         add_name.setText(placeDetailed.name)
-        add_edit_type_spinner.setSelection(
-            spinnerAdapter.getPosition(
-                TypesEnum.valueOf(
-                    placeDetailed.type
-                )
-            )
-        )
+        add_edit_type_spinner.setSelection(spinnerAdapter.getPosition(TypesEnum.valueOf(placeDetailed.type)))
         add_address.setText(placeDetailed.address)
         contact_website.setText(placeDetailed.website)
         contact_phone_number.setText(placeDetailed.phone_number)
@@ -78,18 +70,7 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
                     val address: String = add_address.text.toString()
                     val website: String = contact_website.text.toString()
                     val phoneNumber: String = contact_phone_number.text.toString()
-                    viewModel.savePlace(
-                        id,
-                        type,
-                        name,
-                        address,
-                        listOfOpenings,
-                        website,
-                        phoneNumber,
-                        isEdit,
-                        "country:FR",
-                        resources.getString(R.string.api_key_google)
-                    )
+                    viewModel.savePlace(id, type, name, address, listOfOpenings, website, phoneNumber, isEdit, "country:FR", resources.getString(R.string.api_key_google))
                     if (isEdit) {
                         val intent = Intent()
                         intent.putExtra("New place id", id)
@@ -129,7 +110,7 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun addOpeningsToRecyclerView() {
-        viewModel.addOpeningToRecyclerView(day.text.toString(), hours.text.toString())
+        viewModel.addOpeningToRecyclerView(opening_day_edit.text.toString(), opening_hours_edit.text.toString())
             .observe(this, Observer {
                 if (it == null) {
                     new_opening_day.error = "Please write a day"
@@ -144,15 +125,13 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun clearErrorAndEditText() {
-        day.text?.clear()
-        hours.text?.clear()
+        opening_day_edit.text?.clear()
+        opening_hours_edit.text?.clear()
         new_opening_day.isErrorEnabled = false
         new_opening_hours.isErrorEnabled = false
     }
 
     private fun bindViews() {
-        day = findViewById(R.id.opening_day_edit)
-        hours = findViewById(R.id.opening_hours_edit)
         add_opening_btn.setOnClickListener(this)
         add_save_btn.setOnClickListener(this)
         openingsList = findViewById(R.id.add_opening_recycler_view)

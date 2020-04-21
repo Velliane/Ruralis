@@ -26,8 +26,4 @@ open class PlacesHelper {
         return getPlacesCollection().document(id).get().await()
     }
 
-//    suspend fun updatePhotos(id: String, photoUri: String): Void? {
-//        return getPlacesCollection().document(id).update("photos", photoUri).await()
-//    }
-
 }

@@ -100,7 +100,7 @@ class ListViewModelTest {
         }
         viewModel = ListViewModel(context, googleApiRepository, mockFirestoreDataRepository)
 
-        viewModel.getAllPlacesFromFirestore()
+        viewModel.getPlacesFromFirestoreAccordingUserLocation(location, "6000")
         val listPlaceFound = viewModel.placeListLiveData.getOrAwaitValue()
 
         assertTrue(listPlaceFound.isNotEmpty())

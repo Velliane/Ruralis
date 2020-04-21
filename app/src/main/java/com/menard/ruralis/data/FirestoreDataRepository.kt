@@ -10,6 +10,8 @@ import com.menard.ruralis.add_places.TypesEnum
 import com.menard.ruralis.details.comments.Comments
 import com.menard.ruralis.details.comments.CommentsHelper
 import com.menard.ruralis.details.photos.PhotoHelper
+import com.menard.ruralis.quiz.Question
+import com.menard.ruralis.quiz.QuizHelper
 import com.menard.ruralis.search_places.PlaceForList
 import com.menard.ruralis.utils.onFailureListener
 import kotlin.collections.ArrayList
@@ -20,6 +22,7 @@ class FirestoreDataRepository {
     private val placesHelper = PlacesHelper()
     private val commentsHelper = CommentsHelper()
     private val photoHelper = PhotoHelper()
+    private val quizHelper = QuizHelper()
 
     suspend fun getAllPlacesFromFirestore(
         userLocation: Location?,
@@ -178,6 +181,19 @@ class FirestoreDataRepository {
 
     fun savePhoto(id: String?, name: String, uriPhoto: String) {
         photoHelper.createPhoto(id!!, name, uriPhoto)
+    }
+
+    //-- Quiz data repository --//
+    suspend fun getListOfQuestion(listId: List<Int>): List<Question?> {
+        val list = ArrayList<Question?>()
+        for(id in listId){
+            val listDocuments = quizHelper.getQuestionsForQuiz(id)?.documents
+            if(listDocuments != null){
+                val question = listDocuments[0].toObject(Question::class.java)
+                list.add(question)
+            }
+        }
+        return list
     }
 
 }

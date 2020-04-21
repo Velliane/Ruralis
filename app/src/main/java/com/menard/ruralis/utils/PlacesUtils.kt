@@ -18,8 +18,8 @@ import com.menard.ruralis.search_places.map.MarkerTag
 import java.lang.StringBuilder
 import java.util.*
 
-fun distanceToUser(restaurantLocation: Location, userLocation: Location): String {
-    val realDistance = userLocation.distanceTo(restaurantLocation)
+fun distanceToUser(placeLocation: Location, userLocation: Location): String {
+    val realDistance = userLocation.distanceTo(placeLocation)
 
     return if (realDistance >= 1000) {
         String.format(Locale.getDefault(), "%.2f", realDistance / 1000) + "km"

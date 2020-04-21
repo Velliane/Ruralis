@@ -12,5 +12,6 @@ enum class TypesEnum(@StringRes val res: Int) {
     POULTRY(R.string.type_egg_poultry),
     BEEF_MEAT(R.string.type_beef_meat),
     MIXED_LIVESTOCK(R.string.type_mixed_livestock),
+    FISH(R.string.type_fish),
     OTHER(R.string.type_other)
 }

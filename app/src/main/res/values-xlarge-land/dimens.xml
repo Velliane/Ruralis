@@ -2,9 +2,12 @@
 <resources>
     <dimen name="width_photo_list">200dp</dimen>
     <dimen name="height_photo_list">200dp</dimen>
-    <!-- Bubble width -->
-    <dimen name="bubble_max_width">300dp</dimen>
-
+    <!-- Bubble width / Home -->
+    <dimen name="bubble_max_width">400dp</dimen>
+    <dimen name="knows_it_txt_size">19sp</dimen>
+    <dimen name="home_btn_txt_size">23sp</dimen>
+    <dimen name="margin_home_btn">50dp</dimen>
+    <dimen name="home_title_txt_size">35sp</dimen>
     <!-- Login layout -->
     <dimen name="padding_connexion_btn">15dp</dimen>
     <dimen name="text_size_connexion_btn">35sp</dimen>
@@ -12,5 +15,9 @@
     <dimen name="logo_height">320dp</dimen>
     <dimen name="welcome_text_login_size">28sp</dimen>
     <dimen name="info_text_login_size">25sp</dimen>
+
+
+
+
 
 </resources>

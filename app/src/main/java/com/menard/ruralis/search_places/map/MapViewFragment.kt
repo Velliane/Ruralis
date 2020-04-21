@@ -45,7 +45,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerCl
     /** Shared Preferences */
     private lateinit var sharedPreferences: SharedPreferences
     /** Radius */
-    private var radius: String? = "50"
+    private var radius: String? = ""
     /** Add fromMaps */
     private var fromMaps: Boolean = true
     private lateinit var noInternet: TextView
@@ -120,7 +120,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerCl
                             latitude.toString(),
                             longitude.toString(),
                             location,
-                            radius + "000"
+                            radius+"000"
                         )
                     }
                 },
@@ -134,7 +134,6 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerCl
 
 
     private fun showPlaces(latitude: String, longitude: String, location: Location, radius: String) {
-
         viewModel.getAllPlaces("$latitude, $longitude", radius, "producteur", context!!.resources.getString(R.string.api_key_google), location)
         viewModel.allPlaceLiveData.observe(this, Observer {
             for (place in it) {
@@ -163,7 +162,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerCl
         val location = Location("")
         location.latitude = centerMap.latitude
         location.longitude = centerMap.longitude
-        viewModel.refreshList(location, radius!!, "producteur", context!!.resources.getString(R.string.api_key_google), "${centerMap.latitude}, ${centerMap.longitude}")
+        viewModel.refreshList(location, radius+"000", "producteur", context!!.resources.getString(R.string.api_key_google), "${centerMap.latitude}, ${centerMap.longitude}")
         viewModel.allPlaceLiveData.observe(this, Observer {
             for (place in it) {
                 val latLng = LatLng((place.latitude)!!.toDouble(), (place.longitude)!!.toDouble())

@@ -11,7 +11,7 @@ import com.menard.ruralis.login.User
 
 class MainViewModel(private val context: Context, private val authUI: AuthUI, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
 
-    val userLiveData = MutableLiveData<User>()
+    private val userLiveData = MutableLiveData<User>()
 
     fun updateHeader(displayName: String, photoUrl: String, email: String): LiveData<User> {
         val user = User()

@@ -2,32 +2,19 @@ package com.menard.ruralis.settings
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
-import androidx.core.graphics.ColorUtils
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.menard.ruralis.R
 import com.menard.ruralis.utils.Constants
-import com.rtugeek.android.colorseekbar.ColorSeekBar
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity(), View.OnClickListener {
 
-
-    private lateinit var buttonReset: MaterialButton
-    private lateinit var saveButton: MaterialButton
-    private lateinit var aroundUserEditTxt: TextInputEditText
-    private lateinit var switchMapsBtn: SwitchCompat
-
     /** Shared Preferences */
     private lateinit var sharedPreferences: SharedPreferences
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,32 +24,40 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun bindViews(){
-        buttonReset = findViewById(R.id.settings_reset_color)
-        buttonReset.setOnClickListener(this)
-        saveButton = findViewById(R.id.settings_save_color)
-        buttonReset.setOnClickListener(this)
-        aroundUserEditTxt = findViewById(R.id.settings_edit_distance_user)
+        settings_reset.setOnClickListener(this)
+        settings_save.setOnClickListener(this)
         val around = sharedPreferences.getString(Constants.PREF_SEARCH_AROUND, "50")
-        aroundUserEditTxt.setText(around)
-        switchMapsBtn = findViewById(R.id.settings_maps_switch_btn)
+        settings_edit_distance_user.setText(around)
         val fromMaps = sharedPreferences.getBoolean(Constants.PREF_SEARCH_FROM_MAPS, true)
-        switchMapsBtn.isChecked = fromMaps
+        settings_maps_switch_btn.isChecked = fromMaps
     }
 
     override fun onClick(view: View?) {
         when(view){
-            saveButton -> {
+            settings_save -> {
                 val editor = sharedPreferences.edit()
-                editor.putBoolean(Constants.PREF_SEARCH_FROM_MAPS, switchMapsBtn.isChecked)
-                editor.putString(Constants.PREF_SEARCH_AROUND, aroundUserEditTxt.text.toString())
+                editor.putBoolean(Constants.PREF_SEARCH_FROM_MAPS, settings_maps_switch_btn.isChecked)
+                editor.putString(Constants.PREF_SEARCH_AROUND, settings_edit_distance_user.text.toString())
                 editor.apply()
+                Snackbar.make(settings_container, getString(R.string.settings_save_snackbar), Snackbar.LENGTH_SHORT).show()
             }
-            buttonReset -> {
-                val editor = sharedPreferences.edit()
-                editor.putBoolean(Constants.PREF_SEARCH_FROM_MAPS, true)
-                editor.putString(Constants.PREF_SEARCH_AROUND, "50")
-                editor.apply()
-                onResume()
+            settings_reset -> {
+                val alertDialog = AlertDialog.Builder(this)
+                alertDialog.setTitle(getString(R.string.settings_initialize_title))
+                alertDialog.setMessage(getString(R.string.settings_initialize))
+                alertDialog.setPositiveButton(getString(R.string.yes)){ _, _ ->
+                    val editor = sharedPreferences.edit()
+                    editor.putBoolean(Constants.PREF_SEARCH_FROM_MAPS, true)
+                    editor.putString(Constants.PREF_SEARCH_AROUND, "50")
+                    editor.apply()
+                    finish()
+                    startActivity(intent)
+                    overridePendingTransition(0,0)
+                }
+                alertDialog.setNegativeButton(getString(R.string.no)){ dialog, _ ->
+                    dialog.dismiss()
+                }
+                alertDialog.create().show()
             }
         }
     }
