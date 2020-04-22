@@ -21,7 +21,7 @@ import com.menard.ruralis.search_places.list.ListViewModel
 import com.menard.ruralis.search_places.map.MapViewModel
 import java.lang.IllegalArgumentException
 
-class ViewModelFactory(private val context: Context, private val connectivityRepository: ConnectivityRepository, private val geocodeRepository: GeocodeRepository, private val favoritesDataRepository: FavoritesDataRepository, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository, private val knowsItRepository: KnowsItRepository) : ViewModelProvider.Factory {
+class ViewModelFactory(private val context: Context, private val highScoreRepository: HighScoreRepository, private val connectivityRepository: ConnectivityRepository, private val geocodeRepository: GeocodeRepository, private val favoritesDataRepository: FavoritesDataRepository, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository, private val knowsItRepository: KnowsItRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
@@ -67,7 +67,7 @@ class ViewModelFactory(private val context: Context, private val connectivityRep
                 return QuizViewModel(firestoreDataRepository, connectivityRepository) as T
             }
             modelClass.isAssignableFrom(QuizHomeViewModel::class.java) -> {
-                return QuizHomeViewModel() as T
+                return QuizHomeViewModel(highScoreRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel")
         }

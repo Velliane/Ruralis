@@ -56,6 +56,7 @@
     </style>
 
     <style name="CustomProgressBarTheme">
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>

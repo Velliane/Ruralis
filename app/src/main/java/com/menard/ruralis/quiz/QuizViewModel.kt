@@ -1,10 +1,6 @@
 package com.menard.ruralis.quiz
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.menard.ruralis.data.ConnectivityRepository
 import com.menard.ruralis.data.FirestoreDataRepository
 import kotlinx.coroutines.Dispatchers
@@ -18,8 +14,12 @@ class QuizViewModel(private val firestoreDataRepository: FirestoreDataRepository
     private val questionsListLiveData = MutableLiveData<List<Question?>>()
     private val quizLiveData = MediatorLiveData<List<Question?>>()
 
+    val progressLiveData = MutableLiveData<Boolean>()
+    val _quizLiveData: LiveData<List<Question?>> = quizLiveData
+
 
     init {
+        progressLiveData.value = false
         quizLiveData.addSource(questionsListLiveData, Observer {
             mergeData(connectivityLiveData.value, it)
         })
@@ -43,13 +43,14 @@ class QuizViewModel(private val firestoreDataRepository: FirestoreDataRepository
             val list = firestoreDataRepository.getListOfQuestion(listId)
             withContext(Dispatchers.Main){
                 questionsListLiveData.value = list
+                progressLiveData.value = true
             }
         }
     }
 
     fun generateId(): List<Int>{
         val listId = ArrayList<Int>()
-        val max = 100
+        val max = 12
         val min = 1
         while (listId.size <= 10){
             val id = Random.nextInt((max-min)+1)+min

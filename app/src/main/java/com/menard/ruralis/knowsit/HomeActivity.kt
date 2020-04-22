@@ -44,6 +44,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         main_drawer.setNavigationItemSelectedListener(this)
         home_search_btn.setOnClickListener(this)
         home_refresh.setOnClickListener(this)
+        home_quiz_btn.setOnClickListener(this)
         home_list_fav.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 

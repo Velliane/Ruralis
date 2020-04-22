@@ -30,5 +30,6 @@ class Constants {
         const val INTENT_FROM = "INTENT_FROM"
         const val INTENT_URI = "INTENT_URI"
         const val INTENT_EDIT = "INTENT_EDIT"
+        const val INTENT_SCORE= "INTENT_SCORE"
     }
 }

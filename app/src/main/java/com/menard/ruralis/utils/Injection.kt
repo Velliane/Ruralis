@@ -16,8 +16,9 @@ class Injection {
             val favoritesDataRepository = FavoritesDataRepository(FavoritesDatabase.getInstance(context).favoritesDao())
             val geocodeRepository = GeocodeRepository()
             val connectivityRepository = ConnectivityRepository(context)
+            val highScoreRepository = HighScoreRepository(FavoritesDatabase.getInstance(context).highScoreDao())
             return ViewModelFactory(
-                context, connectivityRepository, geocodeRepository, favoritesDataRepository, textSearchRepository, firestoreDataRepository, knowsItRepository
+                context, highScoreRepository, connectivityRepository, geocodeRepository, favoritesDataRepository, textSearchRepository, firestoreDataRepository, knowsItRepository
             )
         }
 

@@ -15,6 +15,8 @@ import com.menard.ruralis.R
 import com.menard.ruralis.add_places.DayEnum
 import com.menard.ruralis.search_places.PlaceForList
 import com.menard.ruralis.search_places.map.MarkerTag
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import java.lang.StringBuilder
 import java.util.*
 
@@ -115,4 +117,9 @@ fun transformListOfOpeningToString(openings: List<String>?):String{
         }
     }
     return sb.toString()
+}
+
+fun parseLocalDateTimeToString(date: LocalDateTime): String {
+    val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    return date.format(dateTimeFormatter)
 }

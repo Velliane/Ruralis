@@ -188,7 +188,7 @@ class FirestoreDataRepository {
         val list = ArrayList<Question?>()
         for(id in listId){
             val listDocuments = quizHelper.getQuestionsForQuiz(id)?.documents
-            if(listDocuments != null){
+            if(listDocuments != null && listDocuments.isNotEmpty()){
                 val question = listDocuments[0].toObject(Question::class.java)
                 list.add(question)
             }

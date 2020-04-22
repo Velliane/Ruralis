@@ -11,6 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/quiz_title_results"
+        android:textSize="@dimen/text_size_connexion_btn"
+        android:gravity="center"
+        android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -19,14 +22,20 @@
         android:id="@+id/quiz_score_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxHeight="250dp"
+        android:layout_margin="25dp"
+        style="@style/ButtonHome"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/quiz_high_score_title"/>
+        app:layout_constraintTop_toBottomOf="@id/quiz_high_score_title"
+        tools:listitem="@layout/item_highscore"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/start_quiz_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="80dp"
+        android:textAppearance="@style/Widget.MaterialComponents.Button"
+        android:textSize="@dimen/text_size_connexion_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/quiz_score_list"

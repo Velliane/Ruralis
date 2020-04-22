@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.menard.ruralis.details.Favorite
+import com.menard.ruralis.quiz.HighScore
 
 @Database(
-    entities = [Favorite::class],
+    entities = [Favorite::class, HighScore::class],
     version = 1,
     exportSchema = false
 )
@@ -15,6 +16,7 @@ import com.menard.ruralis.details.Favorite
 abstract class FavoritesDatabase: RoomDatabase() {
 
     abstract fun favoritesDao(): FavoritesDao
+    abstract fun highScoreDao(): HighScoreDao
 
     companion object {
         private var INSTANCE: FavoritesDatabase? = null
