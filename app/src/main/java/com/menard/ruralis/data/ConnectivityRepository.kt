@@ -50,7 +50,7 @@ class ConnectivityRepository(private val context: Context) {
         }
     }
 
-    fun wireLiveDataLegacy(){
+    private fun wireLiveDataLegacy(){
         val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         val networkReceiver = object: BroadcastReceiver() {
             override fun onReceive(context:Context, intent: Intent) {

@@ -47,7 +47,7 @@ class AddViewModel(
 
     fun addOpeningToRecyclerView(day: String?, hours: String?): LiveData<String?> {
         val openingLiveData = MutableLiveData<String>()
-        return if (day == "" || hours == "") {
+        return if (day == "" || hours == "" || day == null || hours == null) {
             openingLiveData.value = null
             openingLiveData
         } else {

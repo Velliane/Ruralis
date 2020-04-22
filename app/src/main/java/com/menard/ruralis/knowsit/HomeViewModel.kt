@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel(private val connectivityRepository: ConnectivityRepository, private val favoritesDataRepository: FavoritesDataRepository, private val knowsItRepository: KnowsItRepository, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
+class HomeViewModel(private val connectivityRepository: ConnectivityRepository, private val favoritesDataRepository: FavoritesDataRepository, private val knowsItRepository: KnowsItRepository): ViewModel() {
 
     private val randomKnowsIt = MutableLiveData<KnowsIt>()
     private val listFavoritesLiveData = MutableLiveData<List<Favorite>>()

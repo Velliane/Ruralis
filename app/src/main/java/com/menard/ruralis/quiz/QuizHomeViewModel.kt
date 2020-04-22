@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 
 class QuizHomeViewModel(private val highScoreRepository: HighScoreRepository): ViewModel() {
 
-    private val listHighScoreLiveData = MutableLiveData<List<HighScore>>()
+    val listHighScoreLiveData = MutableLiveData<List<HighScore>>()
 
     fun saveHighScore(highScore: HighScore){
         viewModelScope.launch(Dispatchers.IO) {

@@ -86,7 +86,7 @@ fun changeOpeningHoursToLocaleLanguage(opening: String, context: Context): Strin
     if(hours.contains("Closed")){
         sb.append(" : ${context.getString(R.string.closed)}")
     }else{
-        sb.append(" :$hours")
+        sb.append(" : $hours")
     }
 
     Log.d("SB", sb.toString())

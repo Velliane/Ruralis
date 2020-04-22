@@ -9,7 +9,7 @@ import com.menard.ruralis.data.GoogleApiRepository
 import com.menard.ruralis.login.LoginActivity
 import com.menard.ruralis.login.User
 
-class MainViewModel(private val context: Context, private val authUI: AuthUI, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
+class MainViewModel(private val context: Context, private val authUI: AuthUI): ViewModel() {
 
     private val userLiveData = MutableLiveData<User>()
 

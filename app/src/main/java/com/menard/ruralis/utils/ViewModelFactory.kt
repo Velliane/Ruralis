@@ -26,7 +26,7 @@ class ViewModelFactory(private val context: Context, private val highScoreReposi
         when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 return MainViewModel(
-                    context, AuthUI.getInstance(), googleApiRepository, firestoreDataRepository
+                    context, AuthUI.getInstance()
                 ) as T
             }
             modelClass.isAssignableFrom(DetailsViewModel::class.java) -> {
@@ -41,7 +41,7 @@ class ViewModelFactory(private val context: Context, private val highScoreReposi
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 return HomeViewModel(
-                    connectivityRepository, favoritesDataRepository, knowsItRepository, googleApiRepository, firestoreDataRepository
+                    connectivityRepository, favoritesDataRepository, knowsItRepository
                 ) as T
             }
             modelClass.isAssignableFrom(UserViewModel::class.java) -> {
