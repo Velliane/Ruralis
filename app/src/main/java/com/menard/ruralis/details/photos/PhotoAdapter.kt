@@ -10,6 +10,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.menard.ruralis.R
+import com.menard.ruralis.utils.getProgressDrawableSpinner
+import com.menard.ruralis.utils.loadPlacePhoto
 
 class PhotoAdapter(private val context: Context, private val fromRuralis: Boolean, private val listener: OnItemClickListener): RecyclerView.Adapter<PhotoAdapter.PhotosViewHolder>() {
 
@@ -44,10 +46,10 @@ class PhotoAdapter(private val context: Context, private val fromRuralis: Boolea
 
         fun bind(photo: Photo, onItemClickListener: OnItemClickListener){
             if(fromRuralis) {
-                Glide.with(context).load(Uri.parse(photo.uri)).centerCrop().error(R.drawable.no_image_available_64).into(image)
+                image.loadPlacePhoto(photo.uri, null, getProgressDrawableSpinner(context))
             }else{
                 val photoUrl = itemView.context.getString(R.string.photos_list_view, photo.uri, itemView.context.getString(R.string.api_key_google))
-                Glide.with(itemView.context).load(photoUrl).centerCrop().error(R.drawable.no_image_available_64).into(image)
+                image.loadPlacePhoto(photoUrl, null, getProgressDrawableSpinner(context))
             }
             if(photo.selected!!){
                 container.setBackgroundResource(R.color.colorAccent)

@@ -32,21 +32,26 @@ import kotlinx.android.synthetic.main.fragment_list_view.*
 import kotlinx.android.synthetic.main.fragment_list_view.view.*
 
 class ListViewFragment : BaseFragment(),
-    ListAdapter.OnItemClickListener, View.OnClickListener{
+    ListAdapter.OnItemClickListener, View.OnClickListener {
 
 
     /** FusedLocation */
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
     /** Places Client */
     private lateinit var placesClient: PlacesClient
+
     /** RecyclerView Adapter */
     private lateinit var adapter: ListAdapter
     private lateinit var listResult: List<Result>
+
     /** Shared Preferences */
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var viewModel: ListViewModel
+
     /** Radius */
     private var radius: String? = ""
+
     /** Add fromMaps */
     private var fromMaps: Boolean = true
     private lateinit var textSearch: AppCompatAutoCompleteTextView
@@ -59,34 +64,30 @@ class ListViewFragment : BaseFragment(),
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_list_view, container, false)
         setHasOptionsMenu(true)
         bindViews(view)
         //-- Shared Preferences --//
-        sharedPreferences = activity!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+        sharedPreferences =
+            activity!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
         fromMaps = sharedPreferences.getBoolean(Constants.PREF_SEARCH_FROM_MAPS, true)
         radius = sharedPreferences.getString(Constants.PREF_SEARCH_AROUND, "50")
         //-- Places SDK initialisation --//
         Places.initialize(requireActivity(), context!!.resources.getString(R.string.api_key_google))
         placesClient = Places.createClient(requireActivity())
-
-
         connectionLiveData = ConnectionLiveData(requireContext())
         //-- Location --//
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        view.list_progress.visibility = View.VISIBLE
         //-- Show Places --//
-        connectionLiveData.observe(this, Observer {
-            if(it.isConnected) {
-                Log.d("IsConnected", it.isConnected.toString())
-                if(checkPermissions()) {
-                    getUserLocation()
-                }
-            }else {
-                view.fragment_list_recycler_view.visibility = View.GONE
-                list_no_internet.visibility = View.VISIBLE
-            }
-        })
+        if (checkPermissions()) {
+            getUserLocation()
+        }
         return view
     }
 
@@ -94,19 +95,23 @@ class ListViewFragment : BaseFragment(),
         super.onAttach(context)
         val viewModelFactory = Injection.provideViewModelFactory(requireContext())
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ListViewModel::class.java)
-        //viewModel.init()
     }
 
     private fun bindViews(view: View) {
         listResult = ArrayList()
-        view.fragment_list_recycler_view.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL))
+        view.fragment_list_recycler_view.addItemDecoration(
+            DividerItemDecoration(
+                activity,
+                DividerItemDecoration.HORIZONTAL
+            )
+        )
         view.fragment_list_recycler_view.layoutManager = LinearLayoutManager(activity)
         adapter = ListAdapter(this, requireContext())
         view.fragment_list_recycler_view.adapter = adapter
         textSearch = view.findViewById(R.id.edit_search)
         view.edit_search.addTextChangedListener {
             viewModel.filter(it.toString())
-            viewModel.filteredPlacesLiveData.observe(this, Observer {list ->
+            viewModel.filteredPlacesLiveData.observe(this, Observer { list ->
                 adapter.setData(list)
             })
         }
@@ -120,11 +125,11 @@ class ListViewFragment : BaseFragment(),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.toolbar_menu_filter -> {
                 if (activity_main_search.visibility == View.GONE) {
                     activity_main_search.visibility = View.VISIBLE
-                }else{
+                } else {
                     activity_main_search.visibility = View.GONE
                 }
                 return true
@@ -140,30 +145,41 @@ class ListViewFragment : BaseFragment(),
         locationRequest.fastestInterval = 10000
         locationRequest.smallestDisplacement = 50F
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-            fusedLocationProviderClient.requestLocationUpdates(
-                locationRequest, object : LocationCallback() {
-                    override fun onLocationResult(locationResult: LocationResult?) {
-                        val latitude = locationResult!!.lastLocation.latitude
-                        val longitude = locationResult.lastLocation.longitude
-                        //-- Create Location object to get distance between place and user --//
-                        val location = Location("")
-                        location.latitude = latitude
-                        location.longitude = longitude
-                        //-- Search places --//
-                        viewModel.initViewModel("$latitude,$longitude", radius+"000", "producteur", location, fromMaps)
-                        showAllPlaces()
-                    }
-                }, null
-            )
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest, object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult?) {
+                    val latitude = locationResult!!.lastLocation.latitude
+                    val longitude = locationResult.lastLocation.longitude
+                    //-- Create Location object to get distance between place and user --//
+                    val location = Location("")
+                    location.latitude = latitude
+                    location.longitude = longitude
+                    //-- Search places --//
+                    viewModel.initViewModel(
+                        "$latitude,$longitude",
+                        radius + "000",
+                        Constants.QUERY_GM,
+                        location,
+                        fromMaps
+                    )
+                    showAllPlaces()
+                }
+            }, null
+        )
     }
 
     /**
      * Get places from Firestore and GoogleMaps
      */
-    private fun showAllPlaces(){
+    private fun showAllPlaces() {
         viewModel.allPlaceLiveData.observe(this, Observer {
-            if (it.isNotEmpty()) {
+            if (it != null && it.isNotEmpty()) {
                 adapter.setData(it)
+            }
+        })
+        viewModel.progressLiveData.observe(this, Observer {
+            if (it) {
+                view?.list_progress?.visibility = View.INVISIBLE
             }
         })
     }
@@ -182,7 +198,7 @@ class ListViewFragment : BaseFragment(),
     }
 
     override fun onClick(view: View?) {
-        when(view){
+        when (view) {
             searchBtn -> {
                 viewModel.filter(textSearch.text.toString())
                 viewModel.filteredPlacesLiveData.observe(this, Observer {

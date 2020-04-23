@@ -28,6 +28,8 @@ class PhotosViewModel(private val firestoreDataRepository: FirestoreDataReposito
     private val isSelectedLiveData = MutableLiveData<String>()
     val progressUploadLiveData = MutableLiveData<Int>()
 
+    val photoHelper = PhotoHelper()
+
     init {
         listPhotosLiveData.addSource(allPhotosLiveData, Observer {
             combineLiveData(it, isSelectedLiveData.value)
@@ -74,9 +76,18 @@ class PhotosViewModel(private val firestoreDataRepository: FirestoreDataReposito
     fun getAllPhotosAccordingOrigin(fromRuralis: Boolean, id: String, listUri: List<String?>, context: Context) {
         if (fromRuralis) {
             viewModelScope.launch(Dispatchers.IO) {
-                val list = firestoreDataRepository.getListOfPhotosFromFirestore(id, context)
-                withContext(Dispatchers.Main) {
-                    allPhotosLiveData.value = list
+                val listOfPhotos = ArrayList<Photo>()
+                photoHelper.getAllPhotosById(id).addOnSuccessListener {
+                    it?.documents?.forEach { document ->
+                        val photo = Photo(
+                            document.getString("uri"),
+                            document.id,
+                            document.getBoolean("selected"),
+                            document.getString("place_id")
+                        )
+                        listOfPhotos.add(photo)
+                    }
+                    allPhotosLiveData.postValue(listOfPhotos)
                 }
             }
         } else {

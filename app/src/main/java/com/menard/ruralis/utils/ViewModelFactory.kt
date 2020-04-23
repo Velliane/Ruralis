@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.FirebaseAuth
 import com.menard.ruralis.add_places.AddViewModel
 import com.menard.ruralis.add_places.geocode_model.GeocodeRepository
 import com.menard.ruralis.data.*
@@ -13,7 +12,6 @@ import com.menard.ruralis.details.DetailsViewModel
 import com.menard.ruralis.details.photos.PhotosViewModel
 import com.menard.ruralis.knowsit.HomeViewModel
 import com.menard.ruralis.login.UserViewModel
-import com.menard.ruralis.quiz.QuizHomeActivity
 import com.menard.ruralis.quiz.QuizHomeViewModel
 import com.menard.ruralis.quiz.QuizViewModel
 import com.menard.ruralis.search_places.MainViewModel
@@ -55,7 +53,7 @@ class ViewModelFactory(private val context: Context, private val highScoreReposi
                 ) as T
             }
             modelClass.isAssignableFrom(ListViewModel::class.java) -> {
-                return ListViewModel(context, googleApiRepository, firestoreDataRepository) as T
+                return ListViewModel(connectivityRepository, context, googleApiRepository, firestoreDataRepository) as T
             }
             modelClass.isAssignableFrom(MapViewModel::class.java) -> {
                 return MapViewModel(context, googleApiRepository, firestoreDataRepository) as T

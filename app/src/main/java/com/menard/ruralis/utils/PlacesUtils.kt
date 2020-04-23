@@ -4,8 +4,14 @@ import android.content.Context
 import android.content.DialogInterface
 import android.location.Location
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.util.Log
+import android.widget.ImageView
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AlertDialog
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -122,4 +128,28 @@ fun transformListOfOpeningToString(openings: List<String>?):String{
 fun parseLocalDateTimeToString(date: LocalDateTime): String {
     val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     return date.format(dateTimeFormatter)
+}
+
+/**
+ * Add progress drawable
+ */
+fun getProgressDrawableSpinner(context: Context): CircularProgressDrawable {
+    return CircularProgressDrawable(context).apply {
+        strokeWidth = 5f
+        centerRadius = 40f
+        start()
+    }
+}
+
+/**
+ * Load restaurant's photo
+ */
+fun ImageView.loadPlacePhoto(@Nullable url: String?, @Nullable int:Int?, progressDrawable: CircularProgressDrawable){
+    val options = RequestOptions().placeholder(progressDrawable).error(R.drawable.no_image_available_64)
+
+    if(url != null) {
+        Glide.with(this.context).setDefaultRequestOptions(options.centerCrop()).load(Uri.parse(url)).into(this)
+    }else{
+        Glide.with(this.context).setDefaultRequestOptions(options).load(int).into(this)
+    }
 }

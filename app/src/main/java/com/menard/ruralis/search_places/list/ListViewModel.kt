@@ -5,6 +5,7 @@ import android.location.Location
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.menard.ruralis.R
+import com.menard.ruralis.data.ConnectivityRepository
 import com.menard.ruralis.data.FirestoreDataRepository
 import com.menard.ruralis.data.GoogleApiRepository
 import com.menard.ruralis.search_places.PlaceForList
@@ -14,48 +15,53 @@ import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ListViewModel(private val context: Context, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
+class ListViewModel(private val connectivityRepository: ConnectivityRepository, private val context: Context, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository): ViewModel() {
 
     val placeListLiveData = MutableLiveData<List<PlaceForList>>()
     val placeTextSearchListLiveData = MutableLiveData<List<PlaceForList>>()
     val filteredPlacesLiveData = MutableLiveData<List<PlaceForList>>()
+    val progressLiveData = MutableLiveData<Boolean>()
+    val connectionLiveData = connectivityRepository.connectivityLiveData
 
     private val liveDataMerger = MediatorLiveData<List<PlaceForList>>()
     val allPlaceLiveData: LiveData<List<PlaceForList>> = liveDataMerger
 
 
 
-    fun initViewModel(
-        location: String,
-        radius: String,
-        query: String,
-        locationForFirestore: Location,
-        fromMaps: Boolean){
+    fun initViewModel(location: String, radius: String, query: String, locationForFirestore: Location, fromMaps: Boolean){
 
+        progressLiveData.value = false
         getPlacesFromFirestoreAccordingUserLocation(locationForFirestore, radius)
         getTextSearch(location, radius, query, context.getString(R.string.api_key_google))
         if (fromMaps){
             if(!liveDataMerger.hasObservers()){
                 liveDataMerger.addSource(placeListLiveData, Observer {
-                    mergeList(it, placeTextSearchListLiveData.value)
+                    mergeList(it, placeTextSearchListLiveData.value, connectionLiveData.value)
                 })
                 liveDataMerger.addSource(placeTextSearchListLiveData, Observer {
-                    mergeList(placeListLiveData.value, it)
+                    mergeList(placeListLiveData.value, it, connectionLiveData.value)
                 })
+                liveDataMerger.addSource(connectionLiveData, Observer {
+                    mergeList(placeListLiveData.value, placeTextSearchListLiveData.value, it)
+                })
+                progressLiveData.value = true
             }
         }else{
             if (!liveDataMerger.hasObservers()){
                 liveDataMerger.addSource(placeListLiveData, Observer {
-                    mergeList(it, null)
+                    mergeList(it, null, connectionLiveData.value)
                 })
             }else{
                 liveDataMerger.removeSource(placeTextSearchListLiveData)
             }
+            progressLiveData.value = true
         }
     }
 
-    private fun mergeList(placeDetailedList: List<PlaceForList>?, placeTextSearchList: List<PlaceForList>?){
-        if(placeDetailedList != null && placeTextSearchList != null) {
+    private fun mergeList(placeDetailedList: List<PlaceForList>?, placeTextSearchList: List<PlaceForList>?, connectivity: Boolean?){
+        if (!connectivity!!){
+            return
+        }else if(placeDetailedList != null && placeTextSearchList != null) {
             val listPlaces = placeDetailedList + placeTextSearchList
             liveDataMerger.value = listPlaces.distinct()
         }else if(placeDetailedList != null && placeTextSearchList == null){

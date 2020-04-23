@@ -33,45 +33,39 @@ class FirestoreDataRepository {
         placesHelper.getAllPlaces().addOnSuccessListener {
             val listDocument = it.documents
             for (document in listDocument) {
-                if(userLocation != null && radius != null){
+                if(userLocation != null && radius != null) {
                     val location = Location("")
                     location.latitude = document.getString("latitude")!!.toDouble()
                     location.longitude = document.getString("longitude")!!.toDouble()
                     if (userLocation.distanceTo(location) < radius.toInt()) {
-                        val listOfPhoto = getListOfPhotosFromFirestore(document.id, context)
-                        var uriPhoto: String? = null
-                        if (listOfPhoto.isNotEmpty()) {
-                            uriPhoto = listOfPhoto[0].uri
+                        val listOfPhotos = ArrayList<Photo>()
+                        photoHelper.getAllPhotosById(document.id).addOnSuccessListener { query ->
+                            query?.documents?.forEach { document ->
+                                val photo = Photo(
+                                    document.getString("uri"),
+                                    document.id,
+                                    document.getBoolean("selected"),
+                                    document.getString("place_id")
+                                )
+                                listOfPhotos.add(photo)
+                            }
+                            var uriPhoto: String? = null
+                            if (listOfPhotos.isNotEmpty()) {
+                                uriPhoto = listOfPhotos[0].uri
+                            }
+                            val type = document.getString("type")
+                            val placeForList = PlaceForList(
+                                document.id,
+                                document.getString("name")!!,
+                                context.getString(TypesEnum.valueOf(type!!).res),
+                                uriPhoto,
+                                document.getString("latitude"),
+                                document.getString("longitude"),
+                                document.getBoolean("fromRuralis")!!
+                            )
+                            list.add(placeForList)
                         }
-                        val type = document.getString("type")
-                        val placeForList = PlaceForList(
-                            document.id,
-                            document.getString("name")!!,
-                            context.getString(TypesEnum.valueOf(type!!).res),
-                            uriPhoto,
-                            document.getString("latitude"),
-                            document.getString("longitude"),
-                            document.getBoolean("fromRuralis")!!
-                        )
-                        list.add(placeForList)
                     }
-                }else{
-                    val listOfPhoto = getListOfPhotosFromFirestore(document.id, context)
-                    var uriPhoto: String? = null
-                    if (listOfPhoto.isNotEmpty()) {
-                        uriPhoto = listOfPhoto[0].uri
-                    }
-                    val type = document.getString("type")
-                    val placeForList = PlaceForList(
-                        document.id,
-                        document.getString("name")!!,
-                        context.getString(TypesEnum.valueOf(type!!).res),
-                        uriPhoto,
-                        document.getString("latitude"),
-                        document.getString("longitude"),
-                        document.getBoolean("fromRuralis")!!
-                    )
-                    list.add(placeForList)
                 }
             }
 
@@ -86,23 +80,23 @@ class FirestoreDataRepository {
     }
 
 
-    suspend fun getPlaceForListById(place_id: String): PlaceForList {
-        val document = placesHelper.getPlaceById(place_id)
-        val photos = document.data!!["list_photos"]
-        var listPhoto: List<String>? = null
-        if (photos != null) {
-            listPhoto = photos as List<String>
-        }
-        return PlaceForList(
-            document.id,
-            document.getString("name")!!,
-            document.getString("type")!!,
-            listPhoto?.get(0),
-            document.getString("latitude"),
-            document.getString("longitude"),
-            document.getBoolean("fromRuralis")!!
-        )
-    }
+//    suspend fun getPlaceForListById(place_id: String): PlaceForList {
+//        val document = placesHelper.getPlaceById(place_id)
+//        val photos = document.data!!["list_photos"]
+//        var listPhoto: List<String>? = null
+//        if (photos != null) {
+//            listPhoto = photos as List<String>
+//        }
+//        return PlaceForList(
+//            document.id,
+//            document.getString("name")!!,
+//            document.getString("type")!!,
+//            listPhoto?.get(0),
+//            document.getString("latitude"),
+//            document.getString("longitude"),
+//            document.getBoolean("fromRuralis")!!
+//        )
+//    }
 
     suspend fun getPlaceFromFirestoreById(id: String?): PlaceDetailed {
         return placesHelper.getPlaceById(id!!).toObject<PlaceDetailed>(
@@ -163,21 +157,21 @@ class FirestoreDataRepository {
 
     //-- Image --//
 
-    fun getListOfPhotosFromFirestore(id: String, context: Context): ArrayList<Photo> {
-        val listOfPhotos = ArrayList<Photo>()
-        photoHelper.getAllPhotosById(id).addOnSuccessListener {
-            it?.documents?.forEach { document ->
-                val photo = Photo(
-                    document.getString("uri"),
-                    document.id,
-                    document.getBoolean("selected"),
-                    document.getString("place_id")
-                )
-                listOfPhotos.add(photo)
-            }
-        }.addOnFailureListener (onFailureListener(context))
-        return listOfPhotos
-    }
+//    fun getListOfPhotosFromFirestore(id: String, context: Context): ArrayList<Photo> {
+//        val listOfPhotos = ArrayList<Photo>()
+//        photoHelper.getAllPhotosById(id).addOnSuccessListener {
+//            it?.documents?.forEach { document ->
+//                val photo = Photo(
+//                    document.getString("uri"),
+//                    document.id,
+//                    document.getBoolean("selected"),
+//                    document.getString("place_id")
+//                )
+//                listOfPhotos.add(photo)
+//            }
+//        }.addOnFailureListener (onFailureListener(context))
+//        return listOfPhotos
+//    }
 
     fun savePhoto(id: String?, name: String, uriPhoto: String) {
         photoHelper.createPhoto(id!!, name, uriPhoto)

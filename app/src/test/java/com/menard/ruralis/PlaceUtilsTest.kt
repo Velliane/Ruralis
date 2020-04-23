@@ -1,10 +1,9 @@
 package com.menard.ruralis
 
 import android.content.Context
+import android.location.Location
 import com.menard.ruralis.add_places.DayEnum
-import com.menard.ruralis.utils.changeOpeningHoursToLocaleLanguage
-import com.menard.ruralis.utils.parseLocalDateTimeToString
-import com.menard.ruralis.utils.setTypeForPlacesFromGoogleMaps
+import com.menard.ruralis.utils.*
 import com.nhaarman.mockitokotlin2.whenever
 import junit.framework.Assert.assertEquals
 import org.junit.Before
@@ -31,7 +30,7 @@ class PlaceUtilsTest {
     }
 
     @Test
-    fun formatOpeningHours(){
+    fun formatOpeningHoursToLocalLanguage(){
         val openingsMonday = "Monday:Closed"
         val openingsFriday = "Friday:9h-12 - 14h-18h"
 
@@ -64,4 +63,36 @@ class PlaceUtilsTest {
         val date = LocalDateTime.of(2020, 12, 1, 12, 23, 36)
         assertEquals("01/12/2020", parseLocalDateTimeToString(date))
     }
+
+    @Test
+    fun transformListOfStringToStringFormatted(){
+        val listOfOpenings = arrayListOf("Lundi : 9h-18h", "Mardi : 9h-18h", "Jeudi : Fermé")
+        val string = transformListOfOpeningToString(listOfOpenings)
+        assertEquals("Lundi : 9h-18h,Mardi : 9h-18h,Jeudi : Fermé", string)
+    }
+
+    @Test
+    fun testCloseDistanceToUser(){
+        val userLocation = Location("")
+        userLocation.latitude = 46.6286761
+        userLocation.longitude = 5.2374655
+        val location = Location("")
+        location.latitude = 46.629843
+        location.longitude = 5.226084
+
+        assertEquals( "881m", distanceToUser(location, userLocation))
+    }
+
+    @Test
+    fun testFarDistanceToUser(){
+        val userLocation = Location("")
+        userLocation.latitude = 46.6286761
+        userLocation.longitude = 5.2374655
+        val location = Location("")
+        location.latitude = 46.6301028
+        location.longitude = 5.223020300000001
+
+        assertEquals( "1,12km", distanceToUser(location, userLocation))
+    }
+
 }

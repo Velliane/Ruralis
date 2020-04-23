@@ -5,6 +5,8 @@ class Constants {
 
     companion object {
 
+        const val QUERY_GM = "producteur"
+
         //-- REQUEST CODE --//
         const val RC_FINE_LOCATION = 1
         const val RC_LOGIN = 2
