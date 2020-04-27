@@ -42,16 +42,26 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
 
     class ListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        var name = itemView.findViewById<TextView>(R.id.item_name)
-        var photo = itemView.findViewById<ImageView>(R.id.item_photo)
-        var type = itemView.findViewById<TextView>(R.id.item_type)
-        var distance = itemView.findViewById<TextView>(R.id.item_distance)
-        var progress = itemView.findViewById<ProgressBar>(R.id.list_item_progress)
+        var name: TextView = itemView.findViewById(R.id.item_name)
+        var photo: ImageView = itemView.findViewById(R.id.item_photo)
+        var type: TextView = itemView.findViewById(R.id.item_type)
+        var address: TextView = itemView.findViewById(R.id.item_address)
+        var progress: ProgressBar = itemView.findViewById(R.id.list_item_progress)
+        var openNowLogo: ImageView = itemView.findViewById(R.id.item_logo)
 
         fun bind(placeForList: PlaceForList, onItemClickListener: OnItemClickListener, context: Context) {
             progress.visibility = View.VISIBLE
             name.text = placeForList.name
             type.text = placeForList.type
+            address.text = placeForList.address
+            if(placeForList.openNow != null){
+                if(placeForList.openNow){
+                    Glide.with(itemView.context).load(R.drawable.goat_open).into(openNowLogo)
+                }else{
+                    Glide.with(itemView.context).load(R.drawable.goat_closed).into(openNowLogo)
+                }
+            }
+
             if(placeForList.fromRuralis){
                 itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.items_from_ruralis))
                 if (placeForList.photos != null){

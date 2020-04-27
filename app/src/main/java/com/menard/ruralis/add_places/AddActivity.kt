@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.hootsuite.nachos.chip.ChipInfo
+import com.hootsuite.nachos.terminator.ChipTerminatorHandler
+import com.hootsuite.nachos.tokenizer.ChipTokenizer
 import com.menard.ruralis.R
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
@@ -39,7 +42,6 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
         val viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddViewModel::class.java)
         bindViews()
-
         isEdit = intent.getBooleanExtra(Constants.INTENT_EDIT, false)
         id = intent.getStringExtra(Constants.INTENT_ID)
         if (id != "") {
@@ -59,6 +61,15 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
             val list = placeDetailed.openingsHours.split(",").toTypedArray()
             openingsAdapter.setData(list.asList())
         }
+        if(placeDetailed.tags != null || placeDetailed.tags != ""){
+            val tags = placeDetailed.tags?.split(",")?.toTypedArray()
+            val listOfChip = ArrayList<ChipInfo>()
+            for(item in tags!!){
+                val chip = ChipInfo(item, null)
+                listOfChip.add(chip)
+            }
+            edit_tags.setTextWithChips(listOfChip)
+        }
     }
 
     override fun onClick(v: View?) {
@@ -70,7 +81,7 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
                     val address: String = add_address.text.toString()
                     val website: String = contact_website.text.toString()
                     val phoneNumber: String = contact_phone_number.text.toString()
-                    viewModel.savePlace(id, type, name, address, listOfOpenings, website, phoneNumber, isEdit, "country:FR", resources.getString(R.string.api_key_google))
+                    viewModel.savePlace(id, viewModel.formatListOfTags(edit_tags.chipValues), type, name, address, listOfOpenings, website, phoneNumber, isEdit, "country:FR", resources.getString(R.string.api_key_google))
                     if (isEdit) {
                         val intent = Intent()
                         intent.putExtra("New place id", id)
@@ -134,6 +145,7 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
     private fun bindViews() {
         add_opening_btn.setOnClickListener(this)
         add_save_btn.setOnClickListener(this)
+        edit_tags.addChipTerminator(',', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_ALL)
         openingsList = findViewById(R.id.add_opening_recycler_view)
         openingsList.layoutManager = LinearLayoutManager(this)
         openingsList.adapter = openingsAdapter

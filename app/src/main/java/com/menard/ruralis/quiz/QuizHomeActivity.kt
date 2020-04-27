@@ -4,9 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,13 +58,15 @@ class QuizHomeActivity : AppCompatActivity(), View.OnClickListener {
             val alertDialog = AlertDialog.Builder(this)
             alertDialog.setTitle("Résultat")
             alertDialog.setMessage("Vous avez obtenu un résultat de $score/10. Saisissez un nom puis validez pour sauvegarder votre score")
-            val textView = TextView(this)
+            alertDialog.setCancelable(false)
+            val editText = EditText(this)
             val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-            textView.layoutParams = lp
-            alertDialog.setView(textView)
+            lp.setMargins(15, 25, 15, 10)
+            editText.layoutParams = lp
+            alertDialog.setView(editText)
             alertDialog.setPositiveButton("Valider") { dialog, _ ->
-                val player: String = if(textView.text != ""){
-                    textView.text.toString()
+                val player: String = if(editText.text.toString() != ""){
+                    editText.text.toString()
                 }else{
                     "Player"
                 }

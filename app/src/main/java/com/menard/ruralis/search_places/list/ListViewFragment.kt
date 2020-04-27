@@ -24,7 +24,6 @@ import com.menard.ruralis.R
 import com.menard.ruralis.details.DetailsActivity
 import com.menard.ruralis.search_places.ListAdapter
 import com.menard.ruralis.search_places.textsearch_model.Result
-import com.menard.ruralis.utils.ConnectionLiveData
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
 import kotlinx.android.synthetic.main.custom_search.view.*
@@ -56,7 +55,6 @@ class ListViewFragment : BaseFragment(),
     private var fromMaps: Boolean = true
     private lateinit var textSearch: AppCompatAutoCompleteTextView
     private lateinit var searchBtn: ImageButton
-    private lateinit var connectionLiveData: ConnectionLiveData
 
     companion object {
         fun newInstance(): ListViewFragment {
@@ -80,7 +78,6 @@ class ListViewFragment : BaseFragment(),
         //-- Places SDK initialisation --//
         Places.initialize(requireActivity(), context!!.resources.getString(R.string.api_key_google))
         placesClient = Places.createClient(requireActivity())
-        connectionLiveData = ConnectionLiveData(requireContext())
         //-- Location --//
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         view.list_progress.visibility = View.VISIBLE
@@ -155,13 +152,7 @@ class ListViewFragment : BaseFragment(),
                     location.latitude = latitude
                     location.longitude = longitude
                     //-- Search places --//
-                    viewModel.initViewModel(
-                        "$latitude,$longitude",
-                        radius + "000",
-                        Constants.QUERY_GM,
-                        location,
-                        fromMaps
-                    )
+                    viewModel.initViewModel("$latitude,$longitude", radius + "000", Constants.QUERY_GM, location, fromMaps)
                     showAllPlaces()
                 }
             }, null

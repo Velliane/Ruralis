@@ -49,13 +49,13 @@ class QuizViewModel(private val firestoreDataRepository: FirestoreDataRepository
     }
 
     fun generateId(): List<Int>{
-        val listId = ArrayList<Int>()
-        val max = 12
+        var listId = ArrayList<Int>()
+        val max = 26
         val min = 1
-        while (listId.size <= 10){
+        while (listId.size <= 9){
             val id = Random.nextInt((max-min)+1)+min
             listId.add(id)
-            listId.distinct()
+            listId = ArrayList(listId.distinct())
         }
         return listId
     }

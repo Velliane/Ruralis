@@ -61,7 +61,9 @@ class FirestoreDataRepository {
                                 uriPhoto,
                                 document.getString("latitude"),
                                 document.getString("longitude"),
-                                document.getBoolean("fromRuralis")!!
+                                document.getString("address")!!,
+                                document.getBoolean("fromRuralis")!!,
+                                false
                             )
                             list.add(placeForList)
                         }
@@ -79,25 +81,6 @@ class FirestoreDataRepository {
         return document.toObject(PlaceDetailed::class.java)
     }
 
-
-//    suspend fun getPlaceForListById(place_id: String): PlaceForList {
-//        val document = placesHelper.getPlaceById(place_id)
-//        val photos = document.data!!["list_photos"]
-//        var listPhoto: List<String>? = null
-//        if (photos != null) {
-//            listPhoto = photos as List<String>
-//        }
-//        return PlaceForList(
-//            document.id,
-//            document.getString("name")!!,
-//            document.getString("type")!!,
-//            listPhoto?.get(0),
-//            document.getString("latitude"),
-//            document.getString("longitude"),
-//            document.getBoolean("fromRuralis")!!
-//        )
-//    }
-
     suspend fun getPlaceFromFirestoreById(id: String?): PlaceDetailed {
         return placesHelper.getPlaceById(id!!).toObject<PlaceDetailed>(
             PlaceDetailed::class.java
@@ -106,6 +89,7 @@ class FirestoreDataRepository {
 
     fun savePlaceInFirestore(
         id: String?,
+        tags: String?,
         type: String,
         name: String,
         address: String,
@@ -123,6 +107,7 @@ class FirestoreDataRepository {
             val newId = ref.id
             placesHelper.createPlaces(
                 newId,
+                tags,
                 type,
                 name,
                 address,
@@ -136,7 +121,7 @@ class FirestoreDataRepository {
         } else {
             //-- Update object --//
             placesHelper.createPlaces(
-                id, type, name, address, openings, website, phoneNumber, photos, latitude, longitude
+                id, tags, type, name, address, openings, website, phoneNumber, photos, latitude, longitude
             )
         }
     }
@@ -156,23 +141,6 @@ class FirestoreDataRepository {
     }
 
     //-- Image --//
-
-//    fun getListOfPhotosFromFirestore(id: String, context: Context): ArrayList<Photo> {
-//        val listOfPhotos = ArrayList<Photo>()
-//        photoHelper.getAllPhotosById(id).addOnSuccessListener {
-//            it?.documents?.forEach { document ->
-//                val photo = Photo(
-//                    document.getString("uri"),
-//                    document.id,
-//                    document.getBoolean("selected"),
-//                    document.getString("place_id")
-//                )
-//                listOfPhotos.add(photo)
-//            }
-//        }.addOnFailureListener (onFailureListener(context))
-//        return listOfPhotos
-//    }
-
     fun savePhoto(id: String?, name: String, uriPhoto: String) {
         photoHelper.createPhoto(id!!, name, uriPhoto)
     }

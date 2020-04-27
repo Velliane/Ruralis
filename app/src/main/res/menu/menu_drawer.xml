@@ -5,10 +5,10 @@
     <item
         android:id="@+id/action_settings"
         app:showAsAction="ifRoom"
-        android:title="Settings"/>
+        android:title="@string/nav_settings"/>
 
     <item
         android:id="@+id/action_log_out"
         app:showAsAction="ifRoom"
-        android:title="Log out"/>
+        android:title="@string/nav_log_out"/>
 </menu>

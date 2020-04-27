@@ -25,13 +25,13 @@ class AddViewModel(
     private val placeDetailedLiveData = MutableLiveData<PlaceDetailed>()
     val addingSuccessLiveData = MutableLiveData<Boolean>()
 
-    fun savePlace(id: String?, type: String, name: String, address: String, openings: List<String>?, website: String, phone_number: String, edit: Boolean, countryCode: String, key: String) {
+    fun savePlace(id: String?, tags: String?, type: String, name: String, address: String, openings: List<String>?, website: String, phone_number: String, edit: Boolean, countryCode: String, key: String) {
         addingSuccessLiveData.value = false
         viewModelScope.launch(Dispatchers.IO) {
             val location = geocodeRepository.getLatLng(address, countryCode, key)
             withContext(Dispatchers.Main){
                 val hours = transformListOfOpeningToString(openings)
-                firestoreDataRepository.savePlaceInFirestore(id, type, name, address, emptyList(), hours, website, phone_number, location?.latitude.toString(), location?.longitude.toString(), edit)
+                firestoreDataRepository.savePlaceInFirestore(id, tags, type, name, address, emptyList(), hours, website, phone_number, location?.latitude.toString(), location?.longitude.toString(), edit)
                 addingSuccessLiveData.value = true
             }
         }
@@ -66,4 +66,16 @@ class AddViewModel(
         }
         return placeDetailedLiveData
     }
+
+    fun formatListOfTags(list: List<String>): String{
+        var tags = ""
+        list.forEachIndexed { index, s ->
+            tags += s
+            if(index < list.size - 1){
+                tags += ","
+            }
+        }
+        return tags
+    }
+
 }

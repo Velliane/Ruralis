@@ -88,6 +88,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerCl
         googleMap?.setOnMarkerClickListener(this)
         googleMap?.setOnInfoWindowClickListener(this)
         googleMap?.setOnCameraIdleListener(this)
+        googleMap?.setInfoWindowAdapter(MarkerAdapter(layoutInflater, requireContext()))
         //-- Check if permissions are granted for FINE_LOCATION or request it --//
         if (checkPermissions()) {
             googleMap?.isMyLocationEnabled = true
@@ -138,7 +139,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerCl
         viewModel.allPlaceLiveData.observe(this, Observer {
             for (place in it) {
                 val latLng = LatLng((place.latitude)!!.toDouble(), (place.longitude)!!.toDouble())
-                setMarker(place, googleMap!!, latLng)
+                setMarker(place, googleMap!!, latLng, place.type)
             }
         })
     }
@@ -166,7 +167,7 @@ class MapViewFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnMarkerCl
         viewModel.allPlaceLiveData.observe(this, Observer {
             for (place in it) {
                 val latLng = LatLng((place.latitude)!!.toDouble(), (place.longitude)!!.toDouble())
-                setMarker(place, googleMap!!, latLng)
+                setMarker(place, googleMap!!, latLng, place.type)
             }
         })
     }

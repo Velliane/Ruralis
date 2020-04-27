@@ -1,6 +1,8 @@
 package com.menard.ruralis.knowsit
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -26,6 +28,8 @@ import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.header.view.*
+import smartdevelop.ir.eram.showcaseviewlib.GuideView
+import smartdevelop.ir.eram.showcaseviewlib.config.DismissType
 import java.util.*
 
 
@@ -36,6 +40,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var viewModel: HomeViewModel
     /** Favorites Adapter */
     private lateinit var adapter: FavoritesAdapter
+    /** Shared Preferences */
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +49,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         main_drawer.setNavigationItemSelectedListener(this)
         home_search_btn.setOnClickListener(this)
-        home_refresh.setOnClickListener(this)
         home_quiz_btn.setOnClickListener(this)
         home_list_fav.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -51,11 +56,17 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         adapter = FavoritesAdapter(this, this)
-
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+        val guide = sharedPreferences.getBoolean(Constants.PREF_GUIDE_HOME, false)
+        if(!guide){
+            showGuide(getString(R.string.home_guide_title_1),
+                getString(R.string.home_guide_text_1),
+                knows_it_txt, 1)
+        }
         configureDrawerLayout()
         viewModel.homeLiveData.observe(this, Observer {
             if(it == null){
-                knows_it_txt.text = "Seems like you're not connected to internet. Check your connexion and refresh"
+                knows_it_txt.text = getString(R.string.not_connected_error)
                 knows_it_img.visibility = View.GONE
             }else{
                 knows_it_txt.text = it.info
@@ -138,9 +149,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             home_search_btn -> {
                 startActivity(Intent(this, MainActivity::class.java))
             }
-            home_refresh -> {
-                viewModel.getRandomKnowsIt()
-            }
             home_quiz_btn -> {
                 startActivity(Intent(this, QuizHomeActivity::class.java))
             }
@@ -166,5 +174,27 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
+    private fun showGuide(title: String, text: String, view: View, type: Int) {
+        GuideView.Builder(this)
+            .setTitle(title)
+            .setContentText(text)
+            .setTargetView(view)
+            .setContentTextSize(15)
+            .setTitleTextSize(17)
+            .setDismissType(DismissType.anywhere)
+            .setGuideListener {
+                when(type){
+                    1 -> showGuide(getString(R.string.home_guide_title_2),
+                        getString(R.string.home_guide_text_2),
+                    home_search_btn, 2)
+                    2 -> showGuide(getString(R.string.home_quide_title_3), getString(R.string.home_guide_text_3),
+                        home_quiz_btn, 3)
+                    3 -> showGuide(getString(R.string.home_guide_title_4), getString(R.string.home_guide_text_4),
+                        home_list_fav, 4)
+                    4 -> sharedPreferences.edit().putBoolean(Constants.PREF_GUIDE_HOME, true).apply()
+                }
+            }
+            .build()
+            .show()
+    }
 }

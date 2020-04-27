@@ -36,7 +36,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         val viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QuizViewModel::class.java)
 
-        progressBar.show(this, "Chargement des questions...")
+        progressBar.show(this, getString(R.string.loading_questions))
         getListOfQuestion()
     }
 
@@ -68,9 +68,9 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         val answerId = view?.tag as Int
         if (answerId == currentQuestion?.answerId) {
-            showPromptDialog("Bravo", PromptDialog.DIALOG_TYPE_SUCCESS)
+            showPromptDialog(getString(R.string.good_answer), PromptDialog.DIALOG_TYPE_SUCCESS)
         } else {
-            showPromptDialog("Faux !", PromptDialog.DIALOG_TYPE_WRONG)
+            showPromptDialog(getString(R.string.bad_answer), PromptDialog.DIALOG_TYPE_WRONG)
         }
     }
 
@@ -79,8 +79,9 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         dialog.setTitleText(result)
         dialog.setContentText(currentQuestion?.info)
         dialog.setAnimationEnable(true)
+        dialog.setCancelable(false)
         dialog.dialogType = type
-        dialog.setPositiveListener("Suivant", PromptDialog.OnPositiveListener {
+        dialog.setPositiveListener(getString(R.string.next_question), PromptDialog.OnPositiveListener {
             questionIndex++
             if (type == PromptDialog.DIALOG_TYPE_SUCCESS){
                 score++

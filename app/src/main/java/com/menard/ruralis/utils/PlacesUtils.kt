@@ -36,11 +36,12 @@ fun distanceToUser(placeLocation: Location, userLocation: Location): String {
     }
 }
 
-fun setMarker(place: PlaceForList, googleMap: GoogleMap, latLng: LatLng) {
+fun setMarker(place: PlaceForList, googleMap: GoogleMap, latLng: LatLng, type: String) {
     if (!place.fromRuralis) {
         val markerOptions = MarkerOptions().position(latLng)
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             .title(place.name)
+            .snippet(type)
         val marker = googleMap.addMarker(markerOptions)
         val markerTag = MarkerTag(place.placeId, place.fromRuralis, place.photos)
         marker.tag = markerTag
@@ -48,6 +49,7 @@ fun setMarker(place: PlaceForList, googleMap: GoogleMap, latLng: LatLng) {
         val markerOptions = MarkerOptions().position(latLng)
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
             .title(place.name)
+            .snippet(type)
         val marker = googleMap.addMarker(markerOptions)
         val markerTag = MarkerTag(place.placeId, place.fromRuralis, place.photos)
         marker.tag = markerTag

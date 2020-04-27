@@ -82,4 +82,35 @@
     <string name="add_info_text">Vous connaissez un lieu qui n\'est pas encore présent sur l\'application ? Remplissez le formulaire ci-dessous pour le partager avec les autres utilisateurs !</string>
     <string name="add_title">Ajouter un lieu</string>
 
+    <!-- Guide Text -->
+    <string name="home_guide_title_2">Voir les producteurs</string>
+    <string name="home_guide_title_1">Bienvenue sur Ruralis !</string>
+    <string name="home_guide_text_1">C\'est votre première connexion ! Vous verrez apparaître ici régulièrement une petite information intéressante sur le monde agricole et les animaux d\'élevage (cliquez pour continuer)</string>
+    <string name="home_guide_text_2">En cliquant sur le bouton \'Rechercher un produit\' vous afficherez l\'écran de recherche des producteurs à proximité (cliquez pour continuer)</string>
+    <string name="home_quide_title_3">Quiz</string>
+    <string name="home_guide_text_3">En cliquez sur \'Tester mes connaissances\', vous aurez accès à un petit quiz sur le monde agricole !(cliquez pour continuer)</string>
+    <string name="home_guide_title_4">Vos favoris</string>
+    <string name="home_guide_text_4">Cette liste est pour l\'instant vide ! Mais vous pourrez ici voir apparaître vos producteurs favoris lorsque vous les aurez sélectionnée(cliquez pour continuer)</string>
+
+    <string name="main_guide_title_1"></string>
+    <string name="next_question">Suivant</string>
+    <string name="botoom_map">Map</string>
+    <string name="bottom_list">List</string>
+    <string name="toolbar_search">Search</string>
+    <string name="toolbar_add">Add</string>
+    <string name="toolbar_modify">Modify</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_log_out">Log out</string>
+    <string name="not_connected_error">Seems like you\'re not connected to internet. Check your connexion and refresh</string>
+    <string name="loading_questions">Chargement des questions...</string>
+    <string name="good_answer">Bravo</string>
+    <string name="bad_answer">Faux !</string>
+    <string name="login_welcome_txt">Bienvenue sur Ruralis, mon panier fermier</string>
+    <string name="list_name">NAME</string>
+    <string name="list_type">TYPE</string>
+    <string name="list_distance">DISTANCE</string>
+    <string name="add_tags">Tags</string>
+    <string name="add_tags_info">Saisissez des mots-clefs pertinents sur l\'établissement (ex: fromage, bio, ...)</string>
+
+
 </resources>

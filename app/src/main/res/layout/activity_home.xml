@@ -35,16 +35,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-                <ImageView
-                    android:id="@+id/home_refresh"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/refresh"
-                    app:layout_constraintTop_toTopOf="@id/fragment_home_title"
-                    app:layout_constraintBottom_toBottomOf="@id/fragment_home_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="80dp"/>
-
                 <TextView
                     android:id="@+id/knows_it_txt"
                     android:layout_width="wrap_content"
@@ -93,11 +83,13 @@
                         android:textSize="@dimen/home_btn_txt_size"
                         android:textColor="@color/colorPrimaryDark"
                         android:paddingTop="15dp"
-                        android:paddingBottom="15dp"
+                        android:paddingBottom="13dp"
                         app:icon="@drawable/search"
                         app:strokeWidth="2dp"
                         app:strokeColor="@color/colorPrimaryDark"
-                        android:layout_margin="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginBottom="15dp"
                         app:cornerRadius="12dp"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                        app:layout_constraintStart_toStartOf="parent"
@@ -119,7 +111,10 @@
                         app:strokeWidth="2dp"
                         android:background="@color/colorPrimary"
                         app:strokeColor="@color/colorPrimaryDark"
-                        android:layout_margin="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
                         app:cornerRadius="12dp"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintTop_toTopOf="parent"

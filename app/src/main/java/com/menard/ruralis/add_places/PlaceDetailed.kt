@@ -7,6 +7,7 @@ data class PlaceDetailed  (
 
     val placeId: String? = "",
 
+    val tags: String? = null,
     val type: String = "",
     val name: String = "",
     val address: String = "",

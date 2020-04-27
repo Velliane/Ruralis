@@ -53,6 +53,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private fun signIn() {
         startActivityForResult(AuthUI.getInstance()
             .createSignInIntentBuilder()
+            .setLogo(R.drawable.goat_animation)
             .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build(), AuthUI.IdpConfig.GoogleBuilder().build()))
             .setIsSmartLockEnabled(false, true)
             .build(),

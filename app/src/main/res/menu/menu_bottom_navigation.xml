@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_map_view"
         android:enabled="true"
-        android:title="Map"
+        android:title="@string/botoom_map"
         android:icon="@drawable/nav_map"
         app:showAsAction="ifRoom" />
 
@@ -19,7 +19,7 @@
     <item
         android:id="@+id/action_list_view"
         android:enabled="true"
-        android:title="List"
+        android:title="@string/bottom_list"
         android:icon="@drawable/nav_list"
         app:showAsAction="ifRoom" />
 

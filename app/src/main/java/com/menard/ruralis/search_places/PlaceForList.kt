@@ -8,6 +8,8 @@ data class PlaceForList (
     val photos: String? = null,
     val latitude: String? = "",
     val longitude: String? = "",
-    val fromRuralis: Boolean = false
+    val address: String = "",
+    val fromRuralis: Boolean = false,
+    val openNow: Boolean? = false
 
 )

@@ -11,8 +11,8 @@ open class PlacesHelper {
         return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_PLACES)
     }
 
-    open fun createPlaces(id: String?, type: String, name: String, address: String, openings: String, website: String, phone_number: String, photos: List<String?>, latitude: String, longitude: String): Task<Void> {
-        val newPlace = PlaceDetailed(id, type, name, address, photos, openings, website, phone_number, latitude, longitude,
+    open fun createPlaces(id: String?, tags: String?, type: String, name: String, address: String, openings: String, website: String, phone_number: String, photos: List<String?>, latitude: String, longitude: String): Task<Void> {
+        val newPlace = PlaceDetailed(id, tags, type, name, address, photos, openings, website, phone_number, latitude, longitude,
             true
         )
         return getPlacesCollection().document(id!!).set(newPlace)

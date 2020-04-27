@@ -26,6 +26,7 @@ class Constants {
         const val PREF_ID_PLACE = "PREF_ID_PLACE"
         const val PREF_SEARCH_FROM_MAPS = "PREF_SEARCH_FROM_MAPS"
         const val PREF_SEARCH_AROUND = "PREF_SEARCH_AROUND"
+        const val PREF_GUIDE_HOME = "PREF_GUIDE_HOME"
 
         //-- INTENT --//
         const val INTENT_ID = "INTENT_ID"
