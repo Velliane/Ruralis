@@ -22,7 +22,7 @@
         app:layout_constraintBottom_toTopOf="@id/details_map"
         android:textAlignment="center"
         android:textSize="23sp"
-        android:text="Address"/>
+        android:text="@string/address"/>
 
     <ImageView
         android:id="@+id/details_map"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="23sp"
-        android:text="Phone number"
+        android:text="@string/phone_number"
         android:textStyle="italic"
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:text="Website"
+        android:text="@string/website"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/details_phone_number"
@@ -79,7 +79,7 @@
         android:layout_marginTop="15dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         style="@style/ButtonHome"
-        android:text="Make a call"
+        android:text="@string/make_a_call"
         android:textSize="17sp"
         android:textColor="@color/colorPrimaryDark"
         android:paddingTop="15dp"
@@ -99,7 +99,7 @@
         android:layout_height="80dp"
         android:layout_marginTop="15dp"
         style="@style/ButtonHome"
-        android:text="Visit website"
+        android:text="@string/visit_website"
         android:textSize="17sp"
         android:textColor="@color/colorPrimaryDark"
         android:paddingTop="15dp"

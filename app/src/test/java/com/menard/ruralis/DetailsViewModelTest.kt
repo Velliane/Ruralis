@@ -88,7 +88,7 @@ class DetailsViewModelTest {
 
     @Test
     fun getPlaceFromId_WhereFromRuralisIsTrue() {
-        val place = PlaceDetailed("001", "Fruits et légumes", "La ferme", "6 impasse des Sables", arrayListOf("gr4552/image.fr"), "Du lundi au vendredi : 9h-18h", "maraicher.com", "0665364510", null, null, true)
+        val place = PlaceDetailed("001", "bio", "Fruits et légumes", "La ferme", "6 impasse des Sables", arrayListOf("gr4552/image.fr"), "Du lundi au vendredi : 9h-18h", "maraicher.com", "0665364510", null, null, true)
         val mockFirestoreDataRepository = mock<FirestoreDataRepository> {
             onBlocking { getPlaceFromFirestoreById("001") } doReturn place
         }
@@ -101,7 +101,7 @@ class DetailsViewModelTest {
 
     @Test
     fun getPlaceFromId_WhereFromRuralisIsFalse() {
-        val place = PlaceDetailed("004", "Miel", "La ruche", "21 route des Lilas", arrayListOf("gr4552/image.fr"), "Du lundi au vendredi : 9h-18h", "laruche.com", "066715520", null, null, false)
+        val place = PlaceDetailed("004", "Miel","Miel", "La ruche", "21 route des Lilas", arrayListOf("gr4552/image.fr"), "Du lundi au vendredi : 9h-18h", "laruche.com", "066715520", null, null, false)
         val mockGoogleApiRepository = mock<GoogleApiRepository> {
             onBlocking { getDetails("004", "name, address, website...", "*****", context) } doReturn place
         }

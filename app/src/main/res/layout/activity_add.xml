@@ -71,24 +71,18 @@
 
             <!-- Place's type -->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/add_edit_type"
-                style="@style/TextInputLayoutStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                app:errorEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/add_edit_name">
-
                 <Spinner
                     android:id="@+id/add_edit_type_spinner"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_margin="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/add_edit_name"
                     android:autofillHints="Type" />
-            </com.google.android.material.textfield.TextInputLayout>
+
 
             <!-- Place's address -->
 
@@ -101,7 +95,7 @@
                 android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/add_edit_type">
+                app:layout_constraintTop_toBottomOf="@id/add_edit_type_spinner">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_address"
@@ -135,50 +129,65 @@
                 android:id="@+id/add_opening_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="4"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/add_opening_recycler_view">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <Spinner
                     android:id="@+id/new_opening_day"
                     style="@style/TextInputLayoutStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
                     android:hint="@string/add_openings_day"
-                    android:padding="5dp">
+                    android:layout_gravity="center_vertical">
+                </Spinner>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/opening_day_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="7">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/new_opening_hours"
+                    android:id="@+id/new_opening_hours_open"
                     style="@style/TextInputLayoutStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="3"
                     android:hint="@string/add_openings_hours"
                     android:padding="5dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/opening_hours_edit"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/new_opening_hours_close"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="@string/add_openings_hours"
+                    android:padding="5dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/opening_hours_close_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageButton
                     android:id="@+id/add_opening_btn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:src="@drawable/add"
                     android:contentDescription="@string/add_openings_btn_description" />
+                </LinearLayout>
             </LinearLayout>
             <!-- Contact -->
 

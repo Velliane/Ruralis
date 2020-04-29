@@ -38,7 +38,16 @@ class QuizHomeActivity : AppCompatActivity(), View.OnClickListener {
         quiz_score_list.adapter = adapter
         quiz_score_list.layoutManager = LinearLayoutManager(this)
         viewModel.getAllHighScore().observe(this, Observer {
-            adapter.setData(it)
+            if(it == null || it.isEmpty()){
+                quiz_high_score_title.visibility = View.INVISIBLE
+                quiz_score_list.visibility = View.INVISIBLE
+            }else{
+                quiz_high_score_title.visibility = View.VISIBLE
+                quiz_score_list.visibility = View.VISIBLE
+                adapter.setData(it)
+            }
+
+
         })
 
     }

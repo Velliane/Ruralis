@@ -18,7 +18,7 @@ open class PlacesHelper {
         return getPlacesCollection().document(id!!).set(newPlace)
     }
 
-    open suspend fun getAllPlaces(): Task<QuerySnapshot> {
+    open fun getAllPlaces(): Task<QuerySnapshot> {
         return getPlacesCollection().get()
     }
 

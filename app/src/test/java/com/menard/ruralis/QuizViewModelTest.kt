@@ -9,6 +9,7 @@ import com.menard.ruralis.quiz.QuizViewModel
 import com.menard.ruralis.utils.getOrAwaitValue
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,12 +27,18 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
+import kotlin.random.Random
 
 @ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
 class QuizViewModelTest {
 
     private lateinit var viewModel: QuizViewModel
+
+    @Mock
+    private lateinit var firestoreDataRepository: FirestoreDataRepository
+    @Mock
+    private lateinit var connectivityRepository: ConnectivityRepository
 
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
     @get:Rule
@@ -89,7 +96,7 @@ class QuizViewModelTest {
                 "Le chevron", 2, 3, "Le chevreau/ La chevrette")
         )
         val mockFirestoreDataRepository = mock<FirestoreDataRepository> {
-            onBlocking { getListOfQuestion(listOfId) } doReturn list
+            onBlocking { getListOfQuestion(arrayListOf(2,3)) } doReturn list
         }
         viewModel = QuizViewModel(mockFirestoreDataRepository, connectivityRepository)
         viewModel.getListOfQuestion(listOfId)

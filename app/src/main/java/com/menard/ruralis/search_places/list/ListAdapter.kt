@@ -1,4 +1,4 @@
-package com.menard.ruralis.search_places
+package com.menard.ruralis.search_places.list
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.menard.ruralis.R
+import com.menard.ruralis.search_places.PlaceForList
 import com.menard.ruralis.utils.getProgressDrawableSpinner
 import com.menard.ruralis.utils.loadPlacePhoto
 import kotlin.collections.ArrayList
@@ -24,7 +25,9 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
         val view = inflater.inflate(R.layout.item_list, parent, false)
         onItemClickListener = listener
         mContext = context
-        return ListViewHolder(view)
+        return ListViewHolder(
+            view
+        )
     }
 
     fun setData(newData: List<PlaceForList>){
@@ -61,7 +64,6 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
                     Glide.with(itemView.context).load(R.drawable.goat_closed).into(openNowLogo)
                 }
             }
-
             if(placeForList.fromRuralis){
                 itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.items_from_ruralis))
                 if (placeForList.photos != null){
@@ -69,6 +71,7 @@ class ListAdapter(private val listener: OnItemClickListener, private val context
                 }else {
                     photo.loadPlacePhoto(null, R.drawable.no_image_available_64, getProgressDrawableSpinner(context))
                 }
+
             }else{
                 itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.items_from_maps))
                 if (placeForList.photos != null) {

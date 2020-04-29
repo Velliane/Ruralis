@@ -3,13 +3,17 @@ package com.menard.ruralis
 import android.content.Context
 import android.location.Location
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
+import com.menard.ruralis.data.ConnectivityRepository
 import com.menard.ruralis.data.FirestoreDataRepository
+import com.menard.ruralis.data.FusedLocationRepository
 import com.menard.ruralis.data.GoogleApiRepository
 import com.menard.ruralis.search_places.PlaceForList
 import com.menard.ruralis.search_places.list.ListViewModel
 import com.menard.ruralis.utils.getOrAwaitValue
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +48,12 @@ class ListViewModelTest {
 
     @Mock
     private lateinit var firestoreDataRepository: FirestoreDataRepository
+    @Mock
+    private lateinit var mockConnectivityRepository: ConnectivityRepository
+    @Mock
+    private lateinit var fusedLocationRepository: FusedLocationRepository
 
+    private val location = Location("")
 
     @Rule
     @JvmField
@@ -59,6 +68,8 @@ class ListViewModelTest {
     fun setUp() = runBlockingTest {
         MockitoAnnotations.initMocks(this)
         Dispatchers.setMain(testCoroutineDispatcher)
+        location.latitude = 45.6541
+        location.longitude = 5.65475
     }
 
     @After
@@ -68,29 +79,15 @@ class ListViewModelTest {
     }
 
     @Test
-    fun getOnlyPlacesFromGoogle() = runBlockingTest {
-        val list = arrayListOf(
-            PlaceForList("01", "La ruche", "HONEY", "img.fr", "46.23564", "5.32145", false),
-            PlaceForList("02", "La ferme de ma GM", "DAIRY", "65/image.fr", "46.35467", "5.65448", false)
-        )
-        val mockGoogleApiRepository = mock<GoogleApiRepository> {
-            onBlocking {
-                getTextSearch(context, "46.66554,5.65446", "6000", "XXXX", "XX") } doReturn list
-        }
-        viewModel = ListViewModel(context, mockGoogleApiRepository, firestoreDataRepository)
-
-        viewModel.getTextSearch("46.66554,5.65446", "6000", "producteur", "XXXX")
-        val listPlaceFound = viewModel.placeTextSearchListLiveData.getOrAwaitValue()
-
-        assertEquals("La ruche", listPlaceFound[0].name)
-        assertEquals("02", listPlaceFound[1].placeId)
-    }
-
-    @Test
     fun getOnlyPlacesFromFirestore() = runBlockingTest{
+        val mockConnectionLiveData = MutableLiveData<Boolean>()
+        mockConnectionLiveData.value = true
+        mockConnectivityRepository = mock {
+            onBlocking { connectivityLiveData } doReturn mockConnectionLiveData
+        }
         val list = arrayListOf(
-            PlaceForList("05", "EARL des Platanes", "MEAT", "694/img.fr", "46.23456", "5.32178", true),
-            PlaceForList("04", "La ferme", "EGG", "646/image.fr", "46.23567", "5.654445", true)
+            PlaceForList("05", "EARL des Platanes", "MEAT", "694/img.fr", "46.23456", "5.32178", "2 chemin des pâquerettes", true, true),
+            PlaceForList("04", "La ferme", "EGG", "646/image.fr", "46.23567", "5.654445","25 chemin des pâquerettes",  true, false)
         )
         val location = Location("")
         location.latitude = 46.66554
@@ -98,7 +95,7 @@ class ListViewModelTest {
         val mockFirestoreDataRepository = mock<FirestoreDataRepository>{
             onBlocking { getAllPlacesFromFirestore(location, "6000", context) } doReturn list
         }
-        viewModel = ListViewModel(context, googleApiRepository, mockFirestoreDataRepository)
+        viewModel = ListViewModel(fusedLocationRepository, mockConnectivityRepository, context, googleApiRepository, mockFirestoreDataRepository)
 
         viewModel.getPlacesFromFirestoreAccordingUserLocation(location, "6000")
         val listPlaceFound = viewModel.placeListLiveData.getOrAwaitValue()

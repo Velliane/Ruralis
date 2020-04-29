@@ -2,10 +2,12 @@ package com.menard.ruralis
 
 import android.content.Context
 import android.location.Location
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.menard.ruralis.add_places.DayEnum
 import com.menard.ruralis.utils.*
 import com.nhaarman.mockitokotlin2.whenever
 import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertFalse
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -13,7 +15,9 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
+import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
 import org.threeten.bp.Month
 
 class PlaceUtilsTest {
@@ -27,6 +31,7 @@ class PlaceUtilsTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+
     }
 
     @Test
@@ -69,30 +74,6 @@ class PlaceUtilsTest {
         val listOfOpenings = arrayListOf("Lundi : 9h-18h", "Mardi : 9h-18h", "Jeudi : Fermé")
         val string = transformListOfOpeningToString(listOfOpenings)
         assertEquals("Lundi : 9h-18h,Mardi : 9h-18h,Jeudi : Fermé", string)
-    }
-
-    @Test
-    fun testCloseDistanceToUser(){
-        val userLocation = Location("")
-        userLocation.latitude = 46.6286761
-        userLocation.longitude = 5.2374655
-        val location = Location("")
-        location.latitude = 46.629843
-        location.longitude = 5.226084
-
-        assertEquals( "881m", distanceToUser(location, userLocation))
-    }
-
-    @Test
-    fun testFarDistanceToUser(){
-        val userLocation = Location("")
-        userLocation.latitude = 46.6286761
-        userLocation.longitude = 5.2374655
-        val location = Location("")
-        location.latitude = 46.6301028
-        location.longitude = 5.223020300000001
-
-        assertEquals( "1,12km", distanceToUser(location, userLocation))
     }
 
 }

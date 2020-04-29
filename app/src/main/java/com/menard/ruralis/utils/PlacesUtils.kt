@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AlertDialog
+import androidx.room.util.StringUtil
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -19,22 +20,16 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.OnFailureListener
 import com.menard.ruralis.R
 import com.menard.ruralis.add_places.DayEnum
+import com.menard.ruralis.add_places.OpeningEnum
 import com.menard.ruralis.search_places.PlaceForList
 import com.menard.ruralis.search_places.map.MarkerTag
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
+import org.threeten.bp.ZoneOffset
 import org.threeten.bp.format.DateTimeFormatter
 import java.lang.StringBuilder
 import java.util.*
-
-fun distanceToUser(placeLocation: Location, userLocation: Location): String {
-    val realDistance = userLocation.distanceTo(placeLocation)
-
-    return if (realDistance >= 1000) {
-        String.format(Locale.getDefault(), "%.2f", realDistance / 1000) + "km"
-    } else {
-        (realDistance.toInt().toString()) + "m"
-    }
-}
+import kotlin.collections.ArrayList
 
 fun setMarker(place: PlaceForList, googleMap: GoogleMap, latLng: LatLng, type: String) {
     if (!place.fromRuralis) {
@@ -53,29 +48,6 @@ fun setMarker(place: PlaceForList, googleMap: GoogleMap, latLng: LatLng, type: S
         val marker = googleMap.addMarker(markerOptions)
         val markerTag = MarkerTag(place.placeId, place.fromRuralis, place.photos)
         marker.tag = markerTag
-    }
-}
-
-fun isInternetAvailable(context: Context): Boolean {
-    val isConnected: Boolean
-    val connectivityManager =
-        (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
-    val networkInfo = connectivityManager.activeNetworkInfo
-    isConnected = networkInfo != null && networkInfo.isConnected
-    return isConnected
-}
-
-fun onFailureListener(context: Context): OnFailureListener {
-    return OnFailureListener { e: Exception ->
-        Log.d("Error", e.localizedMessage!!)
-        val builder =
-            AlertDialog.Builder(context, R.style.AppTheme)
-        builder.setMessage(context.getString(R.string.error_firestore))
-            .setNegativeButton(
-                "Ok",
-                DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int -> }
-            )
-            .create().show()
     }
 }
 
@@ -154,4 +126,35 @@ fun ImageView.loadPlacePhoto(@Nullable url: String?, @Nullable int:Int?, progres
     }else{
         Glide.with(this.context).setDefaultRequestOptions(options).load(int).into(this)
     }
+}
+
+fun checkIfEstablishmentIsOpenNow(listOfOpenings: List<String>?, context: Context): Boolean {
+
+    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneOffset.UTC)
+    var isOpenNow= false
+    if(listOfOpenings == null || listOfOpenings.isEmpty()){
+        isOpenNow = false
+    }else{
+        val now = LocalDateTime.now()
+        val dayOfToday = now.dayOfWeek.toString()
+        listOfOpenings.forEach {
+            if (it.toLowerCase(Locale.ROOT).contains(context.getString(DayEnum.valueOf(dayOfToday.toUpperCase(Locale.ROOT)).res).toLowerCase(
+                    Locale.ROOT))){
+                val opening = it.substringBefore("/").substringAfter(": ")
+                val closing = it.substringAfter("/")
+                val openingTime = LocalTime.parse(opening, timeFormatter)
+                val closingTime = LocalTime.parse(closing, timeFormatter)
+                isOpenNow = openingTime.isBefore(now.toLocalTime()) && closingTime.isAfter(now.toLocalTime())
+            }
+        }
+    }
+    return isOpenNow
+}
+
+fun getListOfDay(context: Context): List<String>{
+    val list = ArrayList<String>()
+    for (day in OpeningEnum.values()){
+        list.add(context.getString(day.res))
+    }
+    return list
 }

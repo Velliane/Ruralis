@@ -60,7 +60,7 @@ class AddViewModelTest {
 
     @Test
     fun getPlaceFromFirestoreById(){
-        val place = PlaceDetailed("001", "Fruits et légumes", "La ferme", "6 impasse des Sables", arrayListOf("gr4552/image.fr"), "Du lundi au vendredi : 9h-18h", "maraicher.com", "0665364510", null, null, true)
+        val place = PlaceDetailed("001", "Bio","Fruits et légumes", "La ferme", "6 impasse des Sables" ,arrayListOf("gr4552/image.fr"), "Du lundi au vendredi : 9h-18h", "maraicher.com", "0665364510", null, null, true)
         val mockFirestoreDataRepository = mock<FirestoreDataRepository> {
             onBlocking { getPlaceDetailedById("001") } doReturn place
         }
@@ -74,21 +74,21 @@ class AddViewModelTest {
     @Test
     fun returnOpeningLiveData_WhenDayNull(){
         viewModel = AddViewModel(firestoreDataRepository, geocodeRepository, context)
-        val result = viewModel.addOpeningToRecyclerView(null, "8h-12h").getOrAwaitValue()
+        val result = viewModel.addOpeningToRecyclerView(null, "08:00", "12:00").getOrAwaitValue()
         assertEquals(null, result)
     }
 
     @Test
     fun returnOpeningLiveData_WhenHoursNull(){
         viewModel = AddViewModel(firestoreDataRepository, geocodeRepository, context)
-        val result = viewModel.addOpeningToRecyclerView("Lundi", null).getOrAwaitValue()
+        val result = viewModel.addOpeningToRecyclerView("Lundi", null, null).getOrAwaitValue()
         assertEquals(null, result)
     }
 
     @Test
     fun returnOpeningLiveData_WhenDayAndHoursAreSet(){
         viewModel = AddViewModel(firestoreDataRepository, geocodeRepository, context)
-        val result = viewModel.addOpeningToRecyclerView("Lundi", "8h-12h").getOrAwaitValue()
-        assertEquals("Lundi: 8h-12h", result)
+        val result = viewModel.addOpeningToRecyclerView("Lundi", "08:00", "12:00").getOrAwaitValue()
+        assertEquals("Lundi: 08:00/12:00", result)
     }
 }

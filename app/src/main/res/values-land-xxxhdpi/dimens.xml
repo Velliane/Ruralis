@@ -13,9 +13,13 @@
     <dimen name="welcome_text_login_size">23sp</dimen>
     <dimen name="info_text_login_size">20sp</dimen>
 
+    <!-- Home -->
     <dimen name="margin_home_btn">50dp</dimen>
     <dimen name="knows_it_txt_size">13sp</dimen>
     <dimen name="home_btn_txt_size">17sp</dimen>
     <dimen name="home_title_txt_size">25sp</dimen>
+    <dimen name="width_item_list_land">720dp</dimen>
+    <dimen name="height_item_list_land">240dp</dimen>
+    <dimen name="padding_progress_list_view">155dp</dimen>
 
 </resources>

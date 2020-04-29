@@ -83,8 +83,7 @@ class PhotoFragment : Fragment(), View.OnClickListener, PhotoAdapter.OnItemClick
         viewModel.getAllPhotosAccordingOrigin(
             place.fromRuralis,
             place.placeId!!,
-            place.photos!!,
-            requireContext()
+            place.photos!!
         )
     }
 
@@ -112,8 +111,10 @@ class PhotoFragment : Fragment(), View.OnClickListener, PhotoAdapter.OnItemClick
             dialog.progress = it
             if (it == 100) {
                 dialog.dismiss()
-                adapter.notifyDataSetChanged()
-                activity?.recreate()
+                viewModel.refreshListOfPhoto(placeDetailed.fromRuralis, placeDetailed.placeId!!, placeDetailed.photos!!)
+                viewModel.listPhotosLiveData.observe(this, Observer { list ->
+                        adapter.setData(list)
+                    })
             }
         })
     }

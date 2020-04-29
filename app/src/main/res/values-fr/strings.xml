@@ -60,19 +60,19 @@
     <string name="home_seach_btn">Rechercher un produit</string>
     <string name="home_quiz_btn">Tester mes connaissances</string>
     <string name="quiz_title_results">Résultats</string>
-    <string name="start_quiz_btn">Start Quiz</string>
+    <string name="start_quiz_btn">Lancer le quiz</string>
     <string name="home_title_knows_it">Le saviez-vous ?</string>
     <string name="cannot_modify">Cet établissement ne peut pas être modifié</string>
     <string name="add_save">SAUVEGARDER</string>
-    <string name="add_website">Website</string>
-    <string name="add_phone_number">Phone number</string>
+    <string name="add_website">Site internet</string>
+    <string name="add_phone_number">Numéro de téléphone</string>
     <string name="add_contact_info">Contact</string>
-    <string name="add_openings_btn_description">Add openings hours icon</string>
-    <string name="add_openings_hours">Hours</string>
-    <string name="add_openings_day">Day</string>
+    <string name="add_openings_btn_description">Icone d\'ajout d\'une horaire</string>
+    <string name="add_openings_hours">Heure</string>
+    <string name="add_openings_day">Jour</string>
     <string name="add_openings">Horaires</string>
-    <string name="add_address">Address</string>
-    <string name="add_name">Name</string>
+    <string name="add_address">Adresse</string>
+    <string name="add_name">Nom</string>
     <string name="add_info_text">Vous connaissez un lieu qui n\'est pas encore présent sur l\'application ? Remplissez le formulaire ci-dessous pour le partager avec les autres utilisateurs !</string>
     <string name="add_title">Ajouter un lieu</string>
 
@@ -86,7 +86,6 @@
     <string name="home_guide_title_4">Vos favoris</string>
     <string name="home_guide_text_4">Cette liste est pour l\'instant vide ! Mais vous pourrez ici voir apparaître vos producteurs favoris lorsque vous les aurez sélectionnée(cliquez pour continuer)</string>
 
-    <string name="main_guide_title_1"></string>
     <string name="next_question">Suivant</string>
     <string name="botoom_map">Carte</string>
     <string name="bottom_list">Liste</string>
@@ -95,8 +94,8 @@
     <string name="toolbar_modify">Modifier</string>
     <string name="nav_settings">Paramètres</string>
     <string name="nav_log_out">Déconnexion</string>
-    <string name="not_connected_error">Seems like you\'re not connected to internet. Check your connexion and refresh</string>
-    <string name="loading_questions">Chargement des questions...</string>
+    <string name="not_connected_error">On dirait que vous n\êtes pas connectée…vérifiez votre connexion et recommencez.</string>
+    <string name="loading_questions">Chargement des questions…</string>
     <string name="good_answer">Bravo</string>
     <string name="bad_answer">Faux !</string>
     <string name="login_welcome_txt">Bienvenue sur \nRuralis, mon panier fermier</string>
@@ -105,5 +104,38 @@
     <string name="list_distance">DISTANCE</string>
     <string name="add_tags">Tags</string>
     <string name="add_tags_info">Saisissez des mots-clefs pertinents sur l\'établissement (ex: fromage, bio, …) en les séparant par une virgule</string>
+    <string name="question">Question</string>
+    <string name="choice_one">Réponse un</string>
+    <string name="choice_two">Réponse deux</string>
+    <string name="choice_three">Réponse trois</string>
+
+    <!-- Openings -->
+    <string name="monday_am">Lundi matin</string>
+    <string name="monday_pm">Lundi après-midi</string>
+    <string name="tuesday_am">Mardi matin</string>
+    <string name="tuesday_pm">Mardi après-midi</string>
+    <string name="wednesday_am">Mercredi matin</string>
+    <string name="wednesday_pm">Mercredi après-midi</string>
+    <string name="thursday_am">Jeudi matin</string>
+    <string name="thursday_pm">Jeudi après-midi</string>
+    <string name="friday_am">Vendredi matin</string>
+    <string name="friday_pm">Vendredi après-midi</string>
+    <string name="saturday_am">Samedi matin</string>
+    <string name="saturday_pm">Samedi après-midi</string>
+    <string name="sunday_am">Dimanche matin</string>
+    <string name="sunday_pm">Dimanche après-midi</string>
+    <string name="establishment_succesfully_saved_snackbar">L\'établissement a bien été ajouté ! Il peut se passer quelques minutes avant qu\'il n\'apparaisse sur l\'application. Soyez patient !</string>
+    <string name="error_name">Merci d\'inscrire un nom</string>
+    <string name="error_address">Merci d\'inscrire une adresse</string>
+    <string name="tag_no_favorite">No favorite</string>
+    <string name="tag_favorite">Favorite</string>
+    <string name="search_input">Recherche par mots clef</string>
+    <string name="website">Site internet</string>
+    <string name="phone_number">Numéro de téléphone</string>
+    <string name="make_a_call">Appeler</string>
+    <string name="visit_website">Site internet</string>
+    <string name="address">Adresse</string>
+    <string name="name">Name</string>
+    <string name="default_param_btn">Rétablir les paramètres</string>
 
 </resources>

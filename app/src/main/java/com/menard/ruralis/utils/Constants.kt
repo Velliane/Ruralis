@@ -34,5 +34,15 @@ class Constants {
         const val INTENT_URI = "INTENT_URI"
         const val INTENT_EDIT = "INTENT_EDIT"
         const val INTENT_SCORE= "INTENT_SCORE"
+
+        //-- SAVE INSTANCE --//
+        const val KEY_QUESTION = "KEY_QUESTION"
+        const val KEY_CHOICE_ONE = "KEY_CHOICE_ONE"
+        const val KEY_CHOICE_TWO = "KEY_CHOICE_TWO"
+        const val KEY_CHOICE_THREE = "KEY_CHOICE_THREE"
+        const val KEY_SCORE = "KEY_SCORE"
+        const val KEY_INDEX = "KEY_INDEX"
+        const val KEY_CURRENT_QUESTION = "KEY_CURRENT_QUESTION"
+        const val KEY_LIST_OF_QUESTION = "KEY_LIST_OF_QUESTION"
     }
 }

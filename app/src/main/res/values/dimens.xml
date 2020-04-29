@@ -12,9 +12,18 @@
     <dimen name="logo_height">238dp</dimen>
     <dimen name="welcome_text_login_size">35sp</dimen>
     <dimen name="info_text_login_size">15sp</dimen>
+
+    <!-- Home -->
     <dimen name="margin_home_btn">10dp</dimen>
     <dimen name="knows_it_txt_size">13sp</dimen>
     <dimen name="home_btn_txt_size">13sp</dimen>
     <dimen name="home_title_txt_size">25sp</dimen>
+
+    <!-- Item list -->
+    <dimen name="with_item_list_portrait">385dp</dimen>
+    <dimen name="height_item_list_portrait">240dp</dimen>
+    <dimen name="width_item_list_land">720dp</dimen>
+    <dimen name="height_item_list_land">240dp</dimen>
+    <dimen name="padding_progress_list_view">155dp</dimen>
 
 </resources>

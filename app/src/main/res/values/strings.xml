@@ -111,6 +111,39 @@
     <string name="list_distance">DISTANCE</string>
     <string name="add_tags">Tags</string>
     <string name="add_tags_info">Saisissez des mots-clefs pertinents sur l\'établissement (ex: fromage, bio, ...)</string>
+    <string name="question">Question</string>
+    <string name="choice_one">Choice One</string>
+    <string name="choice_two">Choice Two</string>
+    <string name="choice_three">Choice Three</string>
+
+    <!-- Openings -->
+    <string name="monday_am">Monday am</string>
+    <string name="monday_pm">Monday pm</string>
+    <string name="tuesday_am">Tuesday am</string>
+    <string name="tuesday_pm">Tuesday pm</string>
+    <string name="wednesday_am">Wednesday am</string>
+    <string name="wednesday_pm">Wednesday pm</string>
+    <string name="thursday_am">Thursday am</string>
+    <string name="thursday_pm">Thursday pm</string>
+    <string name="friday_am">Friday am</string>
+    <string name="friday_pm">Friday pm</string>
+    <string name="saturday_am">Saturday am</string>
+    <string name="saturday_pm">Saturday pm</string>
+    <string name="sunday_am">Sunday am</string>
+    <string name="sunday_pm">Sunday pm</string>
+    <string name="establishment_succesfully_saved_snackbar">L\'établissement a bien été ajouté ! Il peut se passer quelques minutes avant qu\'il n\'apparaisse sur l\'application. Soyez patient !</string>
+    <string name="error_name">Please write a name</string>
+    <string name="error_address">Please write an address</string>
+    <string name="tag_no_favorite">No favorite</string>
+    <string name="tag_favorite">Favorite</string>
+    <string name="search_input">Recherche par mots clef</string>
+    <string name="website">Website</string>
+    <string name="phone_number">Phone number</string>
+    <string name="make_a_call">Make a call</string>
+    <string name="visit_website">Visit website</string>
+    <string name="address">Address</string>
+    <string name="name">Name</string>
+    <string name="default_param_btn">Rétablir les paramètres</string>
 
 
 </resources>

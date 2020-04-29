@@ -28,20 +28,8 @@ class Result {
     @SerializedName("place_id")
     @Expose
     var placeId: String? = null
-    @SerializedName("plus_code")
-    @Expose
-    var plusCode: PlusCode? = null
-    @SerializedName("rating")
-    @Expose
-    var rating: Float? = null
-    @SerializedName("reference")
-    @Expose
-    var reference: String? = null
     @SerializedName("types")
     @Expose
     var types: List<String>? = null
-    @SerializedName("user_ratings_total")
-    @Expose
-    var userRatingsTotal: Float? = null
 
 }

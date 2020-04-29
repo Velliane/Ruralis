@@ -27,7 +27,7 @@ import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
 import kotlinx.android.synthetic.main.activity_details.*
 
-class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, View.OnClickListener {
+class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, View.OnClickListener{
 
     /** Viewpager */
     private lateinit var viewPager: ViewPager2
@@ -78,10 +78,10 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
         viewModel.checkIfAlreadyInFavorites(placeId!!).observe(this, Observer {
             if (it) {
                 favoriteFab.setImageResource(R.drawable.star_clicked)
-                favoriteFab.tag = "Favorite"
+                favoriteFab.tag = getString(R.string.tag_favorite)
             } else {
                 favoriteFab.setImageResource(R.drawable.star_unclicked)
-                favoriteFab.tag = "No favorite"
+                favoriteFab.tag = getString(R.string.tag_no_favorite)
             }
         })
     }
@@ -131,14 +131,14 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
     override fun onClick(view: View?) {
         when (view) {
             favoriteFab -> {
-                if (favoriteFab.tag == "No favorite") {
+                if (favoriteFab.tag == getString(R.string.tag_no_favorite)) {
                     viewModel.addToFavorites(placeId, fromRuralis, photoUri, details_name.text.toString())
                     favoriteFab.setImageResource(R.drawable.star_clicked)
-                    favoriteFab.tag = "Favorite"
+                    favoriteFab.tag = getString(R.string.tag_favorite)
                 } else {
                     viewModel.deleteFromFavorites(placeId!!)
                     favoriteFab.setImageResource(R.drawable.star_unclicked)
-                    favoriteFab.tag = "No favorite"
+                    favoriteFab.tag = getString(R.string.tag_no_favorite)
                 }
             }
         }
@@ -147,7 +147,7 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        placeId = data?.getStringExtra("New place id")
+        placeId = data?.getStringExtra(Constants.INTENT_EDIT)
         if (placeId != null) {
             viewModel.getPlaceFromFirestoreById(placeId)
             viewModel.placeLiveData.observe(this, Observer {
@@ -158,15 +158,15 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
-        TODO("Not yet implemented")
+        //
     }
 
     override fun onTabUnselected(tab: TabLayout.Tab?) {
-        TODO("Not yet implemented")
+        //
     }
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
-        TODO("Not yet implemented")
+        //
     }
 
 }

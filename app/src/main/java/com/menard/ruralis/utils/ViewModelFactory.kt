@@ -19,7 +19,7 @@ import com.menard.ruralis.search_places.list.ListViewModel
 import com.menard.ruralis.search_places.map.MapViewModel
 import java.lang.IllegalArgumentException
 
-class ViewModelFactory(private val context: Context, private val highScoreRepository: HighScoreRepository, private val connectivityRepository: ConnectivityRepository, private val geocodeRepository: GeocodeRepository, private val favoritesDataRepository: FavoritesDataRepository, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository, private val knowsItRepository: KnowsItRepository) : ViewModelProvider.Factory {
+class ViewModelFactory(private val context: Context, private val fusedLocationRepository: FusedLocationRepository, private val highScoreRepository: HighScoreRepository, private val connectivityRepository: ConnectivityRepository, private val geocodeRepository: GeocodeRepository, private val favoritesDataRepository: FavoritesDataRepository, private val googleApiRepository: GoogleApiRepository, private val firestoreDataRepository: FirestoreDataRepository, private val knowsItRepository: KnowsItRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
@@ -53,10 +53,10 @@ class ViewModelFactory(private val context: Context, private val highScoreReposi
                 ) as T
             }
             modelClass.isAssignableFrom(ListViewModel::class.java) -> {
-                return ListViewModel(connectivityRepository, context, googleApiRepository, firestoreDataRepository) as T
+                return ListViewModel(fusedLocationRepository, connectivityRepository, context, googleApiRepository, firestoreDataRepository) as T
             }
             modelClass.isAssignableFrom(MapViewModel::class.java) -> {
-                return MapViewModel(context, googleApiRepository, firestoreDataRepository) as T
+                return MapViewModel(fusedLocationRepository, connectivityRepository, context, googleApiRepository, firestoreDataRepository) as T
             }
             modelClass.isAssignableFrom(PhotosViewModel::class.java) -> {
                 return PhotosViewModel(firestoreDataRepository) as T

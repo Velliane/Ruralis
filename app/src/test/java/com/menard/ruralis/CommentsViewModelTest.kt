@@ -73,7 +73,7 @@ class CommentsViewModelTest {
             onBlocking { getComments("001", "***", "###") } doReturn comments
         }
         viewModel = CommentsViewModel(mockFirestoreDataRepository, mockGoogleApiRepository)
-        viewModel.getCommentsOfPlace("001", true, "***", "###")
+        viewModel.getCommentsOfPlace("001", false, "***", "###")
         val listFound = viewModel.allCommentsLiveData.getOrAwaitValue()
 
         assertEquals(1, listFound.size)

@@ -1,5 +1,6 @@
 package com.menard.ruralis.add_places
 
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -10,16 +11,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import com.hootsuite.nachos.chip.ChipInfo
 import com.hootsuite.nachos.terminator.ChipTerminatorHandler
-import com.hootsuite.nachos.tokenizer.ChipTokenizer
 import com.menard.ruralis.R
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
+import com.menard.ruralis.utils.getListOfDay
 import kotlinx.android.synthetic.main.activity_add.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -84,7 +86,7 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
                     viewModel.savePlace(id, viewModel.formatListOfTags(edit_tags.chipValues), type, name, address, listOfOpenings, website, phoneNumber, isEdit, "country:FR", resources.getString(R.string.api_key_google))
                     if (isEdit) {
                         val intent = Intent()
-                        intent.putExtra("New place id", id)
+                        intent.putExtra(Constants.INTENT_EDIT, id)
                         setResult(5, intent)
                         finish()
                     } else {
@@ -99,33 +101,53 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
                                 showLongSnackBar()
                             }
                         })
-
                     }
                 } else {
                     if (add_name.text.toString() == "") {
-                        add_name.error = "Please write a name"
+                        add_name.error = getString(R.string.error_name)
                     }
                     if (add_address.text.toString() == "") {
-                        add_address.error = "Please write an address"
+                        add_address.error = getString(R.string.error_address)
                     }
                 }
             }
             add_opening_btn -> {
                 addOpeningsToRecyclerView()
             }
+            opening_hours_close_edit -> {
+                getTimeFromTimePicker(opening_hours_close_edit)
+            }
+            opening_hours_edit -> {
+                getTimeFromTimePicker(opening_hours_edit)
+            }
         }
     }
+
+    /**
+     * Open DatePickerDialog to let user choose a date for
+     * createdDate and soldDate
+     */
+    private fun getTimeFromTimePicker(view: TextView) {
+        val calendar = Calendar.getInstance()
+        val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            calendar.set(Calendar.HOUR_OF_DAY, hour)
+            calendar.set(Calendar.MINUTE, minute)
+            view.text = SimpleDateFormat("HH:mm").format(calendar.time)
+        }
+        TimePickerDialog(this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
+}
+
 
     private fun checkRequiredInfo(): Boolean {
         return add_name.text.toString() != "" && add_address.text.toString() != ""
     }
 
     private fun addOpeningsToRecyclerView() {
-        viewModel.addOpeningToRecyclerView(opening_day_edit.text.toString(), opening_hours_edit.text.toString())
+        viewModel.addOpeningToRecyclerView(new_opening_day.selectedItem.toString(), opening_hours_edit.text.toString(), opening_hours_close_edit.text.toString())
             .observe(this, Observer {
                 if (it == null) {
-                    new_opening_day.error = "Please write a day"
-                    new_opening_hours.error = "Please write an hour"
+                    new_opening_hours_close.error = "Please write a closing house"
+                    new_opening_hours_open.error = "Please write an opening hour"
                 } else {
                     listOfOpenings.add(it)
                     openingsAdapter.setData(listOfOpenings)
@@ -136,15 +158,18 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun clearErrorAndEditText() {
-        opening_day_edit.text?.clear()
         opening_hours_edit.text?.clear()
-        new_opening_day.isErrorEnabled = false
-        new_opening_hours.isErrorEnabled = false
+        new_opening_hours_open.isErrorEnabled = false
+        opening_hours_close_edit.text?.clear()
+        new_opening_hours_close.isErrorEnabled = false
     }
 
     private fun bindViews() {
         add_opening_btn.setOnClickListener(this)
         add_save_btn.setOnClickListener(this)
+        opening_hours_edit.setOnClickListener(this)
+        opening_hours_close_edit.setOnClickListener(this)
+        new_opening_day.adapter = OpeningsAdapter(this, getListOfDay(this))
         edit_tags.addChipTerminator(',', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_ALL)
         openingsList = findViewById(R.id.add_opening_recycler_view)
         openingsList.layoutManager = LinearLayoutManager(this)
@@ -155,15 +180,15 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showLongSnackBar(){
-        val snackbar = Snackbar.make(
+        val snackBar = Snackbar.make(
             container,
-            "L'établissement a bien été ajouté ! Il peut se passer quelques minutes avant qu'il n'apparaisse sur l'application. Soyez patient !",
+            getString(R.string.establishment_succesfully_saved_snackbar),
             Snackbar.LENGTH_INDEFINITE)
-        val view = snackbar.view
+        val view = snackBar.view
         val textView =
             view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
         textView.maxLines = 4
-        snackbar.show()
+        snackBar.show()
     }
 
     override fun onBackPressed() {

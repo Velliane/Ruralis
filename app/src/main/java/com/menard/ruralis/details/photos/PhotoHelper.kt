@@ -3,6 +3,7 @@ package com.menard.ruralis.details.photos
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.menard.ruralis.utils.Constants
 import kotlinx.coroutines.tasks.await
@@ -20,5 +21,9 @@ open class PhotoHelper {
 
     fun getAllPhotosById(id: String): Task<QuerySnapshot> {
         return getPhotosCollection().whereEqualTo("place_id", id).get()
+    }
+
+    fun getPhotosInRealTime(id: String): Query {
+        return getPhotosCollection().whereEqualTo("place_id", id)
     }
 }

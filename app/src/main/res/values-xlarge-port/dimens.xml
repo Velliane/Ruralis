@@ -16,6 +16,10 @@
     <dimen name="welcome_text_login_size">35sp</dimen>
     <dimen name="info_text_login_size">29sp</dimen>
 
+    <!-- Item list -->
+    <dimen name="with_item_list_portrait">385dp</dimen>
+    <dimen name="height_item_list_portrait">240dp</dimen>
+    <dimen name="padding_progress_list_view">255dp</dimen>
 
 
 </resources>

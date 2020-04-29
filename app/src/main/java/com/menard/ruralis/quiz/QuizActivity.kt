@@ -1,9 +1,9 @@
 package com.menard.ruralis.quiz
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import cn.refactor.lib.colordialog.PromptDialog
@@ -33,11 +33,26 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         choice_three_btn.tag = 3
         choice_three_btn.setOnClickListener(this)
 
+
         val viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QuizViewModel::class.java)
+        getSaveInstanceState(savedInstanceState)
+    }
 
-        progressBar.show(this, getString(R.string.loading_questions))
-        getListOfQuestion()
+    private fun getSaveInstanceState(savedInstanceState: Bundle?) {
+        if(savedInstanceState != null){
+            quiz_question.text = savedInstanceState.getCharSequence(Constants.KEY_QUESTION)
+            choice_one_btn.text = savedInstanceState.getCharSequence(Constants.KEY_CHOICE_ONE)
+            choice_two_btn.text = savedInstanceState.getCharSequence(Constants.KEY_CHOICE_TWO)
+            choice_three_btn.text = savedInstanceState.getCharSequence(Constants.KEY_CHOICE_THREE)
+            score = savedInstanceState.getInt(Constants.KEY_SCORE)
+            questionIndex = savedInstanceState.getInt(Constants.KEY_INDEX)
+            currentQuestion = savedInstanceState.getSerializable(Constants.KEY_CURRENT_QUESTION) as Question
+            listOfQuestion = savedInstanceState.getSerializable(Constants.KEY_LIST_OF_QUESTION) as List<Question?>
+        }else{
+            progressBar.show(this, getString(R.string.loading_questions))
+            getListOfQuestion()
+        }
     }
 
     private fun getListOfQuestion(){
@@ -99,4 +114,15 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         dialog.show()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putCharSequence(Constants.KEY_QUESTION, quiz_question.text)
+        outState.putCharSequence(Constants.KEY_CHOICE_ONE, choice_one_btn.text)
+        outState.putCharSequence(Constants.KEY_CHOICE_TWO, choice_two_btn.text)
+        outState.putCharSequence(Constants.KEY_CHOICE_THREE, choice_three_btn.text)
+        outState.putSerializable(Constants.KEY_CURRENT_QUESTION, currentQuestion)
+        outState.putInt(Constants.KEY_SCORE, score)
+        outState.putInt(Constants.KEY_INDEX, questionIndex)
+        outState.putSerializable(Constants.KEY_LIST_OF_QUESTION, arrayListOf(listOfQuestion))
+    }
 }

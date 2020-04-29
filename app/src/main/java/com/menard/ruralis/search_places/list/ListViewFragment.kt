@@ -5,24 +5,19 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.menard.ruralis.BaseFragment
 import com.menard.ruralis.R
 import com.menard.ruralis.details.DetailsActivity
-import com.menard.ruralis.search_places.ListAdapter
 import com.menard.ruralis.search_places.textsearch_model.Result
 import com.menard.ruralis.utils.Constants
 import com.menard.ruralis.utils.Injection
@@ -32,10 +27,6 @@ import kotlinx.android.synthetic.main.fragment_list_view.view.*
 
 class ListViewFragment : BaseFragment(),
     ListAdapter.OnItemClickListener, View.OnClickListener {
-
-
-    /** FusedLocation */
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     /** Places Client */
     private lateinit var placesClient: PlacesClient
@@ -62,24 +53,17 @@ class ListViewFragment : BaseFragment(),
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_list_view, container, false)
         setHasOptionsMenu(true)
         bindViews(view)
         //-- Shared Preferences --//
-        sharedPreferences =
-            activity!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+        sharedPreferences = activity!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
         fromMaps = sharedPreferences.getBoolean(Constants.PREF_SEARCH_FROM_MAPS, true)
         radius = sharedPreferences.getString(Constants.PREF_SEARCH_AROUND, "50")
         //-- Places SDK initialisation --//
         Places.initialize(requireActivity(), context!!.resources.getString(R.string.api_key_google))
         placesClient = Places.createClient(requireActivity())
-        //-- Location --//
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         view.list_progress.visibility = View.VISIBLE
         //-- Show Places --//
         if (checkPermissions()) {
@@ -96,14 +80,12 @@ class ListViewFragment : BaseFragment(),
 
     private fun bindViews(view: View) {
         listResult = ArrayList()
-        view.fragment_list_recycler_view.addItemDecoration(
-            DividerItemDecoration(
-                activity,
-                DividerItemDecoration.HORIZONTAL
-            )
-        )
+        view.fragment_list_recycler_view.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL))
         view.fragment_list_recycler_view.layoutManager = LinearLayoutManager(activity)
-        adapter = ListAdapter(this, requireContext())
+        adapter = ListAdapter(
+            this,
+            requireContext()
+        )
         view.fragment_list_recycler_view.adapter = adapter
         textSearch = view.findViewById(R.id.edit_search)
         view.edit_search.addTextChangedListener {
@@ -136,27 +118,14 @@ class ListViewFragment : BaseFragment(),
     }
 
     private fun getUserLocation() {
-        //-- Create a LocationRequest --//
-        val locationRequest = LocationRequest()
-        locationRequest.interval = 10000
-        locationRequest.fastestInterval = 10000
-        locationRequest.smallestDisplacement = 50F
-        locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-        fusedLocationProviderClient.requestLocationUpdates(
-            locationRequest, object : LocationCallback() {
-                override fun onLocationResult(locationResult: LocationResult?) {
-                    val latitude = locationResult!!.lastLocation.latitude
-                    val longitude = locationResult.lastLocation.longitude
-                    //-- Create Location object to get distance between place and user --//
-                    val location = Location("")
-                    location.latitude = latitude
-                    location.longitude = longitude
-                    //-- Search places --//
-                    viewModel.initViewModel("$latitude,$longitude", radius + "000", Constants.QUERY_GM, location, fromMaps)
-                    showAllPlaces()
-                }
-            }, null
-        )
+        var location: Location?
+        viewModel.locationLiveData.observe(this, Observer {
+            if(it != null){
+                location = it
+                viewModel.initViewModel(radius + "000", Constants.QUERY_GM, fromMaps, location)
+                showAllPlaces()
+            }
+        })
     }
 
     /**

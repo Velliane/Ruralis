@@ -45,13 +45,13 @@ class AddViewModel(
         return list
     }
 
-    fun addOpeningToRecyclerView(day: String?, hours: String?): LiveData<String?> {
+    fun addOpeningToRecyclerView(day: String?, hours: String?, closeHouse: String?): LiveData<String?> {
         val openingLiveData = MutableLiveData<String>()
-        return if (day == "" || hours == "" || day == null || hours == null) {
+        return if (day == "" || hours == "" || day == null || hours == null || closeHouse == null) {
             openingLiveData.value = null
             openingLiveData
         } else {
-            val opening = "$day: $hours"
+            val opening = "$day: $hours/$closeHouse"
             openingLiveData.value = opening
             openingLiveData
         }

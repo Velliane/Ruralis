@@ -28,8 +28,6 @@ class PhotosViewModel(private val firestoreDataRepository: FirestoreDataReposito
     private val isSelectedLiveData = MutableLiveData<String>()
     val progressUploadLiveData = MutableLiveData<Int>()
 
-    val photoHelper = PhotoHelper()
-
     init {
         listPhotosLiveData.addSource(allPhotosLiveData, Observer {
             combineLiveData(it, isSelectedLiveData.value)
@@ -73,22 +71,11 @@ class PhotosViewModel(private val firestoreDataRepository: FirestoreDataReposito
     }
 
 
-    fun getAllPhotosAccordingOrigin(fromRuralis: Boolean, id: String, listUri: List<String?>, context: Context) {
+    fun getAllPhotosAccordingOrigin(fromRuralis: Boolean, id: String, listUri: List<String?>) {
         if (fromRuralis) {
             viewModelScope.launch(Dispatchers.IO) {
-                val listOfPhotos = ArrayList<Photo>()
-                photoHelper.getAllPhotosById(id).addOnSuccessListener {
-                    it?.documents?.forEach { document ->
-                        val photo = Photo(
-                            document.getString("uri"),
-                            document.id,
-                            document.getBoolean("selected"),
-                            document.getString("place_id")
-                        )
-                        listOfPhotos.add(photo)
-                    }
-                    allPhotosLiveData.postValue(listOfPhotos)
-                }
+                val listOfPhotos = firestoreDataRepository.getPhotosInRealTime(id)
+                allPhotosLiveData.postValue(listOfPhotos)
             }
         } else {
             val listFromMaps = ArrayList<Photo>()
@@ -104,6 +91,10 @@ class PhotosViewModel(private val firestoreDataRepository: FirestoreDataReposito
 
     fun photoClicked(uri: String?) {
         isSelectedLiveData.value = uri
+    }
+
+    fun refreshListOfPhoto(fromRuralis: Boolean, id: String, listUri: List<String?>){
+        getAllPhotosAccordingOrigin(fromRuralis, id, listUri)
     }
 
 }

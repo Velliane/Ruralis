@@ -46,7 +46,6 @@ class ContactFragment : Fragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
-        //address = arguments!!.getString("address")!!
         placeDetailed = arguments!!.getSerializable("place") as PlaceDetailed
         addressTxtView = view.findViewById(R.id.details_address)
         makeCallBtn = view.findViewById(R.id.details_make_call)
@@ -65,8 +64,13 @@ class ContactFragment : Fragment(), View.OnClickListener {
         addressTxtView.text = placeDetailed.address
         makeCallBtn.tag = placeDetailed.phone_number
         visitWebsiteBtn.tag = placeDetailed.website
-        phoneNbr.text = placeDetailed.phone_number
-        website.text = placeDetailed.website
+        if(placeDetailed.phone_number != "" || placeDetailed.phone_number != "null") {
+            phoneNbr.text = placeDetailed.phone_number
+        }
+        if(placeDetailed.website != "" || placeDetailed.website != "null"){
+            website.text = placeDetailed.website
+        }
+
         val key = context!!.resources.getString(R.string.api_key_google)
         val url = "https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=300x300&maptype=roadmap\n" +
                 "&key=$key&markers=color:blue%7Clabel:S%7C${placeDetailed.latitude},${placeDetailed.longitude}"

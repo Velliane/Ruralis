@@ -8,14 +8,11 @@ import android.net.ConnectivityManager
 import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkInfo
-import android.net.NetworkRequest
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.menard.ruralis.BuildConfig
-import com.menard.ruralis.utils.ConnectionModel
 
 
 class ConnectivityRepository(private val context: Context) {
@@ -73,5 +70,6 @@ class ConnectivityRepository(private val context: Context) {
 
         context.registerReceiver(networkReceiver, filter)
     }
+
 
 }

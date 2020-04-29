@@ -10,6 +10,7 @@ data class PlaceForList (
     val longitude: String? = "",
     val address: String = "",
     val fromRuralis: Boolean = false,
-    val openNow: Boolean? = false
+    val openNow: Boolean? = false,
+    val tags: String = ""
 
 )
