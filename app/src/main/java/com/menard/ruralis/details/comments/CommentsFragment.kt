@@ -77,15 +77,15 @@ class CommentsFragment : Fragment(), View.OnClickListener {
         val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
         comment.layoutParams = lp
         dialog.setView(comment)
-        dialog.setTitle("Rédiger un commentaire")
-        dialog.setPositiveButton("Sauvegarder"){ dialog, _ ->
+        dialog.setTitle(getString(R.string.write_comments))
+        dialog.setPositiveButton(getString(R.string.save)){ dialog, _ ->
             if(comment.text.toString() != "") {
                 commentsViewModel.addComment(placeDetailed.placeId, comment.text.toString())
                 updateViews(placeDetailed)
                 dialog.dismiss()
             }
         }
-        dialog.setNegativeButton("Annuler"){ dialog, _ ->
+        dialog.setNegativeButton(getString(R.string.cancel)){ dialog, _ ->
             dialog.dismiss()
         }
         dialog.show()

@@ -65,15 +65,15 @@ class QuizHomeActivity : AppCompatActivity(), View.OnClickListener {
         }else{
             score = data.getIntExtra(Constants.INTENT_SCORE, 0)
             val alertDialog = AlertDialog.Builder(this)
-            alertDialog.setTitle("Résultat")
-            alertDialog.setMessage("Vous avez obtenu un résultat de $score/10. Saisissez un nom puis validez pour sauvegarder votre score")
+            alertDialog.setTitle(getString(R.string.result))
+            alertDialog.setMessage(getString(R.string.score, score))
             alertDialog.setCancelable(false)
             val editText = EditText(this)
             val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
             lp.setMargins(15, 25, 15, 10)
             editText.layoutParams = lp
             alertDialog.setView(editText)
-            alertDialog.setPositiveButton("Valider") { dialog, _ ->
+            alertDialog.setPositiveButton(getString(R.string.save)) { dialog, _ ->
                 val player: String = if(editText.text.toString() != ""){
                     editText.text.toString()
                 }else{
@@ -85,7 +85,7 @@ class QuizHomeActivity : AppCompatActivity(), View.OnClickListener {
                 dialog.dismiss()
                 restartActivity()
             }
-            alertDialog.setNegativeButton("Annuler"){ dialog, which ->
+            alertDialog.setNegativeButton(getString(R.string.cancel)){ dialog, which ->
                 dialog.dismiss()
             }
             alertDialog.create().show()
