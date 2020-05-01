@@ -81,12 +81,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun updateFavorites() {
-        viewModel.showAllFavorites().observe(this, Observer {
-            if (it != null) {
+        viewModel.showAllFavorites().observe(this, Observer {list ->
+            if (list.isNotEmpty() || list != null) {
                 no_favorites.visibility = View.INVISIBLE
                 home_list_fav.visibility = View.VISIBLE
                 home_list_fav.adapter = adapter
-                adapter.setData(it)
+                adapter.setData(list)
                 adapter.notifyDataSetChanged()
             }else{
                 no_favorites.visibility = View.VISIBLE

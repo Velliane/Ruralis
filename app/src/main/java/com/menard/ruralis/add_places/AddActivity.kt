@@ -61,6 +61,7 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
         contact_phone_number.setText(placeDetailed.phone_number)
         if (placeDetailed.openingsHours != null) {
             val list = placeDetailed.openingsHours.split(",").toTypedArray()
+            listOfOpenings.addAll(list)
             openingsAdapter.setData(list.asList())
         }
         if(placeDetailed.tags != null || placeDetailed.tags != ""){

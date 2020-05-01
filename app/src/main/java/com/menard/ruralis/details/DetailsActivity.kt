@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -60,6 +61,7 @@ class DetailsActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Vi
         getPlaceFromViewModel()
         setFavorites()
     }
+
 
     private fun getPlaceFromViewModel() {
         viewModel.getPlaceAccordingItsOrigin(fromRuralis, placeId!!, getString(R.string.details_field), getString(R.string.api_key_google)

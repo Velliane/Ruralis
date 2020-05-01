@@ -43,7 +43,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/fragment_home_title"
-                    android:text="KNOWS IT"
+                    android:text="@string/knows_it"
                     android:paddingTop="10dp"
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
@@ -61,7 +61,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/knows_it_txt"
-                    app:layout_constraintBottom_toTopOf="@id/home_btn_container"/>
+                    app:layout_constraintBottom_toTopOf="@id/home_btn_container"
+                    android:contentDescription="@string/knows_it_image_description" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/home_btn_container"

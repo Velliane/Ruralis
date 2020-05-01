@@ -57,7 +57,7 @@
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="header_name">Nom</string>
-    <string name="home_seach_btn">Rechercher un produit</string>
+    <string name="home_seach_btn">Rechercher un producteur</string>
     <string name="home_quiz_btn">Tester mes connaissances</string>
     <string name="quiz_title_results">Résultats</string>
     <string name="start_quiz_btn">Lancer le quiz</string>
@@ -140,7 +140,7 @@
     <string name="write_comments">Rédiger un commentaire</string>
     <string name="save">Sauvegarder</string>
     <string name="cancel">Annuler</string>
-    <string name="score">Vous avez obtenu un résultat de %1$i/10. Saisissez un nom puis validez pour sauvegarder votre score"</string>
+    <string name="score">Vous avez obtenu un résultat de %1$d/10. Saisissez un nom puis validez pour sauvegarder votre score"</string>
     <string name="result">Résultat</string>
 
 </resources>

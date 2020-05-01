@@ -63,11 +63,11 @@
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="header_name">Nom</string>
-    <string name="home_seach_btn">Rechercher un produit</string>
-    <string name="home_quiz_btn">Tester mes connaissances</string>
-    <string name="quiz_title_results">Résultats</string>
+    <string name="home_seach_btn">Find an farmer</string>
+    <string name="home_quiz_btn">Test my knowledge</string>
+    <string name="quiz_title_results">HighScore</string>
     <string name="start_quiz_btn">Start Quiz</string>
-    <string name="home_title_knows_it">Le saviez-vous ?</string>
+    <string name="home_title_knows_it">Do you know it ?</string>
     <string name="cannot_modify">Cet établissement ne peut pas être modifié</string>
     <string name="add_save">SAUVEGARDER</string>
     <string name="add_website">Website</string>
@@ -146,7 +146,10 @@
     <string name="write_comments">Write a comment</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
-    <string name="score">Your score is %1$i/10. Write your name and save it</string>
+    <string name="score">Your score is %1$d/10. Write your name and save it</string>
     <string name="result">Results</string>
+    <string name="example">Maraîcher</string>
+    <string name="knows_it_image_description">Know\'s it\'s image</string>
+    <string name="knows_it">KNOWS IT</string>
 
 </resources>

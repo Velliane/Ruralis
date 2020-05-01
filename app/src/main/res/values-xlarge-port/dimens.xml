@@ -20,6 +20,9 @@
     <dimen name="with_item_list_portrait">385dp</dimen>
     <dimen name="height_item_list_portrait">240dp</dimen>
     <dimen name="padding_progress_list_view">255dp</dimen>
+    <dimen name="height_name_details">200dp</dimen>
+    <dimen name="margin_bot_fab_favorites">200dp</dimen>
+    <dimen name="size_name_details">35sp</dimen>
 
 
 </resources>

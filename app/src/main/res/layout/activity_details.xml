@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
 
@@ -33,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
-            android:layout_marginBottom="200dp"
+            android:layout_marginBottom="@dimen/margin_bot_fab_favorites"
             android:layout_marginEnd="5dp"
             android:background="@android:color/white"
             android:src="@drawable/star_unclicked"
@@ -44,12 +45,12 @@
         <TextView
             android:id="@+id/details_name"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/height_name_details"
             android:background="@color/colorPrimary"
             android:layout_marginTop="?actionBarSize"
             android:text="@string/name"
             android:gravity="center_vertical|center_horizontal"
-            android:textSize="35sp"
+            android:textSize="@dimen/size_name_details"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -67,6 +68,7 @@
             android:id="@+id/details_fragments_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layoutDirection="ltr"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
