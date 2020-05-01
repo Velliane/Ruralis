@@ -14,7 +14,7 @@ import com.menard.ruralis.add_places.OpeningsListAdapter
 import com.menard.ruralis.add_places.PlaceDetailed
 import com.menard.ruralis.add_places.TypesEnum
 
-class InfosFragment: Fragment() {
+class InfosFragment: Fragment(), OpeningsListAdapter.OnItemClickListener {
 
     /** Views */
     private lateinit var typeTextView: TextView
@@ -48,7 +48,7 @@ class InfosFragment: Fragment() {
         }else{
             typeTextView.text = placeDetailed.type
         }
-        val adapter = OpeningsListAdapter(requireContext())
+        val adapter = OpeningsListAdapter(requireContext(), this, false)
         openingsRecyclerView.adapter = adapter
         if(placeDetailed.openingsHours != null) {
             val list = placeDetailed.openingsHours!!.split(",").toTypedArray()
@@ -70,5 +70,9 @@ class InfosFragment: Fragment() {
     override fun onDestroyView() {
         Log.d("InfoFragment", "onDestroyView()")
         super.onDestroyView()
+    }
+
+    override fun onItemClicked(opening: String) {
+        //
     }
 }

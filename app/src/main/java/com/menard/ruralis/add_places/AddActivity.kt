@@ -23,14 +23,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddActivity : AppCompatActivity(), View.OnClickListener {
+class AddActivity : AppCompatActivity(), View.OnClickListener, OpeningsListAdapter.OnItemClickListener {
 
     /** ViewModel */
     private lateinit var viewModel: AddViewModel
     private lateinit var spinnerAdapter: TypeSpinnerAdapter
     /** Opening Hours Views */
     private lateinit var openingsList: RecyclerView
-    private val openingsAdapter = OpeningsListAdapter(this)
+    private val openingsAdapter = OpeningsListAdapter(this, this, true)
     private var listOfOpenings = ArrayList<String>()
 
     private var isEdit: Boolean = false
@@ -194,5 +194,10 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         super.onBackPressed()
+    }
+
+    override fun onItemClicked(opening: String) {
+        listOfOpenings.remove(opening)
+        openingsAdapter.setData(listOfOpenings)
     }
 }

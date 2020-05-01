@@ -9,10 +9,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="3dp"
         android:textSize="16sp"
         android:text="@string/details_opening_example"/>
+
+    <ImageView
+        android:id="@+id/remove_openings"
+        android:layout_width="20dp"
+        android:layout_height="20sp"
+        android:layout_margin="3dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_openings_preview_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/remove"
+        android:contentDescription="@string/remove_openings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

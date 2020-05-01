@@ -148,8 +148,9 @@
     <string name="cancel">Cancel</string>
     <string name="score">Your score is %1$d/10. Write your name and save it</string>
     <string name="result">Results</string>
-    <string name="example">Maraîcher</string>
-    <string name="knows_it_image_description">Know\'s it\'s image</string>
-    <string name="knows_it">KNOWS IT</string>
+    <string name="example" translatable="false">Maraîcher</string>
+    <string name="knows_it_image_description" translatable="false">Know\'s it\'s image</string>
+    <string name="knows_it" translatable="false">KNOWS IT</string>
+    <string name="remove_openings" translatable="false">Remove openings</string>
 
 </resources>
