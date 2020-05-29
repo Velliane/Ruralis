@@ -18,6 +18,13 @@ You also can:
 
 <a href="https://www.casimages.com/i/20051810014525445916800673.png.html" title="Mon image" target="_blank"><img src="https://nsm09.casimages.com/img/2020/05/18//mini_20051810014525445916800673.png" border="0" alt="Mon image" /></a>       <a href="https://www.casimages.com/i/20051810014725445916800674.png.html" title="Mon image" target="_blank"><img src="https://nsm09.casimages.com/img/2020/05/18//mini_20051810014725445916800674.png" border="0" alt="Mon image" /></a>
 
+### Detail screen
+
+<a href="https://www.casimages.com/i/20051810015525445916800680.png.html" title="Mon image" target="_blank"><img src="https://nsm09.casimages.com/img/2020/05/18//mini_20051810015525445916800680.png" border="0" alt="Mon image" /></a>       <a href="https://www.casimages.com/i/20051810015825445916800687.png.html" title="Mon image" target="_blank"><img src="https://nsm09.casimages.com/img/2020/05/18//mini_20051810015825445916800687.png" border="0" alt="Mon image" /></a>
+
+### Quiz
+
+<a href="https://www.casimages.com/i/20051810015725445916800685.png.html" title="Mon image" target="_blank"><img src="https://nsm09.casimages.com/img/2020/05/18//mini_20051810015725445916800685.png" border="0" alt="Mon image" /></a>       <a href="https://www.casimages.com/i/20051810015625445916800682.png.html" title="Mon image" target="_blank"><img src="https://nsm09.casimages.com/img/2020/05/18//mini_20051810015625445916800682.png" border="0" alt="Mon image" /></a>       <a href="https://www.casimages.com/i/20051810015625445916800683.png.html" title="Mon image" target="_blank"><img src="https://nsm09.casimages.com/img/2020/05/18//mini_20051810015625445916800683.png" border="0" alt="Mon image" /></a>       <a href="https://www.casimages.com/i/20051810015725445916800684.png.html" title="Mon image" target="_blank"><img src="https://nsm09.casimages.com/img/2020/05/18//mini_20051810015725445916800684.png" border="0" alt="Mon image" /></a>
 
 ## Libraries
 
