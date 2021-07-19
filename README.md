@@ -37,8 +37,9 @@ You also can:
 - Room
 - Easy Permissions
 - Firesbase UI
-- 310 ABP
-- [Circle Image View](https://github.com/hdodenhof/CircleImageView)
+- ViewPager2
+- [ColorDialog](https://github.com/andyxialm/ColorDialog)
+- [ShowCaseView](https://github.com/mreram/ShowCaseView)
 
 
 ## API
