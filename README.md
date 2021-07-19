@@ -37,14 +37,14 @@ You also can:
 - Room
 - Easy Permissions
 - Firesbase UI
-- ViewPager2
-- [ColorDialog](https://github.com/andyxialm/ColorDialog)
-- [ShowCaseView](https://github.com/mreram/ShowCaseView)
-
+- 310 ABP
+- [Circle Image View](https://github.com/hdodenhof/CircleImageView)
 
 
 ## API
 
 - [Google Places API](https://developers.google.com/places/web-service/intro?hl=fr)
+- [Twitter](https://developer.twitter.com/en/docs)
+- [Facebook](https://developers.facebook.com/docs/facebook-login/)
 
 ##
